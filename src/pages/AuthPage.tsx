@@ -1,7 +1,22 @@
-const AuthPage = () => {
+import { useState } from 'react';
+import LoginSection from '../components/auth/LoginSection';
+import Overlay from '../components/auth/Overlay';
+
+const AuthPage = (): JSX.Element => {
+  const [panelActive, setPenelActive] = useState<boolean>(false);
+  const handleClickSignUpButton = () => setPenelActive(true);
+  const handleClickSignInButton = () => setPenelActive(false);
+
   return (
     <div>
-      <h1 className="text-3xl">Auth Page</h1>
+      <div className={`container ${panelActive ? `right-panel-active` : ``}`}>
+        <SignupSection />
+        <LoginSection />
+        <Overlay
+          handleClickSignInButton={handleClickSignInButton}
+          handleClickSignUpButton={handleClickSignUpButton}
+        />
+      </div>
     </div>
   );
 };

@@ -2,7 +2,11 @@
 export default {
   content: ['./index.html', './src/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {}
+    extend: {
+      backgroundImage: {
+        cosmos: "url('./src/assets/cosmos.jpg')"
+      }
+    }
   },
   plugins: [require('daisyui')]
 };
