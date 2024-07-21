@@ -1,8 +1,11 @@
 import React, { FormEvent, useState } from 'react';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
+import EmailValidationModal from '../modal/EmailValidationModal';
 
 const SignupSection: React.FC = () => {
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false);
+
   const [formData, setFormData] = useState({
     email: '',
     userId: '',
@@ -47,6 +50,22 @@ const SignupSection: React.FC = () => {
     try {
       const response = await apiInstance.post('/auth', formData);
       console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEmailModal = () => {
+    setIsEmailModalOpen(!isEmailModalOpen);
+  };
+
+  // 이메일 인증 버튼 클릭 함수
+  const handleEmailVerification = async () => {
+    try {
+      // const response = await apiInstance.post('/auth/email', { email: formData.email });
+      // console.log(response.data);
+      console.log('이메일 인증 요청');
+      handleEmailModal();
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +116,9 @@ const SignupSection: React.FC = () => {
                 onChange={handleChange}
               />
             </label>
-            <button className="check-button">인증</button>
+            <button className="check-button" onClick={handleEmailVerification}>
+              인증
+            </button>
           </div>
 
           {errors.email && <div className="error-message text-xs">{errors.email}</div>}
@@ -120,6 +141,7 @@ const SignupSection: React.FC = () => {
           회원가입
         </button>
       </form>
+      {isEmailModalOpen && <EmailValidationModal toggleModal={handleEmailModal} />}
     </div>
   );
 };
