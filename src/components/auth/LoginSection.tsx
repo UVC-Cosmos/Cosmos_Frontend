@@ -53,20 +53,20 @@ const LoginSection = (): JSX.Element => {
     <div className="form-container sign-in-container">
       <form onSubmit={handleSubmit} className="form">
         <h1 className="form-title">로그인</h1>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="text"
               className="grow"
               name="userId"
-              placeholder="userId"
+              placeholder="ID"
               value={formData.userId}
               onChange={handleChange}
             />
           </label>
           {errors.userId && <div className="error-message text-xs">{errors.userId}</div>}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex flex-row items-center gap-2">
             <input
               type="password"

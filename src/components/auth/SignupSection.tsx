@@ -63,7 +63,7 @@ const SignupSection: React.FC = () => {
                 type="text"
                 className="grow"
                 name="userId"
-                placeholder="userId"
+                placeholder="ID"
                 value={formData.userId}
                 onChange={handleChange}
               />
