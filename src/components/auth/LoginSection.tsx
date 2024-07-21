@@ -50,10 +50,10 @@ const LoginSection = (): JSX.Element => {
   };
 
   return (
-    <div className="w-[35vw] flex flex-col gap-6 h-[75vh]">
-      <h1 className="font-bold text-4xl text-center">로그인</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
+    <div className="form-container sign-in-container">
+      <form onSubmit={handleSubmit} className="form">
+        <h1 className="form-title">로그인</h1>
+        <div className="flex flex-col">
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="text"
@@ -79,9 +79,12 @@ const LoginSection = (): JSX.Element => {
           </label>
           {errors.password && <div className="error-message text-xs">{errors.password}</div>}
         </div>
-        <button type="submit" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg">
+        <button type="submit" className="form-button">
           로그인
         </button>
+        <a className="find-password" href="#">
+          패스워드 찾기
+        </a>
       </form>
     </div>
   );

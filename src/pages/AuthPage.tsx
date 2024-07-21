@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import LoginSection from '../components/auth/LoginSection';
 import Overlay from '../components/auth/Overlay';
+import SignupSection from '../components/auth/SignupSection';
+import './AuthPage.css';
 
 const AuthPage = (): JSX.Element => {
   const [panelActive, setPenelActive] = useState<boolean>(false);

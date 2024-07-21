@@ -3,13 +3,12 @@ interface Props {
   handleClickSignInButton: () => void;
 }
 
-const Overlay: JSX.Element = ({ Props }: Props) => {
-  const { handleClickSignUpButton, handleClickSignInButton } = Props;
+const Overlay: React.FC<Props> = ({ handleClickSignUpButton, handleClickSignInButton }) => {
   return (
     <div className="overlay-container">
       <div className="overlay">
         <div className="overlay-panel overlay-left">
-          <h1>Welcome Back!</h1>
+          <h1>반가워요!</h1>
           <p className="overlay-description">
             이미 가입한 회원이시라면,
             <br />
@@ -20,7 +19,7 @@ const Overlay: JSX.Element = ({ Props }: Props) => {
           </button>
         </div>
         <div className="overlay-panel overlay-right">
-          <h1>Hello, Friend!</h1>
+          <h1>안녕하세요!</h1>
           <p className="overlay-description">
             아직 회원이 아니시라면,
             <br />

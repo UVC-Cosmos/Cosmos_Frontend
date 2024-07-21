@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
 
-const SigninSection: React.FC = () => {
+const SignupSection: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     userId: '',
@@ -42,7 +42,8 @@ const SigninSection: React.FC = () => {
       .catch((err) => setErrors({ ...errors, [name]: err.message }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       const response = await apiInstance.post('/auth', formData);
       console.log(response.data);
@@ -52,28 +53,31 @@ const SigninSection: React.FC = () => {
   };
 
   return (
-    <div className="w-[35vw] flex flex-col gap-6 h-[75vh]">
-      <h1 className="font-bold text-4xl text-center">회원가입</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <label className="input input-bordered flex items-center gap-2">
-            <input
-              type="text"
-              className="grow"
-              name="userId"
-              placeholder="userId"
-              value={formData.userId}
-              onChange={handleChange}
-            />
-          </label>
+    <div className="form-container sign-up-container">
+      <form onSubmit={handleSubmit} className="form">
+        <h1 className="form-title">회원가입</h1>
+        <div className="flex flex-col gap-2 w-[20rem]">
+          <div className="flex flex-row justify-between">
+            <label className="input input-bordered flex items-center gap-2">
+              <input
+                type="text"
+                className="grow"
+                name="userId"
+                placeholder="userId"
+                value={formData.userId}
+                onChange={handleChange}
+              />
+            </label>
+            <button className="check-button">중복검사</button>
+          </div>
           {errors.userId && <div className="error-message text-xs">{errors.userId}</div>}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="text"
               name="username"
-              className="grow"
+              className="w-auto"
               placeholder="Username"
               value={formData.username}
               onChange={handleChange}
@@ -81,20 +85,24 @@ const SigninSection: React.FC = () => {
           </label>
           {errors.username && <div className="error-message text-xs">{errors.username}</div>}
         </div>
-        <div className="flex flex-col gap-2">
-          <label className="input input-bordered flex flex-row items-center gap-2">
-            <input
-              type="email"
-              name="email"
-              className="grow"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </label>
+        <div className="flex flex-col gap-2 w-[20rem]">
+          <div className="flex flex-row justify-between">
+            <label className="input input-bordered flex items-center gap-2">
+              <input
+                type="email"
+                name="email"
+                className="grow"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </label>
+            <button className="check-button">인증</button>
+          </div>
+
           {errors.email && <div className="error-message text-xs">{errors.email}</div>}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex flex-row items-center gap-2">
             <input
               type="password"
@@ -108,7 +116,7 @@ const SigninSection: React.FC = () => {
           {errors.password && <div className="error-message text-xs">{errors.password}</div>}
         </div>
 
-        <button type="submit" className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg">
+        <button type="submit" className="form-button">
           회원가입
         </button>
       </form>
@@ -116,4 +124,4 @@ const SigninSection: React.FC = () => {
   );
 };
 
-export default SigninSection;
+export default SignupSection;
