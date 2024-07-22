@@ -13,14 +13,14 @@ const SignupSection: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     userId: '',
-    username: '',
+    userName: '',
     password: ''
   });
 
   const [errors, setErrors] = useState({
     email: '',
     userId: '',
-    username: '',
+    userName: '',
     password: ''
   });
 
@@ -31,7 +31,8 @@ const SignupSection: React.FC = () => {
     password: Yup.string()
       .required('비밀번호는 필수 입력 항목입니다.')
       .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
-    username: Yup.string().required('이름은 필수 입력 항목입니다.')
+    userName: Yup.string().required('이름은 필수 입력 항목입니다.'),
+    userId: Yup.string()
   });
 
   // handle input
@@ -84,7 +85,7 @@ const SignupSection: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await apiInstance.post('/auth', formData);
+      const response = await apiInstance.post('/user', formData);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -107,7 +108,7 @@ const SignupSection: React.FC = () => {
                 onChange={handleChange}
               />
             </label>
-            <button className="check-button" onClick={checkDuplicateId}>
+            <button className="check-button" type="button" onClick={checkDuplicateId}>
               중복확인
             </button>
           </div>
@@ -121,14 +122,14 @@ const SignupSection: React.FC = () => {
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="text"
-              name="username"
+              name="userName"
               className="w-auto"
               placeholder="Username"
-              value={formData.username}
+              value={formData.userName}
               onChange={handleChange}
             />
           </label>
-          {errors.username && <div className="error-message text-xs">{errors.username}</div>}
+          {errors.userName && <div className="error-message text-xs">{errors.userName}</div>}
         </div>
         <div className="flex flex-col gap-2 w-[20rem]">
           <div className="flex flex-row justify-between">
@@ -142,7 +143,7 @@ const SignupSection: React.FC = () => {
                 onChange={handleChange}
               />
             </label>
-            <button className="check-button" onClick={handleEmailVerification}>
+            <button className="check-button" type="button" onClick={handleEmailVerification}>
               인증
             </button>
           </div>
