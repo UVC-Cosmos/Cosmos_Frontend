@@ -1,10 +1,14 @@
+import { useAtom, useAtomValue } from 'jotai';
 import React, { FormEvent, useState } from 'react';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
+import { emailCheckAtom, userIdCheckAtom } from '../../atom/auth/signupAtom';
 import EmailValidationModal from '../modal/EmailValidationModal';
 
 const SignupSection: React.FC = () => {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false);
+  const [isIdDuplicate, setIsIdDuplicate] = useAtom(userIdCheckAtom);
+  const isEmailCheck = useAtomValue(emailCheckAtom);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -27,10 +31,10 @@ const SignupSection: React.FC = () => {
     password: Yup.string()
       .required('비밀번호는 필수 입력 항목입니다.')
       .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
-    userId: Yup.string().required('아이디는 필수 입력 항목입니다.'),
     username: Yup.string().required('이름은 필수 입력 항목입니다.')
   });
 
+  // handle input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -45,6 +49,38 @@ const SignupSection: React.FC = () => {
       .catch((err) => setErrors({ ...errors, [name]: err.message }));
   };
 
+  const handleEmailModal = () => {
+    setIsEmailModalOpen(!isEmailModalOpen);
+  };
+
+  // ID 중복
+  const checkDuplicateId = async () => {
+    try {
+      console.log('아이디 중복 확인 요청');
+      await apiInstance.post('/auth/idDuplicateCheck', { userId: formData.userId }).then((res) => {
+        if (res.status === 200) {
+          setIsIdDuplicate(true);
+          console.log('아이디 중복 확인 성공');
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 이메일 인증 버튼 클릭 함수
+  const handleEmailVerification = async () => {
+    try {
+      const response = await apiInstance.post('/auth/verify-email', { email: formData.email });
+      console.log(response.data);
+      console.log('이메일 인증 요청');
+      handleEmailModal();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 회원가입 요청
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -55,25 +91,9 @@ const SignupSection: React.FC = () => {
     }
   };
 
-  const handleEmailModal = () => {
-    setIsEmailModalOpen(!isEmailModalOpen);
-  };
-
-  // 이메일 인증 버튼 클릭 함수
-  const handleEmailVerification = async () => {
-    try {
-      // const response = await apiInstance.post('/auth/email', { email: formData.email });
-      // console.log(response.data);
-      console.log('이메일 인증 요청');
-      handleEmailModal();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="form-container sign-up-container">
-      <form onSubmit={handleSubmit} className="form">
+      <form className="form" onSubmit={handleSubmit}>
         <h1 className="form-title">회원가입</h1>
         <div className="flex flex-col gap-2 w-[20rem]">
           <div className="flex flex-row justify-between">
@@ -87,9 +107,15 @@ const SignupSection: React.FC = () => {
                 onChange={handleChange}
               />
             </label>
-            <button className="check-button">중복검사</button>
+            <button className="check-button" onClick={checkDuplicateId}>
+              중복확인
+            </button>
           </div>
-          {errors.userId && <div className="error-message text-xs">{errors.userId}</div>}
+          {isIdDuplicate ? (
+            <div className="error-message text-xs">사용 가능한 아이디입니다.</div>
+          ) : (
+            <div className="error-message text-xs">아이디가 중복됩니다.</div>
+          )}
         </div>
         <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex items-center gap-2">
@@ -120,8 +146,12 @@ const SignupSection: React.FC = () => {
               인증
             </button>
           </div>
-
-          {errors.email && <div className="error-message text-xs">{errors.email}</div>}
+          {isEmailCheck ? (
+            <div className="error-message text-xs">인증이 완료되었습니다.</div>
+          ) : (
+            <div className="error-message text-xs">이메일 인증을 완료해주세요.</div>
+          )}
+          {/* {errors.email && <div className="error-message text-xs">{errors.email}</div>} */}
         </div>
         <div className="flex flex-col gap-2 w-[20rem]">
           <label className="input input-bordered flex flex-row items-center gap-2">
@@ -141,7 +171,9 @@ const SignupSection: React.FC = () => {
           회원가입
         </button>
       </form>
-      {isEmailModalOpen && <EmailValidationModal toggleModal={handleEmailModal} />}
+      {isEmailModalOpen && (
+        <EmailValidationModal checkEmail={formData.email} toggleModal={handleEmailModal} />
+      )}
     </div>
   );
 };

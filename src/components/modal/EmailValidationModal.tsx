@@ -1,12 +1,16 @@
+import { useSetAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { apiInstance } from '../../api/api';
+import { emailCheckAtom } from '../../atom/auth/signupAtom';
 
 interface IProps {
   toggleModal: () => void;
+  checkEmail: string;
 }
-const EmailValidationModal = ({ toggleModal }: IProps): JSX.Element => {
+const EmailValidationModal = ({ toggleModal, checkEmail }: IProps): JSX.Element => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [code, setCode] = useState<string>('');
+  const setIsEmailCheck = useSetAtom(emailCheckAtom);
 
   // 모달 외부 클릭 시 모달 닫기
   useEffect(() => {
@@ -28,16 +32,18 @@ const EmailValidationModal = ({ toggleModal }: IProps): JSX.Element => {
   // 인증 버튼 함수
   const handleVerification = async () => {
     try {
-      // const response = await apiInstance
-      //   .post('/auth/verify-email', {
-      //     code
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     // 모달 닫기.
-
-      //   });
-      toggleModal();
+      await apiInstance
+        .post('/auth/verify-emailCode', {
+          email: checkEmail,
+          code: code
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setIsEmailCheck(true);
+          }
+          // 모달 닫기.
+          toggleModal();
+        });
     } catch (error) {
       console.log(error);
     }
@@ -46,10 +52,7 @@ const EmailValidationModal = ({ toggleModal }: IProps): JSX.Element => {
   return (
     <div className="fixed left-0 top-0 z-[100] flex size-full flex-col items-center justify-center bg-black bg-opacity-70">
       <div ref={modalRef} className="flex h-[30rem] w-[52rem] flex-col items-center bg-white">
-        <div
-          id="current-password"
-          className="flex h-24 w-[40rem] flex-row items-center justify-center"
-        >
+        <div className="flex h-24 w-[40rem] flex-row items-center justify-center">
           <p className="mr-4 w-36 text-right text-lg">인증코드</p>
           <input
             type="text"
