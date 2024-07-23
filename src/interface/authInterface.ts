@@ -4,3 +4,15 @@ export interface ISigninForm {
   password: string;
   userId: string;
 }
+
+export interface IUser {
+  userId: string;
+  userName: string;
+  email: string;
+  role: 'Admin' | 'Operator' | 'User';
+}
+
+export interface IAuthAtom {
+  isLogin: boolean;
+  user: IUser | null;
+}
