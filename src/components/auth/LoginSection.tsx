@@ -1,6 +1,14 @@
-import { useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { apiInstance } from '../../api/api';
+import { isLoginAtom, userAtom } from '../../atom/auth/authAtom';
+import { IUser } from '../../interface/authInterface';
 const LoginSection = (): JSX.Element => {
+  const navigate = useNavigate();
+  const setIsLogin = useSetAtom(isLoginAtom);
+  const setUser = useSetAtom(userAtom);
   const [formData, setFormData] = useState({
     userId: '',
     password: ''
@@ -32,21 +40,29 @@ const LoginSection = (): JSX.Element => {
       .catch((err) => setErrors({ ...errors, [name]: err.message }));
   };
 
-  const handleSubmit = async () => {
-    // e.preventDefault();
-    // try {
-    //   await validationSchema.validate(formData, { abortEarly: false });
-    //   // 유효성 검사 통과 시 회원가입 처리 로직 (API 호출 등)
-    //   console.log(formData);
-    // } catch (err) {
-    //   if (err instanceof Yup.ValidationError) {
-    //     const newErrors = {};
-    //     err.inner.forEach((error) => {
-    //       newErrors[error.path] = error.message;
-    //     });
-    //     setErrors(newErrors);
-    //   }
-    // }
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // 폼의 기본 제출 동작 방지
+    try {
+      // formData의 속성을 구조 분해 할당하여 전송 데이터 구성
+      const response = await apiInstance.post('/auth/login', {
+        userId: formData.userId,
+        password: formData.password
+      });
+      console.log(response, '로그인 성공');
+      const userData = response.data as IUser;
+      console.log(userData, '유저 데이터');
+      setIsLogin(true);
+      setUser(userData);
+      if (userData.role === 'Admin') {
+        navigate('/admin/member');
+      } else {
+        navigate('/main');
+      }
+    } catch (error) {
+      setIsLogin(false);
+      setUser(null);
+      console.log(error);
+    }
   };
 
   return (
