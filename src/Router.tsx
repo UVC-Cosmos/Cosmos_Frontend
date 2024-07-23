@@ -3,6 +3,7 @@ import { AdminLayout } from './components/layout/AdminLayout';
 import { DefaultLayout } from './components/layout/DefaultLayout';
 import AuthPage from './pages/AuthPage';
 import DashBoardPage from './pages/DashBoardPage';
+import EditUserPage from './pages/EditUserPage';
 import MemberListPage from './pages/MemberListPage';
 
 const Router = () => {
@@ -12,6 +13,7 @@ const Router = () => {
       <Route path="main" element={<DefaultLayout />}>
         <Route path="dashboard" element={<DashBoardPage />} />
       </Route>
+      <Route path="/edit" element={<EditUserPage />} />
       <Route path="admin" element={<AdminLayout />}>
         <Route path="member" element={<MemberListPage />} />
       </Route>
