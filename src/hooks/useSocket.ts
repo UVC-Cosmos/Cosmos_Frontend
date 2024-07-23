@@ -9,12 +9,12 @@ const useSocket = (url: string, room: string): [Socket | null, (tagId: string, v
         setSocket(newSocket);
 
         newSocket.on("connect", () => {
-            console.log("Connected to WebSocket server");
+            console.log("노드서버에 연결 성공!");
             newSocket.emit("joinRoom", room);
         });
 
         newSocket.on("disconnect", () => {
-            console.log("Disconnected from WebSocket server");
+            console.log("노드서버와 연결 해제!");
         });
 
         return () => {

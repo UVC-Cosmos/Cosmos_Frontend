@@ -1,10 +1,9 @@
 import React from "react";
 import UnityComponent from "../components/unity/UnityComponent";
 import useSocket from "../hooks/useSocket";
-require('dotenv').config();
 
-const EdukitId: string = process.env.REACT_APP_EdukitId as string; // edukitId ex) UVC-EDU-01
-const WebSocketServerUrl: string = process.env.REACT_APP_WebSocketServerUrl as string; // 노드서버 Url ex) http://192.168.0.16:3000
+const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;  // 노드서버 Url ex) http://192.168.0.16:3000
+const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
 
 const DashBoardPage = () => {
   const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
