@@ -1,7 +1,14 @@
+import { useSetAtom } from 'jotai';
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
+import { isLoginAtom, userAtom } from '../../atom/auth/authAtom';
+import { IUser } from '../../interface/authInterface';
 const LoginSection = (): JSX.Element => {
+  const navigate = useNavigate();
+  const setIsLogin = useSetAtom(isLoginAtom);
+  const setUser = useSetAtom(userAtom);
   const [formData, setFormData] = useState({
     userId: '',
     password: ''
@@ -42,36 +49,21 @@ const LoginSection = (): JSX.Element => {
         password: formData.password
       });
       console.log(response, '로그인 성공');
+      const userData = response.data as IUser;
+      console.log(userData, '유저 데이터');
+      setIsLogin(true);
+      setUser(userData);
+      if (userData.role === 'Admin') {
+        navigate('/admin/member');
+      } else {
+        navigate('/main');
+      }
     } catch (error) {
+      setIsLogin(false);
+      setUser(null);
       console.log(error);
     }
   };
-
-  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await apiInstance.post('/auth/login', {
-  //       userId: formData.userId,
-  //       password: formData.password
-  //     });
-
-  //     console.log(response, '로그인 성공');
-
-  //     // 로그인 성공 시 세션 쿠키 값 가져오기
-  //     const cookies = document.cookie.split('; ');
-  //     console.log(cookies, '쿠키값');
-  //     const sessionCookie = cookies.find((cookie) => cookie.startsWith('connect.sid=')); // 세션 쿠키 이름 확인 필요
-  //     console.log(sessionCookie, '세션쿠키');
-  //     const sessionId = sessionCookie ? sessionCookie.split('=')[1] : null;
-  //     console.log(sessionId, '세션아이디');
-  //     // Session Storage에 저장
-  //     if (sessionId) {
-  //       sessionStorage.setItem('sessionId', sessionId);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <div className="form-container sign-in-container">
