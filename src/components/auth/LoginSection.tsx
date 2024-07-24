@@ -56,7 +56,7 @@ const LoginSection = (): JSX.Element => {
       if (userData.role === 'Admin') {
         navigate('/admin/member');
       } else {
-        navigate('/main');
+        navigate('/main/dashboard');
       }
     } catch (error) {
       setIsLogin(false);
