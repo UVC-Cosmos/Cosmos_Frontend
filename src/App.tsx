@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Provider } from 'jotai';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './Router';
+import { MqttProvider } from './context/mqttContext';
 import './App.css';
 
 function App() {
@@ -12,8 +13,10 @@ function App() {
     <BrowserRouter>
       <Provider>
         <QueryClientProvider client={queryClient}>
-          <Router />
-          <ReactQueryDevtools />
+          <MqttProvider>
+            <Router />
+            <ReactQueryDevtools />
+          </MqttProvider>
         </QueryClientProvider>
       </Provider>
     </BrowserRouter>
