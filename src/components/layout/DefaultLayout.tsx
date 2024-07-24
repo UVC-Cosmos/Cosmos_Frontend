@@ -1,10 +1,12 @@
+import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { AuthRoute } from '../auth/AuthRotue';
 
 export const DefaultLayout = (): JSX.Element => {
   const [currentTime, setCurrentTime] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const updateTime = () => {
@@ -26,6 +28,29 @@ export const DefaultLayout = (): JSX.Element => {
 
     return () => clearInterval(intervalId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
   }, []);
+
+  function clearCosmosSessionCookie() {
+    document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  const handleLogout = async () => {
+    try {
+      await apiInstance.post('/auth/logout').then((res) => {
+        if (res.status === 200) {
+          localStorage.removeItem('isLogin');
+          localStorage.removeItem('user');
+          clearCosmosSessionCookie();
+          alert('로그아웃 되었습니다.');
+          navigate('/');
+        } else {
+          alert('로그아웃에 실패했습니다.');
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <header className="h-20 bg-mainColor flex items-center justify-between">
@@ -113,7 +138,7 @@ export const DefaultLayout = (): JSX.Element => {
                   <p className="text-white text-sm">0</p>
                 </div>
               </div>
-              <div>
+              <div onClick={handleLogout}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="3rem"
@@ -140,9 +165,3 @@ export const DefaultLayout = (): JSX.Element => {
     </div>
   );
 };
-
-{
-  /* <AuthRoute>
-  <Outlet />
-</AuthRoute> */
-}
