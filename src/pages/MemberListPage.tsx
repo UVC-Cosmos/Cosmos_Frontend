@@ -21,56 +21,52 @@ const MemberListPage: React.FC = () => {
   //   // TODO: 필터 옵션 및 검색 키워드에 따른 필터링 로직 구현
   // });
 
+  // 이름에 대한 오름차순 및 내림차순 정렬 함수
+  // 내림 차순과 오츰 차순에 따라 setMembers를 통해 members 상태를 변경
+  const sortMembers = () => {
+    const newSortOption = sortOption === 'asc' ? 'desc' : 'asc';
+    setSortOption(newSortOption);
+    setMembers((prev) =>
+      prev.sort((a, b) =>
+        newSortOption === 'asc'
+          ? a.username.localeCompare(b.username)
+          : b.username.localeCompare(a.username)
+      )
+    );
+  };
+
   return (
-    <div>
-      <h1>멤버 리스트</h1>
-
-      {/* 검색, 필터링, 정렬 UI */}
-      <div>
-        <input
-          type="text"
-          placeholder="이름 검색"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-        />
-        <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-          <option value="">전체</option>
-          <option value="사원">사원</option>
-          <option value="대리">대리</option>
-          <option value="과장">과장</option>
-          <option value="부장">부장</option>
-        </select>
-        <button onClick={() => setSortOption(sortOption === 'asc' ? 'desc' : 'asc')}>
-          {sortOption === 'asc' ? '오름차순' : '내림차순'}
-        </button>
-      </div>
-
-      {/* 멤버 리스트 테이블 */}
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>이름</th>
-            <th>이메일</th>
-            <th>권한</th>
-            <th>직급</th>
-            <th>관리</th>
-            {/* 권한 변경, 삭제 등 버튼 추가 */}
-          </tr>
-        </thead>
-        <tbody>
-          {members.map((member) => (
-            <tr key={member.id}>
-              <td>{member.id}</td>
-              <td>{member.username}</td>
-              <td>{member.email}</td>
-              <td>{member.role}</td>
-              <td>{member.position}</td>
-              <td>{/* 관리 버튼 */}관리</td>
+    <div className="w-[90vw] mx-auto mt-4">
+      <div className="overflow-x-auto">
+        <table className="w-[90vw] table">
+          <thead>
+            <tr>
+              <th className="w-1/12">No</th>
+              <th className="w-1/6" onClick={sortMembers}>
+                이름
+                {sortOption === 'asc' ? ' ▲' : ' ▼'}
+              </th>
+              <th className="w-1/6">직급</th>
+              <th className="w-1/4">권한</th>
+              <th className="w-1/6">소속</th>
+              <th className="w-1/12">관리</th>
+              {/* 권한 변경, 삭제 등 버튼 추가 */}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {members.map((member) => (
+              <tr key={member.id} className="hover">
+                <td>{member.id}</td>
+                <td>{member.username}</td>
+                <td>{member.email}</td>
+                <td>{member.role}</td>
+                <td>{member.position}</td>
+                <td>{/* 관리 버튼 */}관리</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
