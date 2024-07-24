@@ -12,8 +12,8 @@ const Router = () => {
       <Route path="/" element={<AuthPage />} />
       <Route path="main" element={<DefaultLayout />}>
         <Route path="dashboard" element={<DashBoardPage />} />
+        <Route path="edit" element={<EditUserPage />} />
       </Route>
-      <Route path="/edit" element={<EditUserPage />} />
       <Route path="admin" element={<AdminLayout />}>
         <Route path="member" element={<MemberListPage />} />
       </Route>

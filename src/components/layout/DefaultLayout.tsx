@@ -1,5 +1,6 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
+import { IUser } from '@/interface/authInterface';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { AuthRoute } from '../auth/AuthRotue';
@@ -7,6 +8,7 @@ import { AuthRoute } from '../auth/AuthRotue';
 export const DefaultLayout = (): JSX.Element => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const navigate = useNavigate();
+  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
     const updateTime = () => {
@@ -32,6 +34,10 @@ export const DefaultLayout = (): JSX.Element => {
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
+
+  const goToEditProfile = () => {
+    navigate('/main/edit');
+  };
 
   const handleLogout = async () => {
     try {
@@ -59,7 +65,7 @@ export const DefaultLayout = (): JSX.Element => {
         </div>
         <div className="flex flex-row gap-4">
           <div className="bg-mainLightColor rounded-lg px-4">
-            <h2 className="text-white text-xl">OOO님 환영합니다!</h2>
+            <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
           </div>
           <div className="text-white text-xl w-[14rem]">
             <h2>{currentTime}</h2>
@@ -105,6 +111,20 @@ export const DefaultLayout = (): JSX.Element => {
               </div>
             </div>
             <div id="position-end" className="flex flex-col gap-4">
+              <div id="edit" onClick={goToEditProfile}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="3rem"
+                  height="3rem"
+                  viewBox="0 0 24 24"
+                  className="hover:bg-mainColorH"
+                >
+                  <path
+                    fill="#635985"
+                    d="M6 17c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6m9-9a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2"
+                  ></path>
+                </svg>
+              </div>
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
