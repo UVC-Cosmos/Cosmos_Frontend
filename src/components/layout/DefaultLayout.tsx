@@ -1,35 +1,15 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
+import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
-import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { AuthRoute } from '../auth/AuthRotue';
 
 export const DefaultLayout = (): JSX.Element => {
-  const [currentTime, setCurrentTime] = useState<string>('');
   const navigate = useNavigate();
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formattedTime = now.toLocaleString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
-      setCurrentTime(formattedTime);
-    };
-
-    updateTime(); // 컴포넌트가 마운트될 때 시간을 설정합니다.
-    const intervalId = setInterval(updateTime, 1000); // 1초마다 시간을 업데이트합니다.
-
-    return () => clearInterval(intervalId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
-  }, []);
+  const currentTime = useCurrentTime();
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -37,6 +17,10 @@ export const DefaultLayout = (): JSX.Element => {
 
   const goToEditProfile = () => {
     navigate('/main/edit');
+  };
+
+  const goToDashboard = () => {
+    navigate('/main/dashboard');
   };
 
   const handleLogout = async () => {
@@ -80,7 +64,7 @@ export const DefaultLayout = (): JSX.Element => {
             className="bg-mainColor w-20 h-full me-3 flex flex-col justify-between items-center p-3 shadow-xl-center"
           >
             <div id="position-top" className="flex flex-col gap-4">
-              <div>
+              <div onClick={goToDashboard}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="3rem"
