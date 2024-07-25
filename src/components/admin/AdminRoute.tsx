@@ -13,8 +13,6 @@ export const AdminRoute = ({ children }: IAdminRouteProps) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
   const role = user.role;
 
-  console.log('isLogin:', isLogin, 'Role:', role); // 디버깅을 위한 로그
-
   if (!isLogin) {
     // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
     return <Navigate to="/" replace />;
