@@ -6,13 +6,13 @@ import { CSSTransition } from 'react-transition-group';
 import './modal.css'; // CSS 파일 추가
 
 interface ExistingPasswordChangeProps {
-  isOpen: boolean;
+  // isOpen: boolean;
   onClose: () => void;
   title: string;
 }
 
 const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
-  isOpen,
+  // isOpen,
   onClose,
   title
 }) => {
@@ -33,7 +33,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
     confirmPassword: ''
   });
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   const validationSchema = Yup.object({
     currentPassword: Yup.string().required('기존의 비밀번호를 입력해주세요.'),
