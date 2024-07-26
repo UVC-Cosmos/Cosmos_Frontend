@@ -3,7 +3,7 @@ import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
 import { Outlet, useNavigate } from 'react-router';
-import { AdminRoute } from '../admin/AdminRoute';
+import { AdminRoute } from '../route/AdminRoute';
 
 export const AdminLayout = (): JSX.Element => {
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');

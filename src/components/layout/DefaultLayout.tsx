@@ -2,10 +2,10 @@ import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
-import { Outlet, useNavigate } from 'react-router';
-import { AuthRoute } from '../auth/AuthRotue';
-import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router';
+import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
+import { AuthRoute } from '../route/AuthRotue';
 
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
