@@ -1,39 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import { Member, dummyMember } from '../dummy/dummyMember';
+import { DeleteMemberModal } from '@/components/modal/DeleteMemberModal';
+import { IMember } from '@/interface/authInterface';
+import { useChangeMemberFactoryMutation } from '@/store/mutation/useChangeMemberFactoryMutation';
+import { useMemberQuery } from '@/store/query/useMemberQuery';
+import React, { useState } from 'react';
+import { dummyMember } from '../dummy/dummyMember';
 
+interface IAllMebers extends IMember {
+  isCheckable?: boolean;
+}
 const MemberListPage: React.FC = () => {
-  const [members, setMembers] = useState<Member[]>(dummyMember); // 멤버 데이터 상태 관리
-  const [sortOption, setSortOption] = useState<'asc' | 'desc'>('asc'); // 정렬 옵션 상태 관리
-  const [filterOption, setFilterOption] = useState<string>(''); // 필터 옵션 상태 관리
-  const [searchKeyword, setSearchKeyword] = useState<string>(''); // 검색 키워드 상태 관리
+  const { isLoading, error, data: allMembers } = useMemberQuery();
 
-  // 컴포넌트 마운트 시 전체 멤버 데이터 가져오기 (실제 API 연동 필요)
-  // useEffect(() => {
-  //   // TODO: API 호출하여 실제 멤버 데이터 가져오기
-  // }, []);
+  const [members, setMembers] = useState<IAllMebers[]>(
+    dummyMember.map((member) => ({ ...member, isCheckable: false }))
+  );
+  const [, setSearchKeyword] = useState<string>(''); // 검색 키워드 상태 관리
+  const [, setIsCheckable] = useState<boolean>(false); // 체크박스 활성화 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 활성화 상태 관리
+  const [initialMembers, setInitialMembers] = useState<IAllMebers[]>([]);
 
-  // 정렬, 필터링, 검색 로직 구현
-  // const sortedMembers = members.sort((a, b) => {
-  //   // TODO: 정렬 옵션에 따른 정렬 로직 구현
-  // });
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
-  // const filteredMembers = sortedMembers.filter((member) => {
-  //   // TODO: 필터 옵션 및 검색 키워드에 따른 필터링 로직 구현
-  // });
+  // 이름 검색 함수
+  // 이름을 검색하면 해당 이름을 포함하는 멤버들만 setMembers로 업데이트
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearchKeyword(value);
+    if (value === '') {
+      // 검색 키워드가 없으면 전체 멤버 데이터로 업데이트
+      setMembers(dummyMember);
+    } else {
+      // 검색 키워드가 있으면 해당 키워드를 포함하는 멤버 데이터로 업데이트
+      const searchedMembers = dummyMember.filter((member) => member.username.includes(value));
+      setMembers(searchedMembers);
+    }
+  };
 
-  // 이름에 대한 오름차순 및 내림차순 정렬 함수
-  // 내림 차순과 오츰 차순에 따라 setMembers를 통해 members 상태를 변경
-  const sortMembers = () => {
-    const newSortOption = sortOption === 'asc' ? 'desc' : 'asc';
-    setSortOption(newSortOption);
-    setMembers((prev) =>
-      prev.sort((a, b) =>
-        newSortOption === 'asc'
-          ? a.username.localeCompare(b.username)
-          : b.username.localeCompare(a.username)
+  const toggleMemberCheckable = (id: number) => {
+    setMembers((prevMembers) =>
+      prevMembers.map((member) =>
+        member.id === id ? { ...member, isCheckable: !member.isCheckable } : member
       )
     );
   };
+
+  // member 데이터 안에 있는 factory 데이터를 checkbox로 표현
+  const handleFactory = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+    factoryName: string
+  ) => {
+    const { checked } = e.target;
+    setMembers((prevMembers) =>
+      prevMembers.map((member) =>
+        member.id === id
+          ? {
+              ...member,
+              factory: checked
+                ? [...member.factory, factoryName].filter(
+                    (value, index, self) => self.indexOf(value) === index
+                  ) // 중복 제거
+                : member.factory.filter((f) => f !== factoryName)
+            }
+          : member
+      )
+    );
+  };
+
+  // 관리 버튼 함수
+  const changeUserFactory = useChangeMemberFactoryMutation();
+
+  const handleEditMember = (id: number) => {
+    const member = members.find((member) => member.id === id);
+    if (member) {
+      changeUserFactory.mutate({ memberId: id, factory: member.factory });
+    }
+    setIsCheckable(false);
+  };
+
+  const handleManageMember = (id: number) => {
+    setInitialMembers(members); // 현재 상태 저장
+    toggleMemberCheckable(id);
+  };
+
+  const handleCancelEdit = () => {
+    setMembers(initialMembers); // 초기 상태로 복구
+    setIsCheckable(false);
+  };
+
+  if (isLoading)
+    return (
+      <div className="w-[90vw] mx-auto mt-4">
+        <div className="flex justify-center items-center h-40">
+          <span className="loading loading-ring loading-lg"></span>
+        </div>
+      </div>
+    );
 
   return (
     <div className="w-[90vw] mx-auto mt-4">
@@ -42,14 +106,32 @@ const MemberListPage: React.FC = () => {
           <thead>
             <tr>
               <th className="w-1/12">No</th>
-              <th className="w-1/6" onClick={sortMembers}>
-                이름
-                {sortOption === 'asc' ? ' ▲' : ' ▼'}
-              </th>
+              <th className="w-1/6">이름</th>
               <th className="w-1/6">직급</th>
               <th className="w-1/4">권한</th>
               <th className="w-1/6">소속</th>
-              <th className="w-1/12">관리</th>
+              <th className="w-1/12">
+                <label className="input input-bordered flex items-center gap-2">
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="이름을 입력하세요."
+                    onChange={handleSearch}
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-4 w-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </label>
+              </th>
               {/* 권한 변경, 삭제 등 버튼 추가 */}
             </tr>
           </thead>
@@ -58,10 +140,52 @@ const MemberListPage: React.FC = () => {
               <tr key={member.id} className="hover">
                 <td>{member.id}</td>
                 <td>{member.username}</td>
-                <td>{member.email}</td>
-                <td>{member.role}</td>
                 <td>{member.position}</td>
-                <td>{/* 관리 버튼 */}관리</td>
+                <td>{member.role}</td>
+                <td>
+                  {['공장1', '공장2', '공장3'].map((factoryName) => (
+                    <label key={factoryName} className="checkbox">
+                      <input
+                        type="checkbox"
+                        checked={member.factory.includes(factoryName)}
+                        disabled={!member.isCheckable}
+                        onChange={(e) => handleFactory(e, member.id, factoryName)}
+                      />
+                      <span className="ml-2">{factoryName}</span>
+                    </label>
+                  ))}
+                </td>
+                <td>
+                  {member.isCheckable ? (
+                    <div className="flex flex-row gap-2">
+                      <button
+                        className="btn btn-sm btn-outline btn-primary"
+                        onClick={() => handleEditMember(member.id)}
+                      >
+                        저장
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline btn-primary"
+                        onClick={() => handleCancelEdit()}
+                      >
+                        취소
+                      </button>
+                      <button className="btn btn-sm btn-outline btn-primary" onClick={toggleModal}>
+                        삭제
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn-sm btn-outline btn-primary"
+                      onClick={() => handleManageMember(member.id)}
+                    >
+                      관리
+                    </button>
+                  )}
+                </td>
+                {isModalOpen && (
+                  <DeleteMemberModal toggleModal={toggleModal} memberId={member.id} />
+                )}
               </tr>
             ))}
           </tbody>
