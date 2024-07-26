@@ -24,5 +24,5 @@ export const EmergencyStateAtom = atom<string>('');
 export const InputLimitAtom = atom<string>('');
 export const DiceValueAtom = atom<string>('');
 export const DiceComparisonValueAtom = atom<string>('');
-export const ColorSensorSensingAtom = atom<string>('');
+export const No2SensingMemoryAtom = atom<string>('');
 export const No3GripperAtom = atom<string>('');

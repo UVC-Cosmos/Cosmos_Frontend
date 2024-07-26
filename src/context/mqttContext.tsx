@@ -27,7 +27,7 @@ import {
   InputLimitAtom,
   DiceValueAtom,
   DiceComparisonValueAtom,
-  ColorSensorSensingAtom,
+  No2SensingMemoryAtom,
   No3GripperAtom
 } from '../atom/mqtt/mqttAtom';
 
@@ -43,6 +43,7 @@ const atomMap = {
   '0': DataTimeAtom,
   '1': StartStateAtom,
   '2': No1ChipEmptyAtom,
+  '6': No2SensingMemoryAtom,
   '8': ResetStateAtom,
   '9': No1PowerStateAtom,
   '10': No2PowerStateAtom,
@@ -64,7 +65,6 @@ const atomMap = {
   '36': InputLimitAtom,
   '37': DiceValueAtom,
   '38': DiceComparisonValueAtom,
-  '39': ColorSensorSensingAtom,
   '40': No3GripperAtom
 };
 
@@ -93,7 +93,7 @@ export const MqttProvider: React.FC<MqttProviderProps> = ({ children }) => {
   const setInputLimit = useSetAtom(InputLimitAtom);
   const setDiceValue = useSetAtom(DiceValueAtom);
   const setDiceComparisonValue = useSetAtom(DiceComparisonValueAtom);
-  const setColorSensorSensing = useSetAtom(ColorSensorSensingAtom);
+  const setNo2SensingMemory = useSetAtom(No2SensingMemoryAtom);
   const setNo3Gripper = useSetAtom(No3GripperAtom);
 
   const previousDataRef = useRef<{ [key: string]: string }>({});
@@ -112,6 +112,7 @@ export const MqttProvider: React.FC<MqttProviderProps> = ({ children }) => {
         '0': setDataTime,
         '1': setStartState,
         '2': setNo1ChipEmpty,
+        '6': setNo2SensingMemory,
         '8': setResetState,
         '9': setNo1PowerState,
         '10': setNo2PowerState,
@@ -133,7 +134,6 @@ export const MqttProvider: React.FC<MqttProviderProps> = ({ children }) => {
         '36': setInputLimit,
         '37': setDiceValue,
         '38': setDiceComparisonValue,
-        '39': setColorSensorSensing,
         '40': setNo3Gripper
       });
       previousDataRef.current = parsedMessage.reduce((acc: { [key: string]: string }, data) => {
@@ -149,6 +149,7 @@ export const MqttProvider: React.FC<MqttProviderProps> = ({ children }) => {
     setDataTime,
     setStartState,
     setNo1ChipEmpty,
+    setNo2SensingMemory,
     setResetState,
     setNo1PowerState,
     setNo2PowerState,
@@ -170,7 +171,6 @@ export const MqttProvider: React.FC<MqttProviderProps> = ({ children }) => {
     setInputLimit,
     setDiceValue,
     setDiceComparisonValue,
-    setColorSensorSensing,
     setNo3Gripper
   ]);
 
