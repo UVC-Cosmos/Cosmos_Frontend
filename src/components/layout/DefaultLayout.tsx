@@ -34,7 +34,7 @@ export const DefaultLayout = (): JSX.Element => {
           localStorage.removeItem('user');
           clearCosmosSessionCookie();
           alert('로그아웃 되었습니다.');
-          // navigate('/');
+          navigate('/');
         } else {
           alert('로그아웃에 실패했습니다.');
         }
