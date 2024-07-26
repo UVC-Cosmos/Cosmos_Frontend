@@ -10,7 +10,7 @@ export interface IUser {
   userId: string;
   userName: string;
   email: string;
-  role: 'Admin' | 'Operator' | 'User' | 'FactoryAdmin';
+  role: 'Admin' | 'User' | 'A-FactoryAdmin' | 'B-FactoryAdmin' | 'C-FactoryAdmin';
 }
 
 export interface IAuthAtom {
