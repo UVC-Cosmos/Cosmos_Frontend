@@ -1,11 +1,11 @@
+import { IUser } from '@/interface/authInterface';
 import { Navigate } from 'react-router';
-import { IUser } from '../../interface/authInterface';
 
-interface IAdminRouteProps {
+interface IManagerRouteProps {
   children: React.ReactNode;
 }
 
-export const AdminRoute = ({ children }: IAdminRouteProps) => {
+export const ManagerRoute = ({ children }: IManagerRouteProps) => {
   const isLogin = localStorage.getItem('isLogin') === 'true';
   const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
   const role = user.role;
@@ -15,11 +15,10 @@ export const AdminRoute = ({ children }: IAdminRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-  if (role !== 'Admin') {
-    // 허용되지 않은 role인 경우 메인 페이지로 리다이렉트
+  if (role !== 'FactoryAdmin') {
     alert('접근 권한이 없습니다.');
     return <Navigate to="/main" replace />;
   }
 
-  return role === 'Admin' ? children : <Navigate to="/" />;
+  return role === 'FactoryAdmin' ? children : <Navigate to="/" />;
 };
