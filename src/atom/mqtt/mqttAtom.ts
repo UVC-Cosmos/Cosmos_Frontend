@@ -1,0 +1,28 @@
+import { atom } from 'jotai';
+
+export const DataTimeAtom = atom<string>('');
+export const StartStateAtom = atom<string>('');
+export const No1ChipEmptyAtom = atom<string>('');
+export const ResetStateAtom = atom<string>('');
+export const No1PowerStateAtom = atom<string>('');
+export const No2PowerStateAtom = atom<string>('');
+export const No3PowerStateAtom = atom<string>('');
+export const Sen1PowerStateAtom = atom<string>('');
+export const Sen2PowerStateAtom = atom<string>('');
+export const No1DelayTimeAtom = atom<string>('');
+export const No1CountAtom = atom<string>('');
+export const No2CountAtom = atom<string>('');
+export const No3CountAtom = atom<string>('');
+export const No3Motor1PositionAtom = atom<string>('');
+export const No3Motor2PositionAtom = atom<string>('');
+export const No2ChipAtom = atom<string>('');
+export const No2CubeFullAtom = atom<string>('');
+export const No2OperationModeAtom = atom<string>('');
+export const VisionCmdMemoryAtom = atom<string>('');
+export const VelocityAtom = atom<string>('');
+export const EmergencyStateAtom = atom<string>('');
+export const InputLimitAtom = atom<string>('');
+export const DiceValueAtom = atom<string>('');
+export const DiceComparisonValueAtom = atom<string>('');
+export const No2SensingMemoryAtom = atom<string>('');
+export const No3GripperAtom = atom<string>('');

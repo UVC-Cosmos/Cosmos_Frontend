@@ -6,6 +6,7 @@ export interface ISigninForm {
 }
 
 export interface IUser {
+  id: number;
   userId: string;
   userName: string;
   email: string;
