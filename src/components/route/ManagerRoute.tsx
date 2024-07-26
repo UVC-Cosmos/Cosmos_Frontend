@@ -15,10 +15,14 @@ export const ManagerRoute = ({ children }: IManagerRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-  if (role !== 'FactoryAdmin') {
+  if (role === 'Admin' || role === 'User') {
     alert('접근 권한이 없습니다.');
     return <Navigate to="/main" replace />;
   }
 
-  return role === 'FactoryAdmin' ? children : <Navigate to="/" />;
+  return role === 'A-FactoryAdmin' || role === 'B-FactoryAdmin' || role === 'C-FactoryAdmin' ? (
+    children
+  ) : (
+    <Navigate to="/" />
+  );
 };
