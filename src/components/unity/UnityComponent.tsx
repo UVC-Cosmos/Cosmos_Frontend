@@ -1,20 +1,15 @@
-import React from "react";
-import { Unity, useUnityContext } from "react-unity-webgl";
+import React from 'react';
+import { Unity, useUnityContext } from 'react-unity-webgl';
 
 const UnityComponent: React.FC = () => {
-    const { unityProvider } = useUnityContext({
-        loaderUrl: "build/Build.loader.js",
-        dataUrl: "build/Build.data.br",
-        frameworkUrl: "build/Build.framework.js.br",
-        codeUrl: "build/Build.wasm.br",
-    });
+  const { unityProvider } = useUnityContext({
+    loaderUrl: '/build/Build.loader.js',
+    dataUrl: '/build/Build.data.br',
+    frameworkUrl: '/build/Build.framework.js.br',
+    codeUrl: '/build/Build.wasm.br'
+  });
 
-    return (
-        <Unity
-            unityProvider={unityProvider}
-            style={{ width: 1000, height: 800 }}
-        />
-    );
+  return <Unity unityProvider={unityProvider} style={{ width: 600, height: 500 }} />;
 };
 
 export default UnityComponent;
