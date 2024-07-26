@@ -142,16 +142,20 @@ const MemberListPage: React.FC = () => {
                 <td>{member.username}</td>
                 <td>{member.position}</td>
                 <td>{member.role}</td>
-                <td>
+                <td className="flex flex-row justify-center items-center gap-2">
                   {['공장1', '공장2', '공장3'].map((factoryName) => (
-                    <label key={factoryName} className="checkbox">
+                    <label
+                      key={factoryName}
+                      className="flex flex-row h-[2rem] items-center justify-center"
+                    >
                       <input
                         type="checkbox"
+                        className="checkbox checkbox-sm checkbox-primary"
                         checked={member.factory.includes(factoryName)}
                         disabled={!member.isCheckable}
                         onChange={(e) => handleFactory(e, member.id, factoryName)}
                       />
-                      <span className="ml-2">{factoryName}</span>
+                      <p className="ml-2">{factoryName}</p>
                     </label>
                   ))}
                 </td>
