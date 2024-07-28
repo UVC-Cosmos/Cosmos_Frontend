@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { DiceValueAtom, DiceComparisonValueAtom } from '../../atom/mqtt/mqttAtom';
+import React, { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
 import diceImage0 from '../../assets/dice/dice0.png';
 import diceImage1 from '../../assets/dice/dice1.png';
 import diceImage2 from '../../assets/dice/dice2.png';
@@ -8,6 +8,7 @@ import diceImage3 from '../../assets/dice/dice3.png';
 import diceImage4 from '../../assets/dice/dice4.png';
 import diceImage5 from '../../assets/dice/dice5.png';
 import diceImage6 from '../../assets/dice/dice6.png';
+import { DiceComparisonValueAtom, DiceValueAtom } from '../../atom/mqtt/mqttAtom';
 
 interface DiceCounts {
   '1': number;
@@ -32,6 +33,54 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
     '5': 0,
     '6': 0
   });
+
+  // apex chart
+  const [options, setOptions] = useState({
+    chart: {
+      id: 'basic-bar',
+      toolbar: {
+        show: false
+      },
+      background: '#ffffff'
+    },
+    title: {
+      text: '주사위 빈도'
+    },
+    xaxis: {
+      categories: [1, 2, 3, 4, 5, 6],
+      labels: {
+        show: false
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      }
+    },
+    grid: {
+      yaxis: {
+        lines: {
+          show: false
+        },
+        show: false
+      }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        borderRadius: 4,
+        columnWidth: '35%'
+      }
+    }
+  });
+
+  const [series, setSeries] = useState([
+    {
+      name: '주사위 빈도',
+      data: [1, 3, 1, 2, 4, 5]
+    }
+  ]);
 
   const getDiceImage = (value: string) => {
     switch (value) {
@@ -70,13 +119,15 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
   };
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
+    <div className="border rounded-xl shadow-md bg-white h-[calc(45vh+0.5rem)] p-2">
       <h2 className="text-lg font-bold mb-4">주사위</h2>
       <p>주사위값: {diceValue}</p>
       <p>
         주사위 기준 값: {diceComparisonValue}
         <input
           type="number"
+          max={6}
+          min={1}
           value={tempComparisonValue}
           onChange={handleComparisonValueChange}
           className="border rounded px-2 py-1 ml-2"
@@ -93,15 +144,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
         alt={`Dice ${diceValue}`}
         className="w-24 h-24 mx-auto my-4"
       />
-      <div>
-        <h3 className="text-md font-semibold">주사위 값 통계</h3>
-        <p>1: {diceCounts['1']}번</p>
-        <p>2: {diceCounts['2']}번</p>
-        <p>3: {diceCounts['3']}번</p>
-        <p>4: {diceCounts['4']}번</p>
-        <p>5: {diceCounts['5']}번</p>
-        <p>6: {diceCounts['6']}번</p>
-      </div>
+      <Chart options={options} series={series} type="bar" width={500} height={'200px'} />
     </div>
   );
 };
