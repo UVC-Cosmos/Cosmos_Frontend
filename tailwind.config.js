@@ -5,6 +5,9 @@ export default {
     extend: {
       backgroundImage: {
         cosmos: "url('./src/assets/background.jpg')"
+      },
+      width: {
+        customLen1: 'calc(35vw-1.5rem)/2'
       }
     },
     colors: {
