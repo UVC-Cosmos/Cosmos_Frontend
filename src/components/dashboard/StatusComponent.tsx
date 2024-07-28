@@ -53,48 +53,87 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   };
 
   return (
-    <div className="flex flex-row rounded-xl bg-dashColor mb-2">
-      <div className="stat flex flex-col gap-2 items-center justify-center">
-        <div className="stat-title text-white">시작 / 정지</div>
+    <div className="flex flex-row rounded-xl bg-dashColor mb-2 justify-between items-center h-[15vh] w-[35vw]">
+      <div className="stat flex flex-col gap-2 items-center justify-center h-[12vh]">
+        <div className="stat-title text-mainColor font-bold">가동</div>
         <div>{getStatusCircle(startState.toString())}</div>
         <div className="stat-actions">
-          <button onClick={() => sendMessage('1', startState.toString() === 'true' ? '0' : '1')}>
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('1', startState.toString() === 'true' ? '0' : '1')}
+          >
             {startState.toString() === 'true' ? 'Stop' : 'Start'}
           </button>
         </div>
       </div>
-      <div className="stat">
-        <p>비상정지: {getStatusCircle(emergencyState.toString())}</p>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">비상정지</div>
+        <div>{getStatusCircle(emergencyState.toString())}</div>
+        <div className="stat-actions">
+          <button className="btn btn-sm" disabled>
+            {'Stop'}
+          </button>
+        </div>
       </div>
-      <div className="stat">
-        <p>1호기: {getStatusCircle(no1PowerState.toString())}</p>
-        <button onClick={() => sendMessage('9', no1PowerState.toString() === 'true' ? '0' : '1')}>
-          {no1PowerState.toString() === 'true' ? '1호기 OFF' : '1호기 ON'}
-        </button>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">1호기</div>
+        <div>{getStatusCircle(no1PowerState.toString())}</div>
+        <div className="stat-actions">
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('9', no1PowerState.toString() === 'true' ? '0' : '1')}
+          >
+            {no1PowerState.toString() === 'true' ? 'OFF' : 'ON'}
+          </button>
+        </div>
       </div>
-      <div className="stat">
-        <p>2호기: {getStatusCircle(no2PowerState.toString())}</p>
-        <button onClick={() => sendMessage('10', no2PowerState.toString() === 'true' ? '0' : '1')}>
-          {no2PowerState.toString() === 'true' ? '2호기 OFF' : '2호기 ON'}
-        </button>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">2호기</div>
+        <div>{getStatusCircle(no2PowerState.toString())}</div>
+        <div className="stat-actions">
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('10', no2PowerState.toString() === 'true' ? '0' : '1')}
+          >
+            {no2PowerState.toString() === 'true' ? 'OFF' : 'ON'}
+          </button>
+        </div>
       </div>
-      <div className="stat">
-        <p>3호기: {getStatusCircle(no3PowerState.toString())}</p>
-        <button onClick={() => sendMessage('11', no3PowerState.toString() === 'true' ? '0' : '1')}>
-          {no3PowerState.toString() === 'true' ? '3호기 OFF' : '3호기 ON'}
-        </button>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">3호기</div>
+        <div>{getStatusCircle(no3PowerState.toString())}</div>
+        <div className="stat-actions">
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('11', no3PowerState.toString() === 'true' ? '0' : '1')}
+          >
+            {no3PowerState.toString() === 'true' ? 'OFF' : 'ON'}
+          </button>
+        </div>
       </div>
-      <div className="stat">
-        <p>Sensor1: {getStatusCircle(sen1PowerState.toString())}</p>
-        <button onClick={() => sendMessage('12', sen1PowerState.toString() === 'true' ? '0' : '1')}>
-          {sen1PowerState.toString() === 'true' ? 'Sensor1 OFF' : 'Sensor1 ON'}
-        </button>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">센서</div>
+        <div>{getStatusCircle(sen1PowerState.toString())}</div>
+        <div className="stat-actions">
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('12', sen1PowerState.toString() === 'true' ? '0' : '1')}
+          >
+            {sen1PowerState.toString() === 'true' ? 'OFF' : 'ON'}
+          </button>
+        </div>
       </div>
-      <div className="stat">
-        <p>Sensor2: {getStatusCircle(sen2PowerState.toString())}</p>
-        <button onClick={() => sendMessage('13', sen2PowerState.toString() === 'true' ? '0' : '1')}>
-          {sen2PowerState.toString() === 'true' ? 'Sensor2 OFF' : 'Sensor2 ON'}
-        </button>
+      <div className="stat h-[12vh] flex flex-col gap-2 items-center justify-center">
+        <div className="stat-title text-mainColor font-bold">센서2</div>
+        <div>{getStatusCircle(sen2PowerState.toString())}</div>
+        <div className="stat-actions">
+          <button
+            className="btn btn-sm"
+            onClick={() => sendMessage('13', sen2PowerState.toString() === 'true' ? '0' : '1')}
+          >
+            {sen2PowerState.toString() === 'true' ? 'OFF' : 'ON'}
+          </button>
+        </div>
       </div>
     </div>
   );

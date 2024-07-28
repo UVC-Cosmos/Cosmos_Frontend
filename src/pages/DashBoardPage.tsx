@@ -59,38 +59,40 @@ const DashBoardPage = () => {
   const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
 
   return (
-    <div className="w-[calc(97vw-5rem)] h-[calc(100vh-5rem)] flex flex-col">
+    <div className="px-4 flex flex-col h-[45vh]">
       <div className="flex flex-row gap-4">
-        <UnityComponent />
+        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col">
+          <UnityComponent />
+        </div>
         <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col">
           <StatusComponent sendMessage={sendMessage} />
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 h-[30vh]">
             <ProcessTimeComponent sendMessage={sendMessage} />
             <ProductionStatsComponent sendMessage={sendMessage} />
           </div>
         </div>
-      </div>
-
-      <div className="flex flex-wrap justify-around mt-5 p-5 bg-gray-100">
-        <div className="flex-wrap">
-          <DataTimeComponent />
-        </div>
-
-        <div className="flex-wrap">
-          <MaterialStatusComponent />
-        </div>
-        <div className="flex-wrap">
+        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[25vw]">
           <DiceValuesComponent sendMessage={sendMessage} />
         </div>
-        <div className="flex-wrap">
+      </div>
+
+      <div className="flex flex-row justify-between">
+        <div>
+          <DataTimeComponent />
+        </div>
+        <div>
+          <MaterialStatusComponent />
+        </div>
+
+        <div>
           <ColorSensorComponent />
         </div>
-        <div className="flex-wrap"></div>
-        <div className="flex-wrap">
+        <div></div>
+        <div>
           <ProductionComponent />
         </div>
-        <div className="flex-wrap"></div>
-        <div className="flex-wrap">
+        <div></div>
+        <div>
           <AxisPositionComponent />
         </div>
       </div>
