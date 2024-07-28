@@ -51,7 +51,7 @@ export const DefaultLayout = (): JSX.Element => {
   return (
     <>
       <div>
-        <header className="h-20 bg-mainColor flex items-center justify-between">
+        <header className="h-[5vh] bg-mainColor flex items-center justify-between">
           <div className="ml-4">
             <Logo />
           </div>
@@ -64,11 +64,11 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </header>
-        <div className="flex flex-col h-[calc(100vh-5rem)]">
-          <div className="flex flex-row h-full">
+        <div className="flex flex-col">
+          <div className="flex flex-row h-[95vh]">
             <div
               id="menu"
-              className="bg-mainColor w-20 h-full me-3 flex flex-col justify-between items-center p-3 shadow-xl-center"
+              className="bg-mainColor w-[5vh] p-3 flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4">
                 <div onClick={goToDashboard}>
