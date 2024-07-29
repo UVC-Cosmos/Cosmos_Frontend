@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { useAtom } from 'jotai';
+import React, { useState } from 'react';
 import { No1DelayTimeAtom } from '../../atom/mqtt/mqttAtom';
 
 const ProcessTimeComponent: React.FC<{ sendMessage: (command: string, value: string) => void }> = ({
@@ -25,7 +25,7 @@ const ProcessTimeComponent: React.FC<{ sendMessage: (command: string, value: str
   };
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
+    <div className="border rounded-xl bg-white">
       <h2 className="text-lg font-bold mb-4">공정 시간 설정</h2>
       <p>현재 공정 반복 시간: {parseFloat(no1DelayTime).toFixed(1)} 초</p>
       <div>
