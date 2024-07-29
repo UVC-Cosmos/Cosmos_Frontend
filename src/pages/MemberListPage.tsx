@@ -21,7 +21,7 @@ const MemberListPage: React.FC = () => {
       );
     }
   }, [allMembers]);
-  console.log('14line', members);
+
   const [, setSearchKeyword] = useState<string>(''); // 검색 키워드 상태 관리
   const [, setIsCheckable] = useState<boolean>(false); // 체크박스 활성화 상태 관리
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 활성화 상태 관리

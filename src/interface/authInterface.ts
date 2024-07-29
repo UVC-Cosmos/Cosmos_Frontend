@@ -23,11 +23,17 @@ export interface IFactory {
   name: string;
 }
 
+export interface ILine {
+  id: number;
+  name: string;
+}
+
 export interface IMember {
   id: number;
   userName: string;
   rank: string;
   role: string;
   Factories: IFactory[];
+  Lines?: ILine[];
   isCheckable?: boolean;
 }

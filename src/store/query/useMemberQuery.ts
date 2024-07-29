@@ -8,7 +8,6 @@ const fetchUser = async (): Promise<IMember[]> => {
 };
 
 export const useMemberQuery = () => {
-  // onSuccess 매개변수 추가
   return useQuery<IMember[]>({
     queryKey: ['allMembers'],
     queryFn: fetchUser,

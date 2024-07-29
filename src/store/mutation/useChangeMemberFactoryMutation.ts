@@ -1,5 +1,4 @@
 import { apiInstance } from '@/api/api';
-import { IFactory } from '@/interface/authInterface';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const changeUserFactory = async (memberId: number, factory: string[]) => {
