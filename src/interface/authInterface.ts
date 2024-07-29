@@ -10,7 +10,7 @@ export interface IUser {
   userId: string;
   userName: string;
   email: string;
-  role: 'Admin' | 'User' | 'A-FactoryAdmin' | 'B-FactoryAdmin' | 'C-FactoryAdmin';
+  role: 'Admin' | 'User' | 'A-factoryAdmin' | 'B-factoryAdmin' | 'C-factoryAdmin';
 }
 
 export interface IAuthAtom {
@@ -18,10 +18,16 @@ export interface IAuthAtom {
   user: IUser | null;
 }
 
+export interface IFactory {
+  id: number;
+  name: string;
+}
+
 export interface IMember {
   id: number;
-  username: string;
-  position: string;
+  userName: string;
+  rank: string;
   role: string;
-  factory: string[];
+  Factories: IFactory[];
+  isCheckable?: boolean;
 }

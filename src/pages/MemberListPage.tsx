@@ -1,24 +1,37 @@
 import { DeleteMemberModal } from '@/components/modal/DeleteMemberModal';
-import { IMember } from '@/interface/authInterface';
+import { IFactory, IMember } from '@/interface/authInterface';
 import { useChangeMemberFactoryMutation } from '@/store/mutation/useChangeMemberFactoryMutation';
 import { useMemberQuery } from '@/store/query/useMemberQuery';
-import React, { useState } from 'react';
-import { dummyMember } from '../dummy/dummyMember';
+import React, { useEffect, useState } from 'react';
 
-interface IAllMebers extends IMember {
-  isCheckable?: boolean;
-}
 const MemberListPage: React.FC = () => {
-  const { isLoading, error, data: allMembers } = useMemberQuery();
+  const { isLoading, data: allMembers } = useMemberQuery();
 
-  const [members, setMembers] = useState<IAllMebers[]>(
-    dummyMember.map((member) => ({ ...member, isCheckable: false }))
+  const [members, setMembers] = useState<IMember[]>(
+    allMembers ? allMembers.map((member) => ({ ...member, isCheckable: false })) : []
   );
+  useEffect(() => {
+    if (allMembers) {
+      setMembers(
+        allMembers.map((member) => ({
+          ...member,
+          isCheckable: false,
+          Factories: member.Factories || [] // factory 초기값 설정
+        }))
+      );
+    }
+  }, [allMembers]);
+  console.log('14line', members);
   const [, setSearchKeyword] = useState<string>(''); // 검색 키워드 상태 관리
   const [, setIsCheckable] = useState<boolean>(false); // 체크박스 활성화 상태 관리
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 활성화 상태 관리
-  const [initialMembers, setInitialMembers] = useState<IAllMebers[]>([]);
+  const [initialMembers, setInitialMembers] = useState<IMember[]>([]);
 
+  const factoryList = [
+    { id: 1, name: 'A공장' },
+    { id: 2, name: 'B공장' },
+    { id: 3, name: 'C공장' }
+  ];
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -30,10 +43,10 @@ const MemberListPage: React.FC = () => {
     setSearchKeyword(value);
     if (value === '') {
       // 검색 키워드가 없으면 전체 멤버 데이터로 업데이트
-      setMembers(dummyMember);
+      setMembers(allMembers!);
     } else {
       // 검색 키워드가 있으면 해당 키워드를 포함하는 멤버 데이터로 업데이트
-      const searchedMembers = dummyMember.filter((member) => member.username.includes(value));
+      const searchedMembers = allMembers!.filter((member) => member.userName.includes(value));
       setMembers(searchedMembers);
     }
   };
@@ -47,22 +60,20 @@ const MemberListPage: React.FC = () => {
   };
 
   // member 데이터 안에 있는 factory 데이터를 checkbox로 표현
-  const handleFactory = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number,
-    factoryName: string
-  ) => {
+  // handleFactory 함수: 체크박스 상태 변경에 따라 직원의 공장 배열을 업데이트하는 함수
+  const handleFactory = (e: React.ChangeEvent<HTMLInputElement>, id: number, factory: IFactory) => {
     const { checked } = e.target;
     setMembers((prevMembers) =>
       prevMembers.map((member) =>
         member.id === id
           ? {
               ...member,
-              factory: checked
-                ? [...member.factory, factoryName].filter(
-                    (value, index, self) => self.indexOf(value) === index
-                  ) // 중복 제거
-                : member.factory.filter((f) => f !== factoryName)
+              Factories: checked // Factories 속성 업데이트
+                ? [...(member.Factories ?? []), factory].filter(
+                    // member.Factories 사용
+                    (value, index, self) => self.findIndex((f) => f.id === value.id) === index
+                  )
+                : member.Factories?.filter((f) => f.id !== factory.id) ?? []
             }
           : member
       )
@@ -75,7 +86,8 @@ const MemberListPage: React.FC = () => {
   const handleEditMember = (id: number) => {
     const member = members.find((member) => member.id === id);
     if (member) {
-      changeUserFactory.mutate({ memberId: id, factory: member.factory });
+      const factoryArray = member.Factories ? member.Factories.map((f) => f.name) : [];
+      changeUserFactory.mutate({ memberId: id, factory: factoryArray });
     }
     setIsCheckable(false);
   };
@@ -108,7 +120,6 @@ const MemberListPage: React.FC = () => {
               <th className="w-1/12">No</th>
               <th className="w-1/6">이름</th>
               <th className="w-1/6">직급</th>
-              <th className="w-1/4">권한</th>
               <th className="w-1/6">소속</th>
               <th className="w-1/12">
                 <label className="input input-bordered flex items-center gap-2">
@@ -139,23 +150,23 @@ const MemberListPage: React.FC = () => {
             {members.map((member) => (
               <tr key={member.id} className="hover">
                 <td>{member.id}</td>
-                <td>{member.username}</td>
-                <td>{member.position}</td>
-                <td>{member.role}</td>
+                <td>{member.userName}</td>
+                <td>{member.rank}</td>
                 <td className="flex flex-row justify-center items-center gap-2">
-                  {['공장1', '공장2', '공장3'].map((factoryName) => (
-                    <label
-                      key={factoryName}
-                      className="flex flex-row h-[2rem] items-center justify-center"
-                    >
+                  {factoryList.map((factory) => (
+                    <label key={factory.id} className="flex flex-row h-[2rem] items-center">
                       <input
                         type="checkbox"
                         className="checkbox checkbox-sm checkbox-primary"
-                        checked={member.factory.includes(factoryName)}
+                        checked={
+                          member.Factories && member.Factories.some((f) => f.name === factory.name)
+                        }
                         disabled={!member.isCheckable}
-                        onChange={(e) => handleFactory(e, member.id, factoryName)}
+                        onChange={(e) =>
+                          handleFactory(e, member.id, { id: factory.id, name: factory.name })
+                        }
                       />
-                      <p className="ml-2">{factoryName}</p>
+                      <p className="ml-2 text-[0.7rem]">{factory.name}</p>
                     </label>
                   ))}
                 </td>
