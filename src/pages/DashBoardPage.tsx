@@ -61,10 +61,10 @@ const DashBoardPage = () => {
   return (
     <div className="px-4 flex flex-col h-[45vh]">
       <div className="flex flex-row gap-4">
-        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col">
+        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col ">
           <UnityComponent />
         </div>
-        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col">
+        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[35vw]">
           <StatusComponent sendMessage={sendMessage} />
           <div className="flex flex-row gap-2 h-[30vh]">
             <ProcessTimeComponent sendMessage={sendMessage} />

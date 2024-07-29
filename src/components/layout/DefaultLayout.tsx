@@ -165,7 +165,7 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div id="content" className="flex-1 bg-white mt-3 overflow-auto">
+            <div id="content" className="bg-white mt-3 overflow-auto">
               <AuthRoute>
                 <Outlet />
               </AuthRoute>

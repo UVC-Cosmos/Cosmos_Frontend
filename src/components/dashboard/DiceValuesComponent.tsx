@@ -122,29 +122,27 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
     <div className="border rounded-xl shadow-md bg-white h-[calc(45vh+0.5rem)] p-2">
       <h2 className="text-lg font-bold mb-4">주사위</h2>
       <p>주사위값: {diceValue}</p>
-      <p>
-        주사위 기준 값: {diceComparisonValue}
-        <input
-          type="number"
-          max={6}
-          min={1}
-          value={tempComparisonValue}
-          onChange={handleComparisonValueChange}
-          className="border rounded px-2 py-1 ml-2"
-        />
-        <button
-          onClick={handleSendComparisonValue}
-          className="ml-2 px-4 py-2 bg-blue-500 text-black border rounded"
-        >
-          변경
-        </button>
-      </p>
+      주사위 기준 값: {diceComparisonValue}
+      <input
+        type="number"
+        max={6}
+        min={1}
+        value={tempComparisonValue}
+        onChange={handleComparisonValueChange}
+        className="border rounded px-2 py-1 ml-2"
+      />
+      <button
+        onClick={handleSendComparisonValue}
+        className="ml-2 px-4 py-2 bg-blue-500 text-black border rounded"
+      >
+        변경
+      </button>
       <img
         src={getDiceImage(diceValue)}
         alt={`Dice ${diceValue}`}
         className="w-24 h-24 mx-auto my-4"
       />
-      <Chart options={options} series={series} type="bar" width={500} height={'200px'} />
+      <Chart options={options} series={series} type="bar" width={'250px'} height={'200px'} />
     </div>
   );
 };
