@@ -10,6 +10,7 @@ const fetchUser = async (): Promise<IMember[]> => {
 export const useMemberQuery = () => {
   return useQuery<IMember[]>({
     queryKey: ['allMembers'],
-    queryFn: fetchUser
+    queryFn: fetchUser,
+    enabled: true
   });
 };

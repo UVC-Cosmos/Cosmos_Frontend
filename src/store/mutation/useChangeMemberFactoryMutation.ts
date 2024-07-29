@@ -2,8 +2,8 @@ import { apiInstance } from '@/api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const changeUserFactory = async (memberId: number, factory: string[]) => {
-  await apiInstance.patch(`/member/${memberId}`, {
-    factory
+  await apiInstance.put(`/admin/update-user-factory/${memberId}`, {
+    factoryNames: factory
   });
 };
 
