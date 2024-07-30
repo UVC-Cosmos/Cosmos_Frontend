@@ -1,41 +1,66 @@
-import { DeleteMemberModal } from '@/components/modal/DeleteMemberModal';
-import { IFactory, IMember } from '@/interface/authInterface';
-import { useChangeMemberFactoryMutation } from '@/store/mutation/useChangeMemberFactoryMutation';
+import { dummyMember } from '@/dummy/dummyMember';
+import { ILine, IMember, IUser } from '@/interface/authInterface';
+import { useChangeMemberPermissionMutation } from '@/store/mutation/useChangeMemberPermissionMutation';
+import { useMemberByFactoryQuery } from '@/store/query/useMemberByFactoryQuery';
 import { useMemberQuery } from '@/store/query/useMemberQuery';
 import React, { useEffect, useState } from 'react';
 
-const MemberListPage: React.FC = () => {
-  const { isLoading, data: allMembers } = useMemberQuery();
+export const PermissionPage: React.FC = () => {
+  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const factoryRoleArr = ['A-factoryAdmin', 'B-factoryAdmin', 'C-factoryAdmin'];
+  const factoryId = factoryRoleArr.findIndex((role) => role === user.role) + 1;
+
+  const { isLoading, data: factoryMembers } = useMemberByFactoryQuery(factoryId);
 
   const [members, setMembers] = useState<IMember[]>(
-    allMembers ? allMembers.map((member) => ({ ...member, isCheckable: false })) : []
+    factoryMembers ? factoryMembers.map((member) => ({ ...member, isCheckable: false })) : []
   );
+
+  // 라인 리스트 상수 정의
+  // factoryId에 따라 다른 라인 리스트를 보여줘야 함
+  // 1 공장의 경우, 1호기, 2호기, 3호기, 센서1, 센서2
+  // 2 공장의 경우, 1호기, 2호기, 3호기
+  // 3 공장의 경우, 1호기, 2호기, 3호기
+  // lineList라는 변수에는 PermissionPage에 접근했을 때, factoryId에 따라 다른 라인 리스트를 보여주기 위해 사용
+  const lineList1 = [
+    { id: 1, name: '1호기' },
+    { id: 2, name: '2호기' },
+    { id: 3, name: '3호기' },
+    { id: 4, name: '센서1' },
+    { id: 5, name: '센서2' }
+  ];
+  const lineList2 = [
+    { id: 1, name: '1호기' },
+    { id: 2, name: '2호기' },
+    { id: 3, name: '3호기' }
+  ];
+  const lineList3 = [
+    { id: 1, name: '1호기' },
+    { id: 2, name: '2호기' },
+    { id: 3, name: '3호기' }
+  ];
+
+  const lineListsByFactoryId = [lineList1, lineList2, lineList3];
+  const lineList = lineListsByFactoryId[factoryId - 1] || [];
+
+  console.log(lineList, '라인리스트');
+
   useEffect(() => {
-    if (allMembers) {
+    if (factoryMembers) {
       setMembers(
-        allMembers.map((member) => ({
+        factoryMembers.map((member) => ({
           ...member,
           isCheckable: false,
-          Factories: member.Factories || [] // factory 초기값 설정
+          Lines: member.Lines || [] // line 초기값 설정
         }))
       );
     }
-  }, [allMembers]);
+  }, [factoryMembers]);
 
   const [, setSearchKeyword] = useState<string>(''); // 검색 키워드 상태 관리
   const [, setIsCheckable] = useState<boolean>(false); // 체크박스 활성화 상태 관리
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 활성화 상태 관리
   const [initialMembers, setInitialMembers] = useState<IMember[]>([]);
-
-  const factoryList = [
-    { id: 1, name: 'A공장' },
-    { id: 2, name: 'B공장' },
-    { id: 3, name: 'C공장' }
-  ];
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
   // 이름 검색 함수
   // 이름을 검색하면 해당 이름을 포함하는 멤버들만 setMembers로 업데이트
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,10 +68,10 @@ const MemberListPage: React.FC = () => {
     setSearchKeyword(value);
     if (value === '') {
       // 검색 키워드가 없으면 전체 멤버 데이터로 업데이트
-      setMembers(allMembers!);
+      setMembers(factoryMembers!);
     } else {
       // 검색 키워드가 있으면 해당 키워드를 포함하는 멤버 데이터로 업데이트
-      const searchedMembers = allMembers!.filter((member) => member.userName.includes(value));
+      const searchedMembers = factoryMembers!.filter((member) => member.userName.includes(value));
       setMembers(searchedMembers);
     }
   };
@@ -59,21 +84,18 @@ const MemberListPage: React.FC = () => {
     );
   };
 
-  // member 데이터 안에 있는 factory 데이터를 checkbox로 표현
-  // handleFactory 함수: 체크박스 상태 변경에 따라 직원의 공장 배열을 업데이트하는 함수
-  const handleFactory = (e: React.ChangeEvent<HTMLInputElement>, id: number, factory: IFactory) => {
+  const handlePermission = (e: React.ChangeEvent<HTMLInputElement>, id: number, line: ILine) => {
     const { checked } = e.target;
     setMembers((prevMembers) =>
       prevMembers.map((member) =>
         member.id === id
           ? {
               ...member,
-              Factories: checked // Factories 속성 업데이트
-                ? [...(member.Factories ?? []), factory].filter(
-                    // member.Factories 사용
-                    (value, index, self) => self.findIndex((f) => f.id === value.id) === index
-                  )
-                : member.Factories?.filter((f) => f.id !== factory.id) ?? []
+              Lines: checked
+                ? [...(member.Lines ?? []), line].filter(
+                    (value, index, self) => self.findIndex((l) => l.id === value.id) === index
+                  ) // 중복 제거
+                : member.Lines?.filter((l) => l.id !== line.id) ?? []
             }
           : member
       )
@@ -81,13 +103,13 @@ const MemberListPage: React.FC = () => {
   };
 
   // 관리 버튼 함수
-  const changeUserFactory = useChangeMemberFactoryMutation();
+  const changeUserPermission = useChangeMemberPermissionMutation();
 
   const handleEditMember = (id: number) => {
     const member = members.find((member) => member.id === id);
     if (member) {
-      const factoryArray = member.Factories ? member.Factories.map((f) => f.name) : [];
-      changeUserFactory.mutate({ memberId: id, factory: factoryArray });
+      const lines = member.Lines?.map((line) => line.name) ?? [];
+      changeUserPermission.mutate({ memberId: id, lines });
     }
     setIsCheckable(false);
   };
@@ -120,7 +142,7 @@ const MemberListPage: React.FC = () => {
               <th className="w-1/12">No</th>
               <th className="w-1/6">이름</th>
               <th className="w-1/6">직급</th>
-              <th className="w-1/6">소속</th>
+              <th className="w-1/3">권한</th>
               <th className="w-1/12">
                 <label className="input input-bordered flex items-center gap-2">
                   <input
@@ -143,7 +165,6 @@ const MemberListPage: React.FC = () => {
                   </svg>
                 </label>
               </th>
-              {/* 권한 변경, 삭제 등 버튼 추가 */}
             </tr>
           </thead>
           <tbody>
@@ -152,21 +173,22 @@ const MemberListPage: React.FC = () => {
                 <td>{member.id}</td>
                 <td>{member.userName}</td>
                 <td>{member.rank}</td>
-                <td className="flex flex-row justify-center items-center gap-2">
-                  {factoryList.map((factory) => (
-                    <label key={factory.id} className="flex flex-row h-[2rem] items-center">
+                <td className="flex flex-row items-center gap-2">
+                  {lineList.map((line) => (
+                    <label key={line.id} className="flex flex-row h-[2rem] items-center">
                       <input
                         type="checkbox"
                         className="checkbox checkbox-sm checkbox-primary"
-                        checked={
-                          member.Factories && member.Factories.some((f) => f.name === factory.name)
-                        }
+                        checked={member.Lines && member.Lines.some((l) => l.id === line.id)}
                         disabled={!member.isCheckable}
                         onChange={(e) =>
-                          handleFactory(e, member.id, { id: factory.id, name: factory.name })
+                          handlePermission(e, member.id, {
+                            id: line.id,
+                            name: line.name
+                          })
                         }
                       />
-                      <p className="ml-2 text-[0.7rem]">{factory.name}</p>
+                      <p className="ml-2 text-[0.7rem]">{line.name}</p>
                     </label>
                   ))}
                 </td>
@@ -185,9 +207,6 @@ const MemberListPage: React.FC = () => {
                       >
                         취소
                       </button>
-                      <button className="btn btn-sm btn-outline btn-primary" onClick={toggleModal}>
-                        삭제
-                      </button>
                     </div>
                   ) : (
                     <button
@@ -198,9 +217,6 @@ const MemberListPage: React.FC = () => {
                     </button>
                   )}
                 </td>
-                {isModalOpen && (
-                  <DeleteMemberModal toggleModal={toggleModal} memberId={member.id} />
-                )}
               </tr>
             ))}
           </tbody>
@@ -209,5 +225,3 @@ const MemberListPage: React.FC = () => {
     </div>
   );
 };
-
-export default MemberListPage;
