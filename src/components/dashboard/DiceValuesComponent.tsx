@@ -9,29 +9,13 @@ import diceImage4 from '../../assets/dice/dice4.png';
 import diceImage5 from '../../assets/dice/dice5.png';
 import diceImage6 from '../../assets/dice/dice6.png';
 
-interface DiceCounts {
-  '1': number;
-  '2': number;
-  '3': number;
-  '4': number;
-  '5': number;
-  '6': number;
-}
-
-const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: string) => void }> = ({
-  sendMessage
-}) => {
+const DiceValuesComponent: React.FC<{
+  sendMessage: (command: string, value: string) => void;
+  diceStats: { [key: string]: number };
+}> = ({ sendMessage, diceStats }) => {
   const [diceValue] = useAtom(DiceValueAtom);
   const [diceComparisonValue] = useAtom(DiceComparisonValueAtom);
   const [tempComparisonValue, setTempComparisonValue] = useState(diceComparisonValue);
-  const [diceCounts, setDiceCounts] = useState<DiceCounts>({
-    '1': 0,
-    '2': 0,
-    '3': 0,
-    '4': 0,
-    '5': 0,
-    '6': 0
-  });
 
   const getDiceImage = (value: string) => {
     switch (value) {
@@ -51,15 +35,6 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
         return diceImage0;
     }
   };
-
-  useEffect(() => {
-    if (diceValue >= '1' && diceValue <= '6') {
-      setDiceCounts((prevCounts) => ({
-        ...prevCounts,
-        [diceValue]: (prevCounts[diceValue as keyof DiceCounts] ?? 0) + 1
-      }));
-    }
-  }, [diceValue]);
 
   const handleComparisonValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTempComparisonValue(event.target.value);
@@ -95,12 +70,12 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
       />
       <div>
         <h3 className="text-md font-semibold">주사위 값 통계</h3>
-        <p>1: {diceCounts['1']}번</p>
-        <p>2: {diceCounts['2']}번</p>
-        <p>3: {diceCounts['3']}번</p>
-        <p>4: {diceCounts['4']}번</p>
-        <p>5: {diceCounts['5']}번</p>
-        <p>6: {diceCounts['6']}번</p>
+        <p>1: {diceStats === null ? 0 : diceStats['1']}번</p>
+        <p>2: {diceStats === null ? 0 : diceStats['2']}번</p>
+        <p>3: {diceStats === null ? 0 : diceStats['3']}번</p>
+        <p>4: {diceStats === null ? 0 : diceStats['4']}번</p>
+        <p>5: {diceStats === null ? 0 : diceStats['5']}번</p>
+        <p>6: {diceStats === null ? 0 : diceStats['6']}번</p>
       </div>
     </div>
   );

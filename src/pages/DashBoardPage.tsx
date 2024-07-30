@@ -1,43 +1,4 @@
-// import React from 'react';
-// import UnityComponent from '../components/unity/UnityComponent';
-// import DataTimeComponent from '../components/dashboard/DataTimeComponent';
-// import StatusComponent from '../components/dashboard/StatusComponent';
-// import MaterialStatusComponent from '../components/dashboard/MaterialStatusComponent';
-// import DiceValuesComponent from '../components/dashboard/DiceValuesComponent';
-// import ColorSensorComponent from '../components/dashboard/ColorSensorComponent';
-// import ProcessTimeComponent from '../components/dashboard/ProcessTimeComponent';
-// import ProductionComponent from '../components/dashboard/ProductionComponent';
-// import ProductionStatsComponent from '../components/dashboard/ProductionStatsComponent';
-// import AxisPositionComponent from '../components/dashboard/AxisPositionComponent';
-// import useSocket from '../hooks/useSocket';
-
-// const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL; // 노드서버 Url ex) http://192.168.0.16:3000
-// const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
-
-// const DashBoardPage = () => {
-//   const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
-
-//   return (
-//     <>
-//       <UnityComponent />
-//       <div
-//         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', marginTop: 20 }}
-//       >
-//         <DataTimeComponent />
-//         <MaterialStatusComponent />
-//         <DiceValuesComponent />
-//         <ColorSensorComponent />
-//         <ProcessTimeComponent />
-//         <ProductionComponent />
-//         <ProductionStatsComponent />
-//         <AxisPositionComponent />
-//         <StatusComponent sendMessage={sendMessage} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default DashBoardPage;
+// DashBoardPage.tsx
 import React from 'react';
 import UnityComponent from '../components/unity/UnityComponent';
 import DataTimeComponent from '../components/dashboard/DataTimeComponent';
@@ -56,8 +17,7 @@ const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL; // 노드�
 const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
 
 const DashBoardPage = () => {
-  const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
-
+  const [socket, sendMessage, diceStats] = useSocket(WebSocketServerUrl, EdukitId);
   return (
     <>
       <UnityComponent />
@@ -72,7 +32,7 @@ const DashBoardPage = () => {
           <MaterialStatusComponent />
         </div>
         <div className="w-full lg:w-1/3 p-2">
-          <DiceValuesComponent sendMessage={sendMessage} />
+          <DiceValuesComponent sendMessage={sendMessage} diceStats={diceStats} />
         </div>
         <div className="w-full lg:w-1/3 p-2">
           <ColorSensorComponent />
