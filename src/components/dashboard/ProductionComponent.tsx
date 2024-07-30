@@ -19,7 +19,10 @@ const ProductionComponent: React.FC = () => {
     options: {
       chart: {
         type: 'bar',
-        height: 350
+        height: 350,
+        toolbar: {
+          show: false
+        }
       },
       plotOptions: {
         bar: {
@@ -48,7 +51,10 @@ const ProductionComponent: React.FC = () => {
       options: {
         chart: {
           type: 'bar',
-          height: 350
+          height: 350,
+          toolbar: {
+            show: false
+          }
         },
         plotOptions: {
           bar: {
@@ -68,10 +74,10 @@ const ProductionComponent: React.FC = () => {
 
   return (
     <div className="border rounded-lg p-6 shadow-md bg-white m-4">
-      <p className="text-lg font-bold">1호기 생산량: {no1Count}</p>
+      {/* <p className="text-lg font-bold">1호기 생산량: {no1Count}</p>
       <p className="text-lg font-bold">2호기 생산량: {no2Count}</p>
-      <p className="text-lg font-bold">3호기 생산량: {no3Count}</p>
-      <Chart options={chartData.options} series={chartData.series} type="bar" height={350} />
+      <p className="text-lg font-bold">3호기 생산량: {no3Count}</p> */}
+      <Chart options={chartData.options} series={chartData.series} type="bar" height={300} />
     </div>
   );
 };
