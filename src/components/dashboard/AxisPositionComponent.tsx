@@ -26,6 +26,7 @@ const AxisPositionComponent: React.FC = () => {
         enabled: false
       }
     },
+
     xaxis: {
       type: 'datetime',
       labels: {
@@ -40,10 +41,7 @@ const AxisPositionComponent: React.FC = () => {
     yaxis: {
       min: 0,
       max: 1500000, // 예시: 0~100 범위 설정, 실제 값에 맞게 조정
-      tickAmount: 4,
-      title: {
-        text: '위치'
-      }
+      tickAmount: 4
     },
     stroke: {
       curve: 'smooth'
@@ -87,10 +85,7 @@ const AxisPositionComponent: React.FC = () => {
     yaxis: {
       min: 0,
       max: 30000000, // 예시: 0~100 범위 설정, 실제 값에 맞게 조정
-      tickAmount: 4,
-      title: {
-        text: '위치'
-      }
+      tickAmount: 4
     },
     stroke: {
       curve: 'smooth'

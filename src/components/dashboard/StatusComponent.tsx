@@ -53,9 +53,9 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   };
 
   return (
-    <div className="flex flex-row rounded-xl bg-dashColor mb-2 justify-around items-center h-[14vh]">
+    <div className="flex flex-row rounded-xl bg-mainColor5 mb-2 justify-around items-center h-[14vh]">
       <div className="flex flex-col gap-2 items-center justify-center h-[12vh]">
-        <div className="text-mainColor font-bold text-sm">가동</div>
+        <div className="text-white opacity-100 font-bold text-sm">가동</div>
         <div>{getStatusCircle(startState.toString())}</div>
         <div>
           <button
@@ -67,7 +67,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">비상정지</div>
+        <div className="text-white font-bold text-sm">비상정지</div>
         <div>{getStatusCircle(emergencyState.toString())}</div>
         <div>
           <button className="btn btn-sm min-h-5 h-5" disabled>
@@ -76,7 +76,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">1호기</div>
+        <div className="text-white font-bold text-sm">1호기</div>
         <div>{getStatusCircle(no1PowerState.toString())}</div>
         <div>
           <button
@@ -88,7 +88,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">2호기</div>
+        <div className="text-white font-bold text-sm">2호기</div>
         <div>{getStatusCircle(no2PowerState.toString())}</div>
         <div>
           <button
@@ -100,7 +100,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">3호기</div>
+        <div className="text-white font-bold text-sm">3호기</div>
         <div>{getStatusCircle(no3PowerState.toString())}</div>
         <div>
           <button
@@ -112,7 +112,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">센서</div>
+        <div className="text-white font-bold text-sm">센서</div>
         <div>{getStatusCircle(sen1PowerState.toString())}</div>
         <div>
           <button
@@ -124,7 +124,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         </div>
       </div>
       <div className="h-[12vh] flex flex-col gap-2 items-center justify-center">
-        <div className="text-mainColor font-bold text-sm">센서2</div>
+        <div className="text-white font-bold text-sm">센서2</div>
         <div>{getStatusCircle(sen2PowerState.toString())}</div>
         <div>
           <button

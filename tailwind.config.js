@@ -12,8 +12,10 @@ export default {
     },
     colors: {
       mainColor: 'rgba(24, 18, 43, 1)',
+      mainColor5: 'rgba(24, 18, 43, 0.5)',
       mainColorM: 'rgba(46,35,108,100)',
       mainColorH: 'rgb(57, 48, 83)',
+
       mainLightColor: '#635985',
       dashColor: '#C8ACD6',
       white: '#ffffff',

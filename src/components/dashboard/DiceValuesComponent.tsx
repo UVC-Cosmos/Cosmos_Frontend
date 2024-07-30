@@ -22,7 +22,8 @@ interface DiceCounts {
 const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: string) => void }> = ({
   sendMessage
 }) => {
-  const [diceValue] = useAtom(DiceValueAtom);
+  const [diceValue, setDiceValue] = useAtom(DiceValueAtom);
+  const [dice, setDice] = useState<string>('0');
   const [diceComparisonValue] = useAtom(DiceComparisonValueAtom);
   const [tempComparisonValue, setTempComparisonValue] = useState(diceComparisonValue);
   const [diceCounts, setDiceCounts] = useState<DiceCounts>({
@@ -115,33 +116,41 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
   };
 
   const handleSendComparisonValue = () => {
+    setDice(tempComparisonValue);
     sendMessage('38', tempComparisonValue); // 서버로 값 전송
   };
 
   return (
-    <div className="border rounded-xl shadow-md bg-white h-[calc(45vh+0.5rem)] p-2">
+    <div className="border rounded-xl shadow-md bg-white h-[calc(45vh+0.5rem)] p-2 m-4">
       <h2 className="text-lg font-bold mb-4">주사위</h2>
-      <p>주사위값: {diceValue}</p>
-      주사위 기준 값: {diceComparisonValue}
-      <input
-        type="number"
-        max={6}
-        min={1}
-        value={tempComparisonValue}
-        onChange={handleComparisonValueChange}
-        className="border rounded px-2 py-1 ml-2"
-      />
-      <button
-        onClick={handleSendComparisonValue}
-        className="ml-2 px-4 py-2 bg-blue-500 text-black border rounded"
-      >
-        변경
-      </button>
-      <img
-        src={getDiceImage(diceValue)}
-        alt={`Dice ${diceValue}`}
-        className="w-24 h-24 mx-auto my-4"
-      />
+      <div className="flex flex-row items-center ">
+        <div>
+          <p>주사위값: {dice}</p>
+          주사위 기준 값: {diceComparisonValue}
+          <input
+            type="number"
+            max={6}
+            min={1}
+            value={tempComparisonValue}
+            onChange={handleComparisonValueChange}
+            className="border rounded px-2 py-1 ml-2"
+          />
+          <button
+            onClick={handleSendComparisonValue}
+            className="ml-2 px-4 py-2 bg-blue-500 text-black border rounded"
+          >
+            변경
+          </button>
+        </div>
+        <div>
+          <img
+            src={getDiceImage(diceValue)}
+            alt={`Dice ${diceValue}`}
+            className="w-24 h-24 mx-auto my-4"
+          />
+        </div>
+      </div>
+
       <Chart options={options} series={series} type="bar" width={'250px'} height={'200px'} />
     </div>
   );

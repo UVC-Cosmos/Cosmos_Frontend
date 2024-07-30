@@ -78,7 +78,7 @@ const ProductionStatsComponent: React.FC<{
   };
 
   return (
-    <div className="border rounded-lg bg-dashColor p-2 w-1/2">
+    <div className="border rounded-lg bg-dashColor p-2 m-4">
       <div className="mb-4">
         <h2 className="text-lg font-bold mb-2">생산 계획량</h2>
         <p>

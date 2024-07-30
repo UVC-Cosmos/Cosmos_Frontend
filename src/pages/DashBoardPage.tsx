@@ -37,6 +37,7 @@
 //   );
 // };
 
+import ChipsValueCountComponent from '@/components/dashboard/ChipsValueCountComponent';
 import { send } from 'process';
 // export default DashBoardPage;
 import React from 'react';
@@ -61,27 +62,36 @@ const DashBoardPage = () => {
   return (
     <div id="dashboard-container" className="flex flex-row h-screen overflow-hidden">
       <div id="left" className="w-[20vw] flex flex-col">
-        레프트
+        <DataTimeComponent />
+        <MaterialStatusComponent />
+        <ProcessTimeComponent sendMessage={sendMessage} />
+        <ProductionStatsComponent sendMessage={sendMessage} />
       </div>
-      <div id="center" className="w-[50vw] h-[92vh] flex flex-col justify-start gap-2">
-        <div className="relative h-[45vh]">
+      <div id="center" className="w-[50vw] flex flex-col justify-start gap-2">
+        <div className="relative h-[45vh] bg-mainColor p-4">
           <UnityComponent />
+
           <button
             onClick={() => sendMessage('8', '1')}
             className="absolute btn btn-primary top-4 right-40"
           >
             reset
           </button>
-          <div id="status-component" className="absolute bottom-1">
+          <div
+            id="status-component"
+            className="absolute bottom-1 left-1/2 transform -translate-x-1/2 -translate-y-4 w-[40vw]"
+          >
             <StatusComponent sendMessage={sendMessage} />
           </div>
         </div>
-        <div id="axis-component" className="h-[43vh]">
+        <div id="axis-component" className="">
           <AxisPositionComponent />
         </div>
       </div>
       <div id="right" className="w-[20vw] flex flex-col">
-        라이트
+        <ChipsValueCountComponent />
+        <ColorSensorComponent />
+        <DiceValuesComponent sendMessage={sendMessage} />
       </div>
     </div>
     // <div className="px-4 flex flex-col h-[45vh]">
