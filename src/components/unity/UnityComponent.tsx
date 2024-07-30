@@ -12,7 +12,7 @@ const UnityComponent: React.FC = () => {
   return (
     <Unity
       unityProvider={unityProvider}
-      style={{ width: '35vw', height: 'calc(45vh + 0.5rem)', borderRadius: '0.75rem' }}
+      style={{ width: '100%', height: '100%', borderRadius: '0.75rem' }}
     />
   );
 };

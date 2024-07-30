@@ -53,13 +53,13 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   };
 
   return (
-    <div className="flex flex-row rounded-xl bg-dashColor mb-2 justify-around items-center h-[15vh]">
+    <div className="flex flex-row rounded-xl bg-dashColor mb-2 justify-around items-center h-[14vh]">
       <div className="flex flex-col gap-2 items-center justify-center h-[12vh]">
         <div className="text-mainColor font-bold text-sm">가동</div>
         <div>{getStatusCircle(startState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('1', startState.toString() === 'true' ? '0' : '1')}
           >
             {startState.toString() === 'true' ? 'Stop' : 'Start'}
@@ -70,7 +70,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div className="text-mainColor font-bold text-sm">비상정지</div>
         <div>{getStatusCircle(emergencyState.toString())}</div>
         <div>
-          <button className="btn btn-sm" disabled>
+          <button className="btn btn-sm min-h-5 h-5" disabled>
             {'Stop'}
           </button>
         </div>
@@ -80,7 +80,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div>{getStatusCircle(no1PowerState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('9', no1PowerState.toString() === 'true' ? '0' : '1')}
           >
             {no1PowerState.toString() === 'true' ? 'OFF' : 'ON'}
@@ -92,7 +92,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div>{getStatusCircle(no2PowerState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('10', no2PowerState.toString() === 'true' ? '0' : '1')}
           >
             {no2PowerState.toString() === 'true' ? 'OFF' : 'ON'}
@@ -104,7 +104,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div>{getStatusCircle(no3PowerState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('11', no3PowerState.toString() === 'true' ? '0' : '1')}
           >
             {no3PowerState.toString() === 'true' ? 'OFF' : 'ON'}
@@ -116,7 +116,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div>{getStatusCircle(sen1PowerState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('12', sen1PowerState.toString() === 'true' ? '0' : '1')}
           >
             {sen1PowerState.toString() === 'true' ? 'OFF' : 'ON'}
@@ -128,7 +128,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
         <div>{getStatusCircle(sen2PowerState.toString())}</div>
         <div>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm min-h-5 h-5"
             onClick={() => sendMessage('13', sen2PowerState.toString() === 'true' ? '0' : '1')}
           >
             {sen2PowerState.toString() === 'true' ? 'OFF' : 'ON'}
