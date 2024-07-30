@@ -1,34 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Chart from 'react-apexcharts';
+import { useAtom } from 'jotai';
+import { No1CountAtom, No2CountAtom, No2SensingMemoryAtom } from '../../atom/mqtt/mqttAtom';
 
 const ChipsValueCountComponent: React.FC = () => {
-  const options = {
-    chart: {
-      type: 'pie' // 'pie' 타입을 ApexCharts에서 지원하는 타입으로 변경해야 합니다.
-    },
-    labels: ['Category 1', 'Category 2']
-    // responsive: [
-    //   {
-    //     breakpoint: 480,
-    //     options: {
-    //       chart: {
-    //         width: 200
-    //       },
-    //       legend: {
-    //         position: 'bottom'
-    //       }
-    //     }
-    //   }
-    // ]
-  };
+  const [no1CountString] = useAtom(No1CountAtom);
+  const [no2CountString] = useAtom(No2CountAtom);
+  const [no2SensingMemory] = useAtom(No2SensingMemoryAtom);
 
-  const series = [44, 55];
+  // 문자열을 숫자로 변환
+  const no1Count = parseInt(no1CountString, 10) || 0;
+  const no2Count = parseInt(no2CountString, 10) || 0;
+  const [redChip, setRedChip] = useState<number>(0); // redChip 상태 관리 추가
+  const [previousNo1Count, setPreviousNo1Count] = useState<number>(no1Count);
+  const sensingMemoryRef = useRef(no2SensingMemory);
+
+  console.log(no1Count, no2Count);
+
+  // 차트 데이터를 상태로 관리
+  const [chartData, setChartData] = useState({
+    series: [no1Count, redChip],
+    options: {
+      chart: {
+        width: 300,
+        type: 'pie' as const
+      },
+      labels: ['양품', '불량품']
+    }
+  });
+
+  useEffect(() => {
+    sensingMemoryRef.current = no2SensingMemory;
+  }, [no2SensingMemory]);
+
+  useEffect(() => {
+    if (no1Count > previousNo1Count) {
+      const timeoutId = setTimeout(() => {
+        if (sensingMemoryRef.current.toString() === 'true') {
+          setChartData((prevData) => ({
+            ...prevData,
+            series: [prevData.series[0] + 1, prevData.series[1]]
+          }));
+        } else {
+          const newRedChip = no1Count - no2Count;
+          setRedChip(newRedChip);
+          setChartData((prevData) => ({
+            ...prevData,
+            series: [prevData.series[0], newRedChip]
+          }));
+        }
+        setPreviousNo1Count(no1Count);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [no1Count, no2Count]);
 
   return (
     <div className="border rounded-lg p-6 shadow-md bg-white m-4">
       <Chart
-        options={options} // 타입 강제 캐스팅을 제거하고, 올바른 타입을 사용해야 합니다.
-        series={series}
+        options={chartData.options}
+        series={chartData.series}
         type="pie"
         height={300}
         width={300}
