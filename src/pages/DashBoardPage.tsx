@@ -59,44 +59,75 @@ const DashBoardPage = () => {
   const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
 
   return (
-    <div className="px-4 flex flex-col h-[45vh]">
-      <div className="flex flex-row gap-4">
-        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col ">
+    <div id="dashboard-container" className="flex flex-row h-screen overflow-hidden">
+      <div id="left" className="w-[20vw] flex flex-col">
+        레프트
+      </div>
+      <div id="center" className="w-[50vw] h-[92vh] flex flex-col justify-start gap-2">
+        <div className="relative h-[45vh]">
           <UnityComponent />
-        </div>
-        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[35vw]">
-          <StatusComponent sendMessage={sendMessage} />
-          <div className="flex flex-row gap-2 h-[30vh]">
-            <ProcessTimeComponent sendMessage={sendMessage} />
-            <ProductionStatsComponent sendMessage={sendMessage} />
+          <button
+            onClick={() => sendMessage('8', '1')}
+            className="absolute btn btn-primary top-4 right-40"
+          >
+            reset
+          </button>
+          <div id="status-component" className="absolute bottom-1">
+            <StatusComponent sendMessage={sendMessage} />
           </div>
         </div>
-        <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[25vw]">
-          <DiceValuesComponent sendMessage={sendMessage} />
-        </div>
-      </div>
-
-      <div className="flex flex-row justify-between">
-        <div>
-          <DataTimeComponent />
-        </div>
-        <div>
-          <MaterialStatusComponent />
-        </div>
-
-        <div>
-          <ColorSensorComponent />
-        </div>
-        <div></div>
-        <div>
-          <ProductionComponent />
-        </div>
-        <div></div>
-        <div>
+        <div id="axis-component" className="h-[43vh]">
           <AxisPositionComponent />
         </div>
       </div>
+      <div id="right" className="w-[20vw] flex flex-col">
+        라이트
+      </div>
     </div>
+    // <div className="px-4 flex flex-col h-[45vh]">
+    //   <div className="flex flex-row gap-4">
+    //     <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col relative">
+    //       <UnityComponent />
+    //       <button
+    //         onClick={() => sendMessage('8', '1')}
+    //         className="absolute btn btn-primary top-4 right-40"
+    //       >
+    //         reset
+    //       </button>
+    //     </div>
+    //     <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[35vw]">
+    //       <StatusComponent sendMessage={sendMessage} />
+    //       <div className="flex flex-row gap-2 h-[30vh]">
+    //         <ProcessTimeComponent sendMessage={sendMessage} />
+    //         <ProductionStatsComponent sendMessage={sendMessage} />
+    //       </div>
+    //     </div>
+    //     <div className="rounded-2xl bg-mainColorM p-2 flex-flex-col w-[25vw]">
+    //       <DiceValuesComponent sendMessage={sendMessage} />
+    //     </div>
+    //   </div>
+
+    //   <div className="flex flex-row justify-between">
+    //     <div>
+    //       <DataTimeComponent />
+    //     </div>
+    //     <div>
+    //       <MaterialStatusComponent />
+    //     </div>
+
+    //     <div>
+    //       <ColorSensorComponent />
+    //     </div>
+    //     <div></div>
+    //     <div>
+    //       <ProductionComponent />
+    //     </div>
+    //     <div></div>
+    //     <div>
+    //       <AxisPositionComponent />
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
