@@ -51,11 +51,11 @@ export const DefaultLayout = (): JSX.Element => {
   return (
     <>
       <div>
-        <header className="h-[5vh] bg-mainColor flex items-center justify-between">
-          <div className="ml-4">
-            <Logo />
+        <header className="h-[7vh] bg-mainColor flex justify-between">
+          <div className="flex items-center justify-center my-2 mx-3">
+            <Logo style={{ borderRadius: '50%' }} />
           </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 m-2 items-center">
             <div className="bg-mainLightColor rounded-lg px-4">
               <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
             </div>
@@ -65,12 +65,12 @@ export const DefaultLayout = (): JSX.Element => {
           </div>
         </header>
         <div className="flex flex-col">
-          <div className="flex flex-row h-[95vh]">
+          <div className="flex flex-row h-[93vh]">
             <div
               id="menu"
-              className="bg-mainColor w-[5vh] p-3 flex flex-col justify-between items-center shadow-xl-center"
+              className="bg-mainColor w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
-              <div id="position-top" className="flex flex-col gap-4">
+              <div id="position-top" className="flex flex-col gap-4 pt-3">
                 <div onClick={goToDashboard}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ export const DefaultLayout = (): JSX.Element => {
                   </svg>
                 </div>
               </div>
-              <div id="position-end" className="flex flex-col gap-4">
+              <div id="position-end" className="flex flex-col gap-4 mb-4">
                 <div id="edit" onClick={openPassChangeModal}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
