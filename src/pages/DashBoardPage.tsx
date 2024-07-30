@@ -51,6 +51,7 @@ import ProductionStatsComponent from '../components/dashboard/ProductionStatsCom
 import StatusComponent from '../components/dashboard/StatusComponent';
 import UnityComponent from '../components/unity/UnityComponent';
 import useSocket from '../hooks/useSocket';
+import ChipsValueCountComponent from '../components/dashboard/ChipsValueCountComponent';
 
 const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL; // 노드서버 Url ex) http://192.168.0.16:3000
 const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
@@ -82,6 +83,9 @@ const DashBoardPage = () => {
         </div>
         <div>
           <MaterialStatusComponent />
+        </div>
+        <div>
+          <ChipsValueCountComponent />
         </div>
 
         <div>

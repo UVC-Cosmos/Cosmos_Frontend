@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { No3Motor1PositionAtom, No3Motor2PositionAtom } from '../../atom/mqtt/mqttAtom';
+import Chart from 'react-apexcharts';
 
 const AxisPositionComponent: React.FC = () => {
   const [motor1Position] = useAtom(No3Motor1PositionAtom);
