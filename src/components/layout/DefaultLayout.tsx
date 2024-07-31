@@ -111,7 +111,6 @@ export const DefaultLayout = (): JSX.Element => {
                   </svg>
                 </div>
                 <div
-                  className="tooltip"
                   data-tip="생산기록"
                   onClick={goToLog}
                   className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
