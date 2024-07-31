@@ -5,11 +5,36 @@ import { IUser } from '@/interface/authInterface';
 import { Outlet, useNavigate } from 'react-router';
 import { AuthRoute } from '../auth/AuthRotue';
 
+import { useState, useEffect } from 'react';
+import useNotificationSocket from '../../hooks/useNotificationSocket';
+import NotificationModal from '../modal/NotificationModal';
+
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
   const currentTime = useCurrentTime();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Array<{ content: string; createdAt: string }>>(
+    []
+  );
+  const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
+  const [notificationSocket] = useNotificationSocket(WebSocketServerUrl);
+
+  useEffect(() => {
+    if (notificationSocket) {
+      notificationSocket.on('notifications', (data: { content: string; createdAt: string }) => {
+        setNotifications((prevNotifications) => [...prevNotifications, data]);
+      });
+    }
+
+    return () => {
+      if (notificationSocket) {
+        notificationSocket.off('notifications');
+      }
+    };
+  }, [notificationSocket]);
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -38,6 +63,21 @@ export const DefaultLayout = (): JSX.Element => {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleDeleteNotification = async (id: string) => {
+    try {
+      const res = await apiInstance.delete(`/notifications/${id}`);
+      if (res.status === 200) {
+        setNotifications((prevNotifications) =>
+          prevNotifications.filter((notification) => notification.id !== id)
+        );
+      } else {
+        alert('알림 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('알림 삭제 중 오류 발생:', error);
     }
   };
 
@@ -125,7 +165,7 @@ export const DefaultLayout = (): JSX.Element => {
                   ></path>
                 </svg>
               </div>
-              <div id="알림" className="relative">
+              <div id="알림" className="relative" onClick={() => setIsModalOpen(true)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="3rem"
@@ -139,7 +179,7 @@ export const DefaultLayout = (): JSX.Element => {
                   ></path>
                 </svg>
                 <div className="rounded-full w-5 h-5 bg-mainColorH absolute top-1 right-1 flex justify-center items-center">
-                  <p className="text-white text-sm">0</p>
+                  <p className="text-white text-sm">{notifications.length}</p>
                 </div>
               </div>
               <div onClick={handleLogout}>
@@ -166,6 +206,13 @@ export const DefaultLayout = (): JSX.Element => {
           {/* 변경된 부분: flex-1로 공간을 차지하고 overflow-auto 추가 */}
         </div>
       </div>
+      {isModalOpen && (
+        <NotificationModal
+          notifications={notifications}
+          onClose={() => setIsModalOpen(false)}
+          onDelete={handleDeleteNotification}
+        />
+      )}
     </div>
   );
 };

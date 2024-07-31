@@ -23,6 +23,10 @@ const useSocket = (url: string, room: string): [Socket | null, (tagId: string, v
             console.log('Received diceStats:', data);
             setDiceStats(data);
         });
+        
+        newSocket.on('notifications', (data) => {
+            console.log('Received notifications:', data);
+        });
 
         return () => {
             newSocket.close();
@@ -30,6 +34,7 @@ const useSocket = (url: string, room: string): [Socket | null, (tagId: string, v
     }, [url, room]);
 
     const sendMessage = (tagId: string, value: string) => {
+        
         if (socket) {
             const message = { tagId, value };
             socket.emit("control", room, JSON.stringify(message));
