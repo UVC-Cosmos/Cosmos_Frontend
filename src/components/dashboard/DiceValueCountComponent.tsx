@@ -97,6 +97,22 @@ export const DiceValueCountComponent: React.FC = () => {
     }
   }, [diceValue]);
 
+  useEffect(() => {
+    setSeries([
+      {
+        name: '주사위 빈도',
+        data: [
+          diceCounts['1'],
+          diceCounts['2'],
+          diceCounts['3'],
+          diceCounts['4'],
+          diceCounts['5'],
+          diceCounts['6']
+        ]
+      }
+    ]);
+  }, [diceCounts]);
+
   return (
     <div className="bg-bgComp h-[100%] px-2">
       <Chart options={options} series={series} type="bar" width={'100%'} height={'100%'} />

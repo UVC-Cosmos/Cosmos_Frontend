@@ -37,14 +37,16 @@ const ColorSensorComponent: React.FC = () => {
 
   return (
     <div className="p-2 bg-bgComp h-[100%]">
-      <h2 className="text-lg font-bold mb-4">반출 된 칩 색깔</h2>
-      {chipColor && (
-        <img
-          src={chipColor === 'white' ? whiteChipImage : redChipImage}
-          alt="Chip Color"
-          className="w-24 h-24"
-        />
-      )}
+      <h2 className="text-sm font-bold text-white mb-4">반출 된 칩 색깔</h2>
+      <div className="flex items-center">
+        {chipColor && (
+          <img
+            src={chipColor === 'white' ? whiteChipImage : redChipImage}
+            alt="Chip Color"
+            className="w-24 h-24"
+          />
+        )}
+      </div>
     </div>
   );
 };
