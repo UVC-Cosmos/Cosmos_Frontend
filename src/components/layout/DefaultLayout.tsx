@@ -1,17 +1,20 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
-import { IUser } from '@/interface/authInterface';
+import { IFactory, IUser } from '@/interface/authInterface';
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import { AuthRoute } from '../route/AuthRotue';
 
+interface IUser2 extends IUser {
+  Factories: IFactory[];
+}
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
-  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const [isPassChangeModal, setIsPassChangeModal] = useState<boolean>(false);
-
+  const factories = user.Factories;
   const currentTime = useCurrentTime();
 
   function clearCosmosSessionCookie() {
@@ -24,6 +27,10 @@ export const DefaultLayout = (): JSX.Element => {
 
   const goToDashboard = () => {
     navigate('/main/dashboard');
+  };
+
+  const refreshPage = () => {
+    window.location.reload();
   };
 
   const handleLogout = async () => {
@@ -56,6 +63,11 @@ export const DefaultLayout = (): JSX.Element => {
             <Logo style={{ borderRadius: '50%' }} />
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
+            {factories.map((factory) => (
+              <button className="bg-mainLightColor rounded-lg px-4" onClick={refreshPage}>
+                <h2 className="text-white text-xl">{factory.name}</h2>
+              </button>
+            ))}
             <div className="bg-mainLightColor rounded-lg px-4">
               <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
             </div>
