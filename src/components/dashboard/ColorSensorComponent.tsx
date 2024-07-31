@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { No1CountAtom, No2SensingMemoryAtom } from '../../atom/mqtt/mqttAtom';
-import whiteChipImage from '../../assets/whiteChipImage.png';
+import React, { useEffect, useState, useRef } from 'react';
 import redChipImage from '../../assets/redChipImage.jpeg';
+import whiteChipImage from '../../assets/whiteChipImage.png';
+import { No1CountAtom, No2SensingMemoryAtom } from '../../atom/mqtt/mqttAtom';
 
 const ColorSensorComponent: React.FC = () => {
   const [no1CountString] = useAtom(No1CountAtom);
@@ -36,7 +36,7 @@ const ColorSensorComponent: React.FC = () => {
   }, [no1Count]);
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
+    <div className="p-2 bg-bgComp h-[100%]">
       <h2 className="text-lg font-bold mb-4">반출 된 칩 색깔</h2>
       {chipColor && (
         <img

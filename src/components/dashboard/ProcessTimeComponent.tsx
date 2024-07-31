@@ -25,7 +25,7 @@ const ProcessTimeComponent: React.FC<{ sendMessage: (command: string, value: str
   };
 
   return (
-    <div className="border rounded-xl bg-dashColor p-2 m-4">
+    <div className="bg-bgComp p-2 h-[100%]">
       <h2 className="text-lg font-bold mb-4">공정 시간 설정</h2>
       <p>현재 공정 반복 시간: {parseFloat(no1DelayTime).toFixed(1)} 초</p>
       <div>

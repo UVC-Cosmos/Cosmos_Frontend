@@ -15,6 +15,7 @@
     "apexcharts": "^3.51.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+    "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "echarts": "^5.5.1",
     "jotai": "^2.9.0",

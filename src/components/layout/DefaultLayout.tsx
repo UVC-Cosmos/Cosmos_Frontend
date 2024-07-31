@@ -51,7 +51,7 @@ export const DefaultLayout = (): JSX.Element => {
   return (
     <>
       <div>
-        <header className="h-[7vh] bg-mainColor flex justify-between">
+        <header className="h-[7vh] bg-bgLayout flex justify-between">
           <div className="flex items-center justify-center my-2 mx-3">
             <Logo style={{ borderRadius: '50%' }} />
           </div>
@@ -68,10 +68,10 @@ export const DefaultLayout = (): JSX.Element => {
           <div className="flex flex-row h-[93vh]">
             <div
               id="menu"
-              className="bg-mainColor w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
+              className="bg-bgLayout w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4 pt-3">
-                <div onClick={goToDashboard}>
+                <div onClick={goToDashboard} className="tooltip" data-tip="대시보드">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -85,7 +85,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div className="tooltip" data-tip="생산기록">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -102,7 +102,12 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
               <div id="position-end" className="flex flex-col gap-4 mb-4">
-                <div id="edit" onClick={openPassChangeModal}>
+                <div
+                  id="edit"
+                  onClick={openPassChangeModal}
+                  className="tooltip"
+                  data-tip="마이페이지"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -116,7 +121,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div className="tooltip" data-tip="공지사항">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -132,7 +137,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div id="알림" className="relative">
+                <div id="알림" className="relative tooltip" data-tip="알림">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -149,7 +154,7 @@ export const DefaultLayout = (): JSX.Element => {
                     <p className="text-white text-sm">0</p>
                   </div>
                 </div>
-                <div onClick={handleLogout}>
+                <div onClick={handleLogout} className="tooltip" data-tip="로그아웃">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -165,7 +170,7 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div id="content" className="bg-white mt-3 overflow-auto">
+            <div id="content" className="bg-mainColor overflow-auto ">
               <AuthRoute>
                 <Outlet />
               </AuthRoute>

@@ -1,5 +1,5 @@
-import React from 'react';
 import { useAtom } from 'jotai';
+import React from 'react';
 import { No1ChipEmptyAtom, No2CubeFullAtom } from '../../atom/mqtt/mqttAtom';
 
 const MaterialStatusComponent: React.FC = () => {
@@ -12,8 +12,8 @@ const MaterialStatusComponent: React.FC = () => {
   });
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
-      <h2 className="text-lg font-bold mb-4">자재 유무</h2>
+    <div className="p-2 bg-bgComp h-[100%]">
+      <h2 className="text-base font-bold mb-4 text-white">자재 유무</h2>
       <p style={getBlinkingStyle(no1ChipEmpty.toString() === 'true')}>
         1호기 칩: {no1ChipEmpty.toString() === 'true' ? '자재 없음!' : '생산 가능'}
       </p>
