@@ -27,7 +27,8 @@ export default {
       colorOff: '#ff0000',
       colorNone: '#8E8E8E',
 
-      textGray01: 'rgba(112, 112, 112, 1)'
+      textGray01: 'rgba(112, 112, 112, 1)',
+      borderGray: 'rgba(219, 219, 219, 1)'
     }
   },
   plugins: [require('daisyui'), require('@iconify/tailwind')]
