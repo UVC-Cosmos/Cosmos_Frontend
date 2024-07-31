@@ -59,13 +59,13 @@ const ChipsValueCountComponent: React.FC = () => {
   }, [no1Count, no2Count]);
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
+    <div className="bg-bgComp p-2 h-[100%]">
       <Chart
         options={chartData.options}
         series={chartData.series}
         type="pie"
-        height={300}
-        width={300}
+        width={'100%'}
+        height={'100%'}
       />
     </div>
   );

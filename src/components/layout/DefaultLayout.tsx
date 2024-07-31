@@ -1,17 +1,20 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
-import { IUser } from '@/interface/authInterface';
+import { IFactory, IUser } from '@/interface/authInterface';
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import { AuthRoute } from '../route/AuthRotue';
 
+interface IUser2 extends IUser {
+  Factories: IFactory[];
+}
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
-  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const [isPassChangeModal, setIsPassChangeModal] = useState<boolean>(false);
-
+  const factories = user.Factories;
   const currentTime = useCurrentTime();
 
   function clearCosmosSessionCookie() {
@@ -24,6 +27,10 @@ export const DefaultLayout = (): JSX.Element => {
 
   const goToDashboard = () => {
     navigate('/main/dashboard');
+  };
+
+  const refreshPage = () => {
+    window.location.reload();
   };
 
   const handleLogout = async () => {
@@ -51,11 +58,16 @@ export const DefaultLayout = (): JSX.Element => {
   return (
     <>
       <div>
-        <header className="h-[7vh] bg-mainColor flex justify-between">
+        <header className="h-[7vh] bg-bgLayout flex justify-between">
           <div className="flex items-center justify-center my-2 mx-3">
             <Logo style={{ borderRadius: '50%' }} />
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
+            {factories.map((factory) => (
+              <button className="bg-mainLightColor rounded-lg px-4" onClick={refreshPage}>
+                <h2 className="text-white text-xl">{factory.name}</h2>
+              </button>
+            ))}
             <div className="bg-mainLightColor rounded-lg px-4">
               <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
             </div>
@@ -68,10 +80,10 @@ export const DefaultLayout = (): JSX.Element => {
           <div className="flex flex-row h-[93vh]">
             <div
               id="menu"
-              className="bg-mainColor w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
+              className="bg-bgLayout w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4 pt-3">
-                <div onClick={goToDashboard}>
+                <div onClick={goToDashboard} className="tooltip" data-tip="대시보드">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -85,7 +97,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div className="tooltip" data-tip="생산기록">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -102,7 +114,12 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
               <div id="position-end" className="flex flex-col gap-4 mb-4">
-                <div id="edit" onClick={openPassChangeModal}>
+                <div
+                  id="edit"
+                  onClick={openPassChangeModal}
+                  className="tooltip"
+                  data-tip="마이페이지"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -116,7 +133,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div className="tooltip" data-tip="공지사항">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -132,7 +149,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div id="알림" className="relative">
+                <div id="알림" className="relative tooltip" data-tip="알림">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -149,7 +166,7 @@ export const DefaultLayout = (): JSX.Element => {
                     <p className="text-white text-sm">0</p>
                   </div>
                 </div>
-                <div onClick={handleLogout}>
+                <div onClick={handleLogout} className="tooltip" data-tip="로그아웃">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -165,7 +182,7 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div id="content" className="bg-white mt-3 overflow-auto">
+            <div id="content" className="bg-mainColor overflow-auto w-[95vw]">
               <AuthRoute>
                 <Outlet />
               </AuthRoute>
