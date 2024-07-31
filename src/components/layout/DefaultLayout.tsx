@@ -3,7 +3,7 @@ import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IFactory, IUser } from '@/interface/authInterface';
 import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import { AuthRoute } from '../route/AuthRotue';
 
@@ -12,10 +12,15 @@ interface IUser2 extends IUser {
 }
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
+  const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const [isPassChangeModal, setIsPassChangeModal] = useState<boolean>(false);
   const factories = user.Factories;
   const currentTime = useCurrentTime();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -27,6 +32,10 @@ export const DefaultLayout = (): JSX.Element => {
 
   const goToDashboard = () => {
     navigate('/main/dashboard');
+  };
+
+  const goToLog = () => {
+    navigate('/main/log');
   };
 
   const refreshPage = () => {
@@ -83,13 +92,17 @@ export const DefaultLayout = (): JSX.Element => {
               className="bg-bgLayout w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4 pt-3">
-                <div onClick={goToDashboard} className="tooltip" data-tip="대시보드">
+                <div
+                  onClick={goToDashboard}
+                  className={`tooltip ${isActive('/main/dashboard') ? 'bg-white' : ''}`}
+                  data-tip="대시보드"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
                     height="3rem"
                     viewBox="0 0 24 24"
-                    className="hover:bg-mainColorH"
+                    className={`${isActive('/main/dashboard') ? '' : 'hover:bg-mainColorH'}`}
                   >
                     <path
                       fill="#635985"
@@ -97,13 +110,18 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div className="tooltip" data-tip="생산기록">
+                <div
+                  className="tooltip"
+                  data-tip="생산기록"
+                  onClick={goToLog}
+                  className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
                     height="3rem"
                     viewBox="0 0 20 20"
-                    className="hover:bg-mainColorH"
+                    className={`${isActive('/main/log') ? '' : 'hover:bg-mainColorH'}`}
                   >
                     <g fill="#635985">
                       <path d="m3.196 12.87l-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484l-5.666 3.322a2.25 2.25 0 0 1-2.276 0z"></path>
