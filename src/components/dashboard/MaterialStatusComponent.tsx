@@ -32,7 +32,7 @@ const MaterialStatusComponent: React.FC = () => {
 
         <div
           className="stats shadow bg-bgLayout border"
-          style={getBlinkingStyle(no1ChipEmpty.toString() === 'true')}
+          style={getBlinkingStyle(no2CubeFull.toString() === 'true')}
         >
           <div className="stat">
             <div className="stat-title text-white">2호기 칩</div>
