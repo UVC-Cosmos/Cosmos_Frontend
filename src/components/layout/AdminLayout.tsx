@@ -35,8 +35,8 @@ export const AdminLayout = (): JSX.Element => {
     <>
       <div id="layout">
         <header className="h-20 bg-mainColor flex items-center justify-between">
-          <div className="ml-4">
-            <Logo />
+          <div className="ml-4 rounded-full overflow-hidden w-12 h-12 bg-white flex items-center justify-center shadow-lg border border-gray-200">
+            <Logo className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-row gap-4 items-center">
             <div className="bg-mainLightColor rounded-lg px-4">
