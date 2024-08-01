@@ -1,10 +1,10 @@
+import { No3Motor2PositionAtom } from '@/atom/mqtt/mqttAtom';
 import { useAtom } from 'jotai';
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import { No3Motor1PositionAtom } from '../../atom/mqtt/mqttAtom';
 
-const AxisPositionComponent: React.FC = () => {
-  const [motor1Position] = useAtom(No3Motor1PositionAtom);
+export const AxisPosition2Component: React.FC = () => {
+  const [motor2Position] = useAtom(No3Motor2PositionAtom);
 
   const [option] = useState({
     chart: {
@@ -14,9 +14,10 @@ const AxisPositionComponent: React.FC = () => {
         enabled: true,
         easing: 'linear',
         dynamicAnimation: {
-          speed: 500 // 0.5초마다 업데이트
+          speed: 500 // 1초마다 업데이트
         }
       },
+      // fontColor: '#ffffff',
       background: 'rgba(49, 53, 60, 1)',
       borderRadius: '5px',
       toolbar: {
@@ -26,11 +27,13 @@ const AxisPositionComponent: React.FC = () => {
         enabled: false
       }
     },
-
     xaxis: {
       type: 'datetime',
       labels: {
         show: false
+      },
+      axisTicks: {
+        color: '#ffffff'
       }
     },
     responsive: [
@@ -40,7 +43,7 @@ const AxisPositionComponent: React.FC = () => {
     ],
     yaxis: {
       min: 0,
-      max: 5000000, // 예시: 0~100 범위 설정, 실제 값에 맞게 조정
+      max: 30000000,
       tickAmount: 4,
       labels: {
         style: {
@@ -50,10 +53,10 @@ const AxisPositionComponent: React.FC = () => {
     },
     stroke: {
       curve: 'smooth',
-      colors: ['rgba(112,195,208,1)']
+      colors: ['rgba(126, 144, 68, 1)']
     },
     title: {
-      text: '3호기 1축 모터 위치 (세로축)',
+      text: '3호기 2축 모터 위치 (가로축)',
       align: 'left',
       style: {
         color: '#ffffff'
@@ -63,24 +66,30 @@ const AxisPositionComponent: React.FC = () => {
 
   const [series, setSeries] = useState<{ name: string; data: (string | number)[][] }[]>([
     {
-      name: '3호기 1축',
+      name: '3호기 2축',
       data: []
     }
   ]);
 
-  // motor1 은 세로축 최대 1500000
-  // motor2 는 가로축 최대 30000000
+  // useEffect(() => {
+  //   setSeries((prevSeries) => [
+  //     {
+  //       ...prevSeries[0],
+  //       data: [...prevSeries[0].data, [new Date().getTime(), motor2Position]]
+  //     }
+  //   ]);
+  // }, [motor2Position]);
 
   useEffect(() => {
-    if (motor1Position) {
+    if (motor2Position) {
       setSeries((prevSeries) => [
         {
           ...prevSeries[0],
-          data: [...prevSeries[0].data, [new Date().getTime(), parseFloat(motor1Position)]]
+          data: [...prevSeries[0].data, [new Date().getTime(), parseFloat(motor2Position)]]
         }
       ]);
     }
-  }, [motor1Position]);
+  }, [motor2Position]);
 
   return (
     <>
@@ -94,5 +103,3 @@ const AxisPositionComponent: React.FC = () => {
     </>
   );
 };
-
-export default AxisPositionComponent;

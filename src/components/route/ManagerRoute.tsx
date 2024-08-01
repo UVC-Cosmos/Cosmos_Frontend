@@ -16,12 +16,12 @@ export const ManagerRoute = ({ children }: IManagerRouteProps) => {
   }
 
   if (role === 'User') {
-    alert('접근 권한이 없습니다.');
+    // alert('접근 권한이 없습니다.');
     return <Navigate to="/main/dashboard" replace />;
   }
 
   if (role === 'Admin') {
-    alert('접근 권한이 없습니다.');
+    // alert('접근 권한이 없습니다.');
     return <Navigate to="/admin/member" replace />;
   }
 

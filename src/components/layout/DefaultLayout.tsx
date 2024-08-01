@@ -1,18 +1,28 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
-import { IUser } from '@/interface/authInterface';
+import { IFactory, IUser } from '@/interface/authInterface';
 import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
 import ShowUserInfo from '../modal/ShowUserInfo';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AuthRoute } from '../route/AuthRotue';
 
+interface IUser2 extends IUser {
+  Factories: IFactory[];
+}
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
-  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+
   const [isShowUserInfo, setIsShowUserInfo] = useState<boolean>(false);
+  const location = useLocation();
+  const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
+  const factories = user.Factories;
 
   const currentTime = useCurrentTime();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -24,6 +34,14 @@ export const DefaultLayout = (): JSX.Element => {
 
   const goToDashboard = () => {
     navigate('/main/dashboard');
+  };
+
+  const goToLog = () => {
+    navigate('/main/log');
+  };
+
+  const refreshPage = () => {
+    window.location.reload();
   };
 
   const handleLogout = async () => {
@@ -51,11 +69,16 @@ export const DefaultLayout = (): JSX.Element => {
   return (
     <>
       <div>
-        <header className="h-[7vh] bg-mainColor flex justify-between">
+        <header className="h-[7vh] bg-bgLayout flex justify-between">
           <div className="flex items-center justify-center my-2 mx-3">
             <Logo style={{ borderRadius: '50%' }} />
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
+            {factories.map((factory) => (
+              <button className="bg-mainLightColor rounded-lg px-4" onClick={refreshPage}>
+                <h2 className="text-white text-xl">{factory.name}</h2>
+              </button>
+            ))}
             <div className="bg-mainLightColor rounded-lg px-4">
               <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
             </div>
@@ -68,16 +91,20 @@ export const DefaultLayout = (): JSX.Element => {
           <div className="flex flex-row h-[93vh]">
             <div
               id="menu"
-              className="bg-mainColor w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
+              className="bg-bgLayout w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4 pt-3">
-                <div onClick={goToDashboard}>
+                <div
+                  onClick={goToDashboard}
+                  className={`tooltip ${isActive('/main/dashboard') ? 'bg-white' : ''}`}
+                  data-tip="대시보드"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
                     height="3rem"
                     viewBox="0 0 24 24"
-                    className="hover:bg-mainColorH"
+                    className={`${isActive('/main/dashboard') ? '' : 'hover:bg-mainColorH'}`}
                   >
                     <path
                       fill="#635985"
@@ -85,13 +112,17 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div
+                  data-tip="생산기록"
+                  onClick={goToLog}
+                  className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
                     height="3rem"
                     viewBox="0 0 20 20"
-                    className="hover:bg-mainColorH"
+                    className={`${isActive('/main/log') ? '' : 'hover:bg-mainColorH'}`}
                   >
                     <g fill="#635985">
                       <path d="m3.196 12.87l-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484l-5.666 3.322a2.25 2.25 0 0 1-2.276 0z"></path>
@@ -102,7 +133,12 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
               <div id="position-end" className="flex flex-col gap-4 mb-4">
-                <div id="edit" onClick={openUserInfoModal}>
+                <div
+                  id="edit"
+                  onClick={openUserInfoModal}
+                  className="tooltip"
+                  data-tip="마이페이지"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -116,7 +152,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div>
+                <div className="tooltip" data-tip="공지사항">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -132,7 +168,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div id="알림" className="relative">
+                <div id="알림" className="relative tooltip" data-tip="알림">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -149,7 +185,7 @@ export const DefaultLayout = (): JSX.Element => {
                     <p className="text-white text-sm">0</p>
                   </div>
                 </div>
-                <div onClick={handleLogout}>
+                <div onClick={handleLogout} className="tooltip" data-tip="로그아웃">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -165,7 +201,7 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div id="content" className="bg-white mt-3 overflow-auto">
+            <div id="content" className="bg-mainColor overflow-auto w-[95vw]">
               <AuthRoute>
                 <Outlet />
               </AuthRoute>

@@ -1,3 +1,5 @@
+import { IHistory } from '@/interface/historyInterface';
+
 export interface IMember {
   id: number;
   username: string;
@@ -64,5 +66,88 @@ export const dummyMember: IMember[] = [
     position: '대리',
     role: 'superUser',
     factory: ['공장1', '공장2', '공장3']
+  }
+];
+
+export const dummyHistory: IHistory[] = [
+  {
+    Statistics: {
+      '1': 46,
+      '2': 39,
+      '3': 37
+    },
+    Defect: {
+      machine1DefectRate: 7,
+      machine2DefectRate: 2,
+      totalDefectRate: 9
+    },
+    Dice: {
+      '1': 22,
+      '2': 10,
+      '3': 17,
+      '4': 9,
+      '5': 10,
+      '6': 4
+    }
+  },
+  {
+    Statistics: {
+      '1': 46,
+      '2': 39,
+      '3': 37
+    },
+    Defect: {
+      machine1DefectRate: 7,
+      machine2DefectRate: 2,
+      totalDefectRate: 9
+    },
+    Dice: {
+      '1': 22,
+      '2': 10,
+      '3': 17,
+      '4': 9,
+      '5': 10,
+      '6': 4
+    }
+  },
+  {
+    Statistics: {
+      '1': 46,
+      '2': 39,
+      '3': 37
+    },
+    Defect: {
+      machine1DefectRate: 7,
+      machine2DefectRate: 2,
+      totalDefectRate: 9
+    },
+    Dice: {
+      '1': 22,
+      '2': 10,
+      '3': 17,
+      '4': 9,
+      '5': 10,
+      '6': 4
+    }
+  },
+  {
+    Statistics: {
+      '1': 46,
+      '2': 39,
+      '3': 37
+    },
+    Defect: {
+      machine1DefectRate: 7,
+      machine2DefectRate: 2,
+      totalDefectRate: 9
+    },
+    Dice: {
+      '1': 22,
+      '2': 10,
+      '3': 17,
+      '4': 9,
+      '5': 10,
+      '6': 4
+    }
   }
 ];

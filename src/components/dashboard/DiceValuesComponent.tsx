@@ -35,53 +35,70 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
     '6': 0
   });
 
-  // apex chart
-  const [options, setOptions] = useState({
-    chart: {
-      id: 'basic-bar',
-      toolbar: {
-        show: false
-      },
-      background: '#ffffff'
-    },
-    title: {
-      text: '주사위 빈도'
-    },
-    xaxis: {
-      categories: [1, 2, 3, 4, 5, 6],
-      labels: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      }
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: false
-        },
-        show: false
-      }
-    },
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        borderRadius: 4,
-        columnWidth: '35%'
-      }
-    }
-  });
+  // // apex chart
+  // const [options, setOptions] = useState({
+  //   chart: {
+  //     id: 'basic-bar',
+  //     toolbar: {
+  //       show: false
+  //     }
+  //   },
+  //   background: 'rgba(49, 53, 60, 1)',
+  //   title: {
+  //     text: '주사위 빈도',
+  //     style: {
+  //       color: '#ffffff'
+  //     }
+  //   },
+  //   xaxis: {
+  //     categories: [1, 2, 3, 4, 5, 6],
+  //     labels: {
+  //       show: false
+  //     },
+  //     axisBorder: {
+  //       show: false
+  //     },
+  //     axisTicks: {
+  //       show: false
+  //     }
+  //   },
+  //   yaxis: {
+  //     labels: {
+  //       style: {
+  //         colors: ['#ffffff']
+  //       }
+  //     }
+  //   },
+  //   grid: {
+  //     yaxis: {
+  //       lines: {
+  //         show: false
+  //       },
+  //       show: false
+  //     }
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       horizontal: true,
+  //       borderRadius: 4,
+  //       columnWidth: '35%'
+  //     }
+  //   }
+  // });
 
-  const [series, setSeries] = useState([
-    {
-      name: '주사위 빈도',
-      data: [1, 3, 1, 2, 4, 5]
-    }
-  ]);
+  // const [series, setSeries] = useState([
+  //   {
+  //     name: '주사위 빈도',
+  //     data: [
+  //       diceCounts['1'],
+  //       diceCounts['2'],
+  //       diceCounts['3'],
+  //       diceCounts['4'],
+  //       diceCounts['5'],
+  //       diceCounts['6']
+  //     ]
+  //   }
+  // ]);
 
   const getDiceImage = (value: string) => {
     switch (value) {
@@ -121,26 +138,30 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
   };
 
   return (
-    <div className="border rounded-xl shadow-md bg-white h-[calc(45vh+0.5rem)] p-2 m-4">
-      <h2 className="text-lg font-bold mb-4">주사위</h2>
-      <div className="flex flex-row items-center ">
-        <div>
-          <p>주사위값: {dice}</p>
-          주사위 기준 값: {diceComparisonValue}
-          <input
-            type="number"
-            max={6}
-            min={1}
-            value={tempComparisonValue}
-            onChange={handleComparisonValueChange}
-            className="border rounded px-2 py-1 ml-2"
-          />
-          <button
-            onClick={handleSendComparisonValue}
-            className="ml-2 px-4 py-2 bg-blue-500 text-black border rounded"
-          >
-            변경
-          </button>
+    <div className="bg-bgComp h-[100%] px-2">
+      <h2 className="text-base font-bold mb-4 text-white">다이스 밸류</h2>
+      <p className="text-white">기준값: {dice}</p>
+      <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row">
+          <div className="flex flex-col h-24 justify-between">
+            <p className="text-white">주사위 기준 값</p>
+            <div className="flex flex-row items-center">
+              <input
+                type="number"
+                max={6}
+                min={1}
+                value={tempComparisonValue}
+                onChange={handleComparisonValueChange}
+                className="border rounded px-2 py-1"
+              />
+              <button
+                onClick={handleSendComparisonValue}
+                className="ml-2 px-4 py-2 bg-blue-500 h-8 text-white border rounded flex items-center"
+              >
+                변경
+              </button>
+            </div>
+          </div>
         </div>
         <div>
           <img
@@ -150,8 +171,10 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
           />
         </div>
       </div>
-
-      <Chart options={options} series={series} type="bar" width={'250px'} height={'200px'} />
+      {/* <div className="h-[100%]">
+        <Chart options={options} series={series} type="bar" width={'100%'} height={'100%'} />
+      </div> */}
+      {/* <Chart options={options} series={series} type="bar" width={'250px'} height={'200px'} /> */}
     </div>
   );
 };
