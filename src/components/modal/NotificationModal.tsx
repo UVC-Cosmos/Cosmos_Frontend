@@ -38,8 +38,8 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded shadow-lg w-96 max-h-[80vh] overflow-y-auto">
+    <div className="fixed inset-0 flex items-start justify-start bg-black bg-opacity-50 ml-[82px]">
+      <div className="bg-white p-6 rounded-lg shadow-lg relative w-96 max-h-[80vh] overflow-y-auto">
         <h2 className="text-xl mb-4">알림</h2>
         <div>
           {sortedDates.map((date) => (

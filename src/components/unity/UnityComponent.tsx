@@ -9,7 +9,7 @@ const UnityComponent: React.FC = () => {
     codeUrl: '/build/Build.wasm.br'
   });
 
-  return <Unity unityProvider={unityProvider} style={{ width: 600, height: 500 }} />;
+  return <Unity unityProvider={unityProvider} style={{ width: '100%', height: '100%' }} />;
 };
 
 export default UnityComponent;

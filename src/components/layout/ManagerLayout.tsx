@@ -3,9 +3,9 @@ import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
 import { Outlet, useNavigate } from 'react-router';
-import { AdminRoute } from '../route/AdminRoute';
+import { ManagerRoute } from '../route/ManagerRoute';
 
-export const AdminLayout = (): JSX.Element => {
+export const ManagerLayout = (): JSX.Element => {
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
   const currentTime = useCurrentTime();
   const navigate = useNavigate();
@@ -63,9 +63,9 @@ export const AdminLayout = (): JSX.Element => {
         </header>
       </div>
       <div>
-        <AdminRoute>
+        <ManagerRoute>
           <Outlet />
-        </AdminRoute>
+        </ManagerRoute>
       </div>
     </>
   );

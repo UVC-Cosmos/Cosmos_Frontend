@@ -1,5 +1,5 @@
-import React from 'react';
 import { useAtom } from 'jotai';
+import React from 'react';
 import { DataTimeAtom } from '../../atom/mqtt/mqttAtom';
 
 const DataTimeComponent: React.FC = () => {
@@ -20,7 +20,7 @@ const DataTimeComponent: React.FC = () => {
   return (
     <div className="border rounded-lg p-6 shadow-md bg-white m-4">
       <h2 className="text-lg font-bold mb-4">데이터 수집 시간</h2>
-      <p>{formatDateTime(dataTime)}</p>
+      <p className="stat-value text-sm">{formatDateTime(dataTime)}</p>
     </div>
   );
 };

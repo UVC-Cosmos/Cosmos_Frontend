@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
+import React, { useEffect, useState, useRef } from 'react';
 import {
+  DiceComparisonValueAtom,
+  DiceValueAtom,
   InputLimitAtom,
   No1CountAtom,
   No2CountAtom,
-  No3CountAtom,
-  DiceComparisonValueAtom,
-  DiceValueAtom,
-  No2SensingMemoryAtom
+  No2SensingMemoryAtom,
+  No3CountAtom
 } from '../../atom/mqtt/mqttAtom';
 
 const ProductionStatsComponent: React.FC<{
@@ -78,7 +78,7 @@ const ProductionStatsComponent: React.FC<{
   };
 
   return (
-    <div className="border rounded-lg p-6 shadow-md bg-white m-4">
+    <div className="border rounded-lg bg-dashColor p-2 m-4">
       <div className="mb-4">
         <h2 className="text-lg font-bold mb-2">생산 계획량</h2>
         <p>
