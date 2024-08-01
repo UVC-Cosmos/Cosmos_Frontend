@@ -95,7 +95,7 @@ const SignupSection: React.FC = () => {
   return (
     <div className="form-container sign-up-container">
       <form className="form" onSubmit={handleSubmit}>
-        <h1 className="form-title">회원가입</h1>
+        <h1 className="form-title text-3xl">회원가입</h1>
         <div className="flex flex-col gap-2 w-[20rem]">
           <div className="flex flex-row justify-between">
             <label className="input input-bordered flex items-center gap-2">
