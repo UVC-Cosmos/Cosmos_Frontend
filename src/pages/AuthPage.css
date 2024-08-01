@@ -20,13 +20,13 @@ h1 {
 }
 
 .find-password:hover {
-  color: #ff4b2b;
+  color: rgba(36, 53, 99, 1);
 }
 
 .form-button {
   border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
+  border: 1px solid rgba(36, 53, 99, 1);
+  background-color: rgba(36, 53, 99, 1);
   color: #ffffff;
   font-size: 12px;
   width: 16rem;
@@ -53,9 +53,9 @@ h1 {
 
 .check-button {
   border-radius: 8px;
-  border: 1px solid #ff4b2b;
+  border: 1px solid rgba(36, 53, 99, 1);
   background-color: #ffffff;
-  color: #ff4b2b;
+  color: rgba(36, 53, 99, 1);
   font-size: 12px;
   width: 6rem;
   font-weight: bold;
@@ -182,9 +182,9 @@ input {
 }
 
 .overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  background: rgba(31, 33, 38, 1);
+  background: -webkit-linear-gradient(to right, rgba(36, 53, 99, 1), rgba(31, 33, 38, 1));
+  background: linear-gradient(to right, rgba(36, 53, 99, 1), rgba(31, 33, 38, 1));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
