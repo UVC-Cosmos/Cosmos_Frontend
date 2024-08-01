@@ -24,9 +24,6 @@ const useSocket = (url: string, room: string): [Socket | null, (tagId: string, v
             setDiceStats(data);
         });
         
-        newSocket.on('notifications', (data) => {
-            console.log('Received notifications:', data);
-        });
 
         return () => {
             newSocket.close();

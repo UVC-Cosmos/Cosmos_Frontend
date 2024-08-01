@@ -9,32 +9,53 @@ import { useState, useEffect } from 'react';
 import useNotificationSocket from '../../hooks/useNotificationSocket';
 import NotificationModal from '../modal/NotificationModal';
 
+interface IUser2 extends IUser {
+  id: string;
+}
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
-  const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
 
   const currentTime = useCurrentTime();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Array<{ content: string; createdAt: string }>>(
-    []
-  );
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
-  const [notificationSocket] = useNotificationSocket(WebSocketServerUrl);
+  const [socket, notifications] = useNotificationSocket(WebSocketServerUrl, user.id);
+
+  const [userNotifications, setUserNotifications] = useState<
+    Array<{ id: number; content: string; createdAt: string }>
+  >([]);
+
+  // 페이지가 처음 로드될 때 HTTP 요청을 통해 데이터를 가져오는 부분
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await apiInstance.get('/notification');
+        if (response.status === 200) {
+          console.log('🚀 ~ fetchNotifications ~ response.data:', response.data);
+          setUserNotifications(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   useEffect(() => {
-    if (notificationSocket) {
-      notificationSocket.on('notifications', (data: { content: string; createdAt: string }) => {
-        setNotifications((prevNotifications) => [...prevNotifications, data]);
+    if (socket) {
+      socket.on('notifications', (data: { id: number; content: string; createdAt: string }) => {
+        setUserNotifications((prevNotifications) => [...prevNotifications, data]);
       });
     }
 
     return () => {
-      if (notificationSocket) {
-        notificationSocket.off('notifications');
+      if (socket) {
+        socket.off('notifications');
       }
     };
-  }, [notificationSocket]);
+  }, [socket]);
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -66,11 +87,11 @@ export const DefaultLayout = (): JSX.Element => {
     }
   };
 
-  const handleDeleteNotification = async (id: string) => {
+  const handleDeleteNotification = async (id: number) => {
     try {
-      const res = await apiInstance.delete(`/notifications/${id}`);
+      const res = await apiInstance.delete(`/notification/${id}`);
       if (res.status === 200) {
-        setNotifications((prevNotifications) =>
+        setUserNotifications((prevNotifications) =>
           prevNotifications.filter((notification) => notification.id !== id)
         );
       } else {
@@ -179,7 +200,7 @@ export const DefaultLayout = (): JSX.Element => {
                   ></path>
                 </svg>
                 <div className="rounded-full w-5 h-5 bg-mainColorH absolute top-1 right-1 flex justify-center items-center">
-                  <p className="text-white text-sm">{notifications.length}</p>
+                  <p className="text-white text-sm">{userNotifications.length}</p>
                 </div>
               </div>
               <div onClick={handleLogout}>
@@ -208,7 +229,7 @@ export const DefaultLayout = (): JSX.Element => {
       </div>
       {isModalOpen && (
         <NotificationModal
-          notifications={notifications}
+          notifications={userNotifications}
           onClose={() => setIsModalOpen(false)}
           onDelete={handleDeleteNotification}
         />
