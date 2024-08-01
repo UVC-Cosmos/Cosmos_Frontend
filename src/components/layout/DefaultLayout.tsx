@@ -4,13 +4,13 @@ import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
-import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
+import ShowUserInfo from '../modal/ShowUserInfo';
 import { AuthRoute } from '../route/AuthRotue';
 
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
-  const [isPassChangeModal, setIsPassChangeModal] = useState<boolean>(false);
+  const [isShowUserInfo, setIsShowUserInfo] = useState<boolean>(false);
 
   const currentTime = useCurrentTime();
 
@@ -44,9 +44,9 @@ export const DefaultLayout = (): JSX.Element => {
     }
   };
 
-  // 비밀번호 변경 모달 열기/닫기 함수
-  const openPassChangeModal = () => setIsPassChangeModal(true);
-  const closePassChangeModal = () => setIsPassChangeModal(false);
+  // 회원정보 조회 모달 열기/닫기 함수
+  const openUserInfoModal = () => setIsShowUserInfo(true);
+  const closeUserInfoModal = () => setIsShowUserInfo(false);
 
   return (
     <>
@@ -102,7 +102,7 @@ export const DefaultLayout = (): JSX.Element => {
                 </div>
               </div>
               <div id="position-end" className="flex flex-col gap-4 mb-4">
-                <div id="edit" onClick={openPassChangeModal}>
+                <div id="edit" onClick={openUserInfoModal}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -172,13 +172,7 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </div>
-        {isPassChangeModal && (
-          <ExistingPasswordChangeModal
-            // isOpen={isPassChangeModal}
-            onClose={closePassChangeModal}
-            title="비밀번호 변경"
-          />
-        )}
+        {isShowUserInfo && <ShowUserInfo isOpen={isShowUserInfo} onClose={closeUserInfoModal} />}
       </div>
     </>
   );

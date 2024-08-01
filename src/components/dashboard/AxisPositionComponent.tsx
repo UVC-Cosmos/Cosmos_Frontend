@@ -44,7 +44,8 @@ const AxisPositionComponent: React.FC = () => {
       tickAmount: 4
     },
     stroke: {
-      curve: 'smooth'
+      curve: 'smooth',
+      colors: ['#FF1654']
     },
     title: {
       text: '3호기 1축 모터 위치 (세로축)',

@@ -1,24 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import * as Yup from 'yup';
 import { apiInstance } from '@/api/api';
 import { AxiosError } from 'axios';
-import { CSSTransition } from 'react-transition-group';
-import './modal.css'; // CSS 파일 추가
+import './modal.css';
+import './alert.css';
 
 interface ExistingPasswordChangeProps {
-  // isOpen: boolean;
   onClose: () => void;
   title: string;
 }
 
-const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
-  // isOpen,
-  onClose,
-  title
-}) => {
-  // const [currentPassword, setCurrentPassword] = useState('');
-  // const [newPassword, setNewPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
+const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ onClose, title }) => {
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -26,14 +19,23 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
   });
   const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false);
   const [user] = useState(() => JSON.parse(localStorage.getItem('user') || '{}'));
-
   const [errors, setErrors] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
 
-  // if (!isOpen) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+    const firstInput = document.querySelector('input[name="currentPassword"]');
+    if (firstInput) {
+      (firstInput as HTMLInputElement).focus();
+    }
+  }, []);
 
   const validationSchema = Yup.object({
     currentPassword: Yup.string().required('기존의 비밀번호를 입력해주세요.'),
@@ -61,7 +63,10 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
 
   const checkCurrentPassword = async () => {
     if (!formData.currentPassword) {
-      alert('기존 비밀번호를 입력해주세요.');
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        currentPassword: '기존의 비밀번호를 입력해주세요.'
+      }));
       return;
     }
     try {
@@ -76,7 +81,11 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
       const axiosError = error as AxiosError;
       if (axiosError.response && axiosError.response.status === 400) {
         setIsPasswordConfirmed(false);
-        alert('비밀번호가 일치하지 않습니다.');
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: '비밀번호가 일치하지 않습니다.'
+        }));
+        return;
       } else {
         console.error('비밀번호 확인 중 오류가 발생했습니다.');
       }
@@ -123,15 +132,26 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
     }
   };
 
+  const handleClose = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-md w-auto max-h-[80vh] min-h-[240px] overflow-auto">
-        <h2 className="form-title">{title}</h2>
-        <div className="border-b-2 mb-3" />
-        <button className="absolute top-2 right-3 text-xl" onClick={onClose}>
-          &times;
-        </button>
-        {/* <div className="flex flex-col border-2"> */}
+    <dialog id="my_modal_3" className="modal" ref={dialogRef}>
+      <div className="modal-box">
+        <form method="dialog">
+          <button
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={handleClose}
+          >
+            ✕
+          </button>
+        </form>
+        <h3 className="font-bold text-lg">{title}</h3>
+
         <div className="flex flex-col gap-2 w-[392px] items-center h-[240px]">
           <div className="flex flex-row justify-between w-full">
             <label className="input input-bordered flex items-center gap-2">
@@ -148,10 +168,24 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
               확인
             </button>
           </div>
-          {isPasswordConfirmed ? (
-            <div className="text-sm text-green-500">비밀번호 확인 완료 !</div>
-          ) : (
-            <div className="error-message text-sm">기존의 비밀번호를 입력해주세요</div>
+
+          {errors.currentPassword && (
+            <div role="alert" className="alert alert-error">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 shrink-0 stroke-current"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{errors.currentPassword}</span>
+            </div>
           )}
 
           <CSSTransition in={isPasswordConfirmed} timeout={300} classNames="slide" unmountOnExit>
@@ -190,7 +224,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
                   변경
                 </button>
               </div>
-              {formData.confirmPassword == formData.newPassword ? (
+              {formData.confirmPassword === formData.newPassword ? (
                 <div className="text-sm text-green-500">비밀번호가 일치합니다</div>
               ) : (
                 <div className="text-error text-sm">{errors.confirmPassword}</div>
@@ -199,8 +233,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({
           </CSSTransition>
         </div>
       </div>
-    </div>
-    // </div>
+    </dialog>
   );
 };
 
