@@ -5,7 +5,6 @@ import './ShowUserInfo.css';
 import { IFactory, ILine, IUser } from '@/interface/authInterface';
 
 interface ShowUserInfoProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -24,7 +23,7 @@ const ShowUserInfo: React.FC<ShowUserInfoProps> = ({ onClose }) => {
   const closeExistingPasswordChangeModal = () => setIsPasswordChangeModalOpen(false);
 
   return (
-    <div className="fixed inset-0 flex items-start justify-start bg-black bg-opacity-50 ml-[82px]">
+    <div className="fixed inset-0 flex items-start justify-start ml-[82px]">
       <div className="bg-white p-6 rounded-lg shadow-lg relative h-full w-[400px]">
         <div className="mb-3"></div>
         <button className="absolute top-2 right-3 text-2xl" onClick={onClose}>

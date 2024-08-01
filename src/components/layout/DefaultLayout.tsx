@@ -6,6 +6,8 @@ import { useState } from 'react';
 import ShowUserInfo from '../modal/ShowUserInfo';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AuthRoute } from '../route/AuthRotue';
+import { CSSTransition } from 'react-transition-group';
+import '../modal/ShowUserInfo.css';
 
 interface IUser2 extends IUser {
   Factories: IFactory[];
@@ -13,7 +15,7 @@ interface IUser2 extends IUser {
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const [isShowUserInfo, setIsShowUserInfo] = useState<boolean>(false);
+  const [isShowUserInfoModal, setIsShowUserInfoModal] = useState<boolean>(false);
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const factories = user.Factories;
@@ -63,8 +65,8 @@ export const DefaultLayout = (): JSX.Element => {
   };
 
   // 회원정보 조회 모달 열기/닫기 함수
-  const openUserInfoModal = () => setIsShowUserInfo(true);
-  const closeUserInfoModal = () => setIsShowUserInfo(false);
+  const openUserInfoModal = () => setIsShowUserInfoModal(true);
+  const closeUserInfoModal = () => setIsShowUserInfoModal(false);
 
   return (
     <>
@@ -208,7 +210,9 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </div>
-        {isShowUserInfo && <ShowUserInfo isOpen={isShowUserInfo} onClose={closeUserInfoModal} />}
+        <CSSTransition in={isShowUserInfoModal} timeout={300} classNames="modal" unmountOnExit>
+          <ShowUserInfo onClose={closeUserInfoModal} />
+        </CSSTransition>
       </div>
     </>
   );
