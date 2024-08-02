@@ -1,17 +1,13 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
-
 import { IFactory, ILine, IUser } from '@/interface/authInterface';
-import { useEffect, useState } from 'react';
-
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AuthRoute } from '../route/AuthRotue';
 import '../modal/ShowUserInfo.css';
-import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
-
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useNotificationSocket from '../../hooks/useNotificationSocket';
+import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import NotificationModal from '../modal/NotificationModal';
 
 interface IUser2 extends IUser {
@@ -22,19 +18,14 @@ interface IUser2 extends IUser {
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
 
-
   // const [isShowUserInfoModal, setIsShowUserInfoModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
-  const location = useLocation();
   const factories = user.Factories;
   const [selectedFactory, setSelectedFactory] = useState<number | null>(null); // 선택된 공장 상태
 
   const currentTime = useCurrentTime();
-  const [isShowUserInfo, setIsShowUserInfo] = useState<boolean>(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
   const [socket, notifications] = useNotificationSocket(WebSocketServerUrl, user.id);
   const isActive = (path: string) => {
