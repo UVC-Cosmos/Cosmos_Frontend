@@ -42,13 +42,13 @@ export const LogPage = (): JSX.Element => {
           <thead>
             <tr>
               <th colSpan={3} className="w-1/6 text-center border-borderGray border">
-                생산량
+                호기 별 생산량
               </th>
               <th colSpan={3} className="w-1/6 text-center border-borderGray border">
-                불량률
+                호기 별 불량률
               </th>
               <th colSpan={6} className="w-1/6 text-center border-borderGray border">
-                주사위
+                주사위 별 빈도
               </th>
             </tr>
             <tr>
@@ -57,7 +57,7 @@ export const LogPage = (): JSX.Element => {
               <th className="w-1/12 border-r-borderGray border-r">3호기</th>
               <th className="w-1/12">1호기</th>
               <th className="w-1/12">2호기</th>
-              <th className="w-1/12 border-r-borderGray border-r">토탈</th>
+              <th className="w-1/12 border-r-borderGray border-r">Total</th>
               <th className="w-1/12">1</th>
               <th className="w-1/12">2</th>
               <th className="w-1/12">3</th>

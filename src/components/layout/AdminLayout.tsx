@@ -39,8 +39,10 @@ export const AdminLayout = (): JSX.Element => {
             <Logo className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-row gap-4 items-center">
-            <div className="bg-mainLightColor rounded-lg px-4">
-              <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
+            <div className="bg-[#5a626e] rounded-lg px-4">
+              <h2 className="text-white text-xl">
+                <strong className="font-black">{user.userName}</strong> 님 환영합니다!
+              </h2>
             </div>
             <div className="text-white text-xl w-[14rem]">
               <h2>{currentTime}</h2>

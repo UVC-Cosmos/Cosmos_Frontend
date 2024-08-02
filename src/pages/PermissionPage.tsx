@@ -168,9 +168,9 @@ export const PermissionPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {members.map((member) => (
+            {members.map((member, idx) => (
               <tr key={member.id} className="hover">
-                <td>{member.id}</td>
+                <td>{idx + 1}</td>
                 <td>{member.userName}</td>
                 <td>{member.rank}</td>
                 <td className="flex flex-row items-center gap-2">

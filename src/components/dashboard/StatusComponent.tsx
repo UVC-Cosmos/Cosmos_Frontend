@@ -25,14 +25,14 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   };
 
   return (
-    <div className="flex flex-col mb-2 items-center w-[9vw]">
+    <div className="flex flex-col items-center w-[9vw]">
       <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
         <div className="text-white opacity-100 font-bold text-sm">리셋</div>
         <button onClick={() => sendMessage('8', '1')} className="btn btn-primary min-h-5 h-5">
           reset
         </button>
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white opacity-100 font-bold text-sm">가동</div>
         <input
           type="checkbox"
@@ -41,7 +41,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
           onChange={() => handleToggle('1', startState.toString())}
         />
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white font-bold text-sm">1호기</div>
         <input
           type="checkbox"
@@ -50,7 +50,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
           onChange={() => handleToggle('9', no1PowerState.toString())}
         />
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white font-bold text-sm">2호기</div>
         <input
           type="checkbox"
@@ -59,7 +59,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
           onChange={() => handleToggle('10', no2PowerState.toString())}
         />
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white font-bold text-sm">3호기</div>
         <input
           type="checkbox"
@@ -68,7 +68,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
           onChange={() => handleToggle('11', no3PowerState.toString())}
         />
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white font-bold text-sm">센서</div>
         <input
           type="checkbox"
@@ -77,7 +77,7 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
           onChange={() => handleToggle('12', sen1PowerState.toString())}
         />
       </div>
-      <div className="flex flex-row gap-2 items-center justify-between w-[8vw]">
+      <div className="flex flex-row gap-2 items-center justify-between w-[8vw] mt-1">
         <div className="text-white font-bold text-sm">센서2</div>
         <input
           type="checkbox"

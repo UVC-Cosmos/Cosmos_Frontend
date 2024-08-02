@@ -4,6 +4,8 @@ import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IUser } from '@/interface/authInterface';
 import { Outlet, useNavigate } from 'react-router';
 import { ManagerRoute } from '../route/ManagerRoute';
+import { useState } from 'react';
+import AdminModal from '../modal/AdminModal';
 
 export const ManagerLayout = (): JSX.Element => {
   const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
@@ -12,6 +14,11 @@ export const ManagerLayout = (): JSX.Element => {
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   const handleLogout = async () => {
     try {
@@ -52,14 +59,20 @@ export const ManagerLayout = (): JSX.Element => {
           <Logo className="w-full h-full object-cover" />
         </div>
         <div className="flex flex-row gap-4 items-center">
-          <div className="bg-mainLightColor rounded-lg px-4">
-            <h2 className="text-white text-xl">{user.userName} 님 환영합니다!</h2>
+          <div className="bg-[#5a626e] rounded-lg px-4">
+            <h2 className="text-white text-xl">
+              <strong className="font-black">{user.userName}</strong> 님 환영합니다!
+            </h2>
           </div>
           <div className="text-white text-xl w-[14rem]">
             <h2>{currentTime}</h2>
           </div>
           <div className="dropdown dropdown-bottom dropdown-end mr-4">
-            <div tabIndex={0} role="button" className="btn m-1 bg-mainColor text-white">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn m-1 bg-mainColor text-white border-mainColor"
+            >
               <svg
                 className="swap-off fill-current"
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,12 +94,17 @@ export const ManagerLayout = (): JSX.Element => {
               </li>
               <li>
                 <div onClick={handleWrite}>
-                  <a>공지 작성</a>
+                  <a>공지작성</a>
+                </div>
+              </li>
+              <li>
+                <div onClick={handleModal}>
+                  <a>비밀번호 변경</a>
                 </div>
               </li>
               <li>
                 <div onClick={handleLogout}>
-                  <a>로그 아웃</a>
+                  <a>로그아웃</a>
                 </div>
               </li>
             </ul>
@@ -98,6 +116,7 @@ export const ManagerLayout = (): JSX.Element => {
           <Outlet />
         </ManagerRoute>
       </div>
+      {isModalOpen && <AdminModal onClose={handleModal} title="비밀번호 변경" />}
     </div>
   );
 };
