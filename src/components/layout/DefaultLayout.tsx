@@ -20,6 +20,7 @@ export const DefaultLayout = (): JSX.Element => {
 
   // const [isShowUserInfoModal, setIsShowUserInfoModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState<boolean>(false);
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const factories = user.Factories;
@@ -27,7 +28,7 @@ export const DefaultLayout = (): JSX.Element => {
 
   const currentTime = useCurrentTime();
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
-  const [socket, notifications] = useNotificationSocket(WebSocketServerUrl, user.id);
+  const [socket, notifications] = useNotificationSocket('http://localhost:3001', user.id);
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -72,6 +73,10 @@ export const DefaultLayout = (): JSX.Element => {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const toggleNotifyModal = () => {
+    setIsNotifyModalOpen(!isNotifyModalOpen);
   };
 
   // const goToEditProfile = () => {
@@ -315,7 +320,7 @@ export const DefaultLayout = (): JSX.Element => {
                   id="알림"
                   className="relative tooltip"
                   data-tip="알림"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={toggleNotifyModal}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -354,10 +359,10 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </div>
-        {isModalOpen && (
+        {isNotifyModalOpen && (
           <NotificationModal
             notifications={userNotifications}
-            onClose={() => setIsModalOpen(false)}
+            onClose={toggleNotifyModal}
             onDelete={handleDeleteNotification}
           />
         )}

@@ -6,7 +6,7 @@ const NotificationComponent: React.FC = () => {
 
   useEffect(() => {
     const userId = 'user123'; // 실제 사용자 ID를 사용
-    socket.current = new WebSocket('ws://localhost:3000');
+    socket.current = new WebSocket('ws://localhost:3001');
 
     socket.current.onopen = () => {
       console.log('WebSocket 연결 성공');
