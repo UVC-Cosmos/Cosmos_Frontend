@@ -14,14 +14,14 @@ const MaterialStatusComponent: React.FC = () => {
 
   return (
     <div className="p-2 bg-bgComp h-[100%]">
-      <h2 className="text-sm font-bold text-white mb-4">자재 유무</h2>
-      <div className="flex flex-row justify-around items-center gap-2 w-[100%] h-[70%]">
+      {/* <h2 className="text-sm font-bold text-white mb-4">자재 유무</h2> */}
+      <div className="flex flex-row justify-center items-center gap-2 w-[100%] h-[100%]">
         <div
           className="stats shadow bg-bgLayout border"
           style={getBlinkingStyle(no1ChipEmpty.toString() === 'true')}
         >
           <div className="stat">
-            <div className="stat-title text-white">1호기 칩</div>
+            <div className="stat-title text-white">1호기 칩 자재 유무</div>
             <div className="stat-value">
               <p style={getBlinkingStyle(no1ChipEmpty.toString() === 'true')}>
                 {no1ChipEmpty.toString() === 'true' ? '자재 없음!' : '생산 가능'}
@@ -30,7 +30,7 @@ const MaterialStatusComponent: React.FC = () => {
           </div>
         </div>
 
-        <div
+        {/* <div
           className="stats shadow bg-bgLayout border"
           style={getBlinkingStyle(no2CubeFull.toString() === 'true')}
         >
@@ -42,7 +42,7 @@ const MaterialStatusComponent: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
