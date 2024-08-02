@@ -131,6 +131,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
             <div className="flex flex-row items-center">
               <input
                 type="number"
+                id="주사위 변경값"
                 max={6}
                 min={1}
                 value={tempComparisonValue}

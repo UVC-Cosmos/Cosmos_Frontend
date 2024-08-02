@@ -129,7 +129,11 @@ export const DefaultLayout = (): JSX.Element => {
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
             {factories.map((factory) => (
-              <button className="bg-mainLightColor rounded-lg px-4" onClick={refreshPage}>
+              <button
+                className="bg-mainLightColor rounded-lg px-4"
+                onClick={refreshPage}
+                key={factory.id}
+              >
                 <h2 className="text-white text-xl">{factory.name}</h2>
               </button>
             ))}

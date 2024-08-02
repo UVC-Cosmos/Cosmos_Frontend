@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import ExistingPasswordChangeModal from './ExistingPasswordChange';
 import './ShowUserInfo.css';
@@ -17,6 +17,9 @@ interface IUser2 extends IUser {
 
 const ShowUserInfo: React.FC<ShowUserInfoProps> = ({ onClose }) => {
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] = useState(false);
+
+  // ref를 만들어 CSSTransition에 사용할 DOM 요소를 참조
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -92,11 +95,19 @@ const ShowUserInfo: React.FC<ShowUserInfoProps> = ({ onClose }) => {
       </div>
 
       {/* CSSTransition으로 모달 애니메이션 적용 */}
-      <CSSTransition in={isPasswordChangeModalOpen} timeout={300} classNames="modal" unmountOnExit>
-        <ExistingPasswordChangeModal
-          onClose={closeExistingPasswordChangeModal}
-          title="비밀번호 변경"
-        />
+      <CSSTransition
+        in={isPasswordChangeModalOpen}
+        timeout={300}
+        classNames="modal"
+        unmountOnExit
+        nodeRef={modalRef} // nodeRef로 DOM 요소 참조 전달
+      >
+        <div ref={modalRef}>
+          <ExistingPasswordChangeModal
+            onClose={closeExistingPasswordChangeModal}
+            title="비밀번호 변경"
+          />
+        </div>
       </CSSTransition>
     </div>
   );
