@@ -28,7 +28,7 @@ export const DefaultLayout = (): JSX.Element => {
 
   const currentTime = useCurrentTime();
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
-  const [socket, notifications] = useNotificationSocket('http://localhost:3001', user.id);
+  const [socket, notifications] = useNotificationSocket('http://localhost:3000', user.id);
   const isActive = (path: string) => {
     return location.pathname === path;
   };

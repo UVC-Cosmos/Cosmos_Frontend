@@ -15,12 +15,9 @@ const ChipsValueCountComponent: React.FC = () => {
   const [previousNo1Count, setPreviousNo1Count] = useState<number>(no1Count);
   const sensingMemoryRef = useRef(no2SensingMemory);
 
-  console.log(no1Count, no2Count);
-
   // 차트 데이터를 상태로 관리
   const [chartData, setChartData] = useState({
-    // series: [no1Count, redChip],
-    series: [24, 14],
+    series: [no1Count, redChip],
     options: {
       chart: {
         width: 300,
@@ -28,10 +25,18 @@ const ChipsValueCountComponent: React.FC = () => {
         background: 'rgba(49, 53, 60, 1)'
       },
       labels: ['양품', '불량품'],
-      colors: ['#70c3d0', '#f44336'],
+      colors: ['#18d618', '#f44336'],
       legend: {
         labels: {
           colors: '#ffffff'
+        }
+      },
+      title: {
+        text: '1호기 불/양품 생산량',
+        align: 'left',
+        style: {
+          color: '#ffffff',
+          fontSize: '20px'
         }
       }
     }
@@ -67,13 +72,42 @@ const ChipsValueCountComponent: React.FC = () => {
   }, [no1Count, no2Count]);
 
   return (
-    <Chart
-      options={chartData.options}
-      series={chartData.series}
-      type="pie"
-      width={'100%'}
-      height={'100%'}
-    />
+    <div className="relative w-full h-full">
+      <div
+        style={{
+          filter: no1Count === 0 && no2Count === 0 ? 'blur(5px)' : 'none',
+          pointerEvents: no1Count === 0 && no2Count === 0 ? 'none' : 'auto',
+          width: '100%',
+          height: '100%',
+          zIndex: 1
+        }}
+      >
+        <Chart
+          options={chartData.options}
+          series={chartData.series}
+          type="pie"
+          width={'100%'}
+          height={'100%'}
+        />
+      </div>
+      {no1Count === 0 && no2Count === 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: '#ffffff',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            padding: '10px',
+            borderRadius: '5px',
+            zIndex: 2
+          }}
+        >
+          <p>1호기의 생산량이 0 입니다.</p>
+        </div>
+      )}
+    </div>
   );
 };
 

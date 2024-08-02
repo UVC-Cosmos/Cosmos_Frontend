@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import React, { useEffect, useState, useRef } from 'react';
-import redChipImage from '../../assets/redChipImage.jpeg';
+import redChipImage from '../../assets/redChipImage.png';
 import whiteChipImage from '../../assets/whiteChipImage.png';
 import { No1CountAtom, No2SensingMemoryAtom } from '../../atom/mqtt/mqttAtom';
 
@@ -37,15 +37,16 @@ const ColorSensorComponent: React.FC = () => {
 
   return (
     <div className="p-2 bg-bgComp h-[100%]">
-      <h2 className="text-sm font-bold text-white mb-4">반출 된 칩 색깔</h2>
-      <div className="flex items-center">
-        {chipColor && (
-          <img
-            src={chipColor === 'white' ? whiteChipImage : redChipImage}
-            alt="Chip Color"
-            className="w-24 h-24"
-          />
-        )}
+      <h2 className="font-bold text-white mb-4 text-2xl">반출 된 칩 색깔</h2>
+      <div className="flex items-center justify-center">
+        {/* {chipColor && ( */}
+        <img
+          // src={chipColor === 'white' ? whiteChipImage : redChipImage}
+          src={redChipImage}
+          alt="Chip Color"
+          className="w-36 h-36"
+        />
+        {/* )} */}
       </div>
     </div>
   );
