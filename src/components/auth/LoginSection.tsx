@@ -48,9 +48,11 @@ const LoginSection = (): JSX.Element => {
         userId: formData.userId,
         password: formData.password
       });
-      console.log(response, '로그인 성공');
+      // if (response.)
+      // console.log(response, '로그인 성공');
+      // console.log(userData, '유저 데이터');
+
       const userData = response.data as IUser;
-      console.log(userData, '유저 데이터');
       setIsLogin(true);
       setUser(userData);
       if (userData.role === 'Admin') {

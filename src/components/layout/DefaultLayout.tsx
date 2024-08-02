@@ -2,7 +2,7 @@ import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { IFactory, ILine, IUser } from '@/interface/authInterface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AuthRoute } from '../route/AuthRotue';
 import '../modal/ShowUserInfo.css';
@@ -21,6 +21,7 @@ export const DefaultLayout = (): JSX.Element => {
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const factories = user.Factories;
+  const [selectedFactory, setSelectedFactory] = useState<number | null>(null); // 선택된 공장 상태
 
   const currentTime = useCurrentTime();
 
@@ -48,10 +49,6 @@ export const DefaultLayout = (): JSX.Element => {
     navigate('/main/log');
   };
 
-  const refreshPage = () => {
-    window.location.reload();
-  };
-
   const handleLogout = async () => {
     try {
       await apiInstance.post('/auth/logout').then((res) => {
@@ -70,6 +67,19 @@ export const DefaultLayout = (): JSX.Element => {
     }
   };
 
+  const handleFactoryClick = (factoryId: number) => {
+    setSelectedFactory(factoryId); // 선택된 공장 상태 업데이트
+    localStorage.setItem('selectedFactory', JSON.stringify(factoryId));
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const savedFactoryId = localStorage.getItem('selectedFactory');
+    if (savedFactoryId) {
+      setSelectedFactory(JSON.parse(savedFactoryId));
+    }
+  }, []);
+
   // 회원정보 조회 모달 열기/닫기 함수
   // const openUserInfoModal = () => setIsShowUserInfoModal(true);
   // const closeUserInfoModal = () => setIsShowUserInfoModal(false);
@@ -78,13 +88,17 @@ export const DefaultLayout = (): JSX.Element => {
     <>
       <div>
         <header className="h-[7vh] bg-bgLayout flex justify-between">
-          <div className="flex items-center justify-center my-2 mx-3">
-            <Logo style={{ borderRadius: '50%' }} />
+          <div className="ml-4 mt-2 rounded-full overflow-hidden w-12 h-12 bg-white flex items-center justify-center shadow-lg border border-gray-200">
+            <Logo className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
             {factories.map((factory) => (
-              <button className="bg-[#5a626e] rounded-lg px-4" onClick={refreshPage}>
-                <h2 className="text-white text-xl">{factory.name}</h2>
+              <button
+                key={factory.id}
+                className={`rounded-lg px-4 ${selectedFactory === factory.id ? 'bg-[#008000] text-white font-extrabold' : 'bg-[#5a626e] text-white'}`}
+                onClick={() => handleFactoryClick(factory.id)}
+              >
+                <h2 className="text-xl">{factory.name}</h2>
               </button>
             ))}
             <div className="bg-[#5a626e] rounded-lg px-4">
@@ -106,7 +120,7 @@ export const DefaultLayout = (): JSX.Element => {
               <div id="position-top" className="flex flex-col gap-4 pt-3">
                 <div
                   onClick={goToDashboard}
-                  className={`tooltip ${isActive('/main/dashboard') ? 'bg-white' : ''}`}
+                  // className={`tooltip ${isActive('/main/dashboard') ? 'border border-borderGray' : ''}`}
                   data-tip="대시보드"
                 >
                   <svg
@@ -116,7 +130,7 @@ export const DefaultLayout = (): JSX.Element => {
                     viewBox="0 0 24 24"
                   >
                     <path
-                      fill="#5a626e"
+                      fill={isActive('/main/dashboard') ? '#ffffff' : '#5a626e'}
                       d="M13 9V3h8v6zM3 13V3h8v10zm10 8V11h8v10zM3 21v-6h8v6z"
                     ></path>
                   </svg>
@@ -124,7 +138,7 @@ export const DefaultLayout = (): JSX.Element => {
                 <div
                   data-tip="생산기록"
                   onClick={goToLog}
-                  className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
+                  // className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +146,7 @@ export const DefaultLayout = (): JSX.Element => {
                     height="3rem"
                     viewBox="0 0 20 20"
                   >
-                    <g fill="#5a626e">
+                    <g fill={isActive('/main/log') ? '#ffffff' : '#5a626e'}>
                       <path d="m3.196 12.87l-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484l-5.666 3.322a2.25 2.25 0 0 1-2.276 0z"></path>
                       <path d="m3.196 8.87l-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484l-5.666 3.322a2.25 2.25 0 0 1-2.276 0z"></path>
                       <path d="M10.38 1.103a.75.75 0 0 0-.76 0l-7.25 4.25a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .76 0l7.25-4.25a.75.75 0 0 0 0-1.294z"></path>
@@ -284,9 +298,7 @@ export const DefaultLayout = (): JSX.Element => {
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <ExistingPasswordChangeModal toggleModal={toggleModal} title="비밀번호 변경" />
-      )}
+      {isModalOpen && <ExistingPasswordChangeModal onClose={toggleModal} title="비밀번호 변경" />}
     </>
   );
 };

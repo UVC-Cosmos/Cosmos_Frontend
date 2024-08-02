@@ -8,6 +8,7 @@ import EditUserPage from './pages/EditUserPage';
 import { LogPage } from './pages/LogPage';
 import MemberListPage from './pages/MemberListPage';
 import { PermissionPage } from './pages/PermissionPage';
+import WriteNotifyPage from './pages/WriteNotifyPage';
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
       </Route>
       <Route path="factory" element={<ManagerLayout />}>
         <Route path="member" element={<PermissionPage />} />
+        <Route path="write" element={<WriteNotifyPage />} />
       </Route>
     </Routes>
   );

@@ -26,13 +26,15 @@ const MemberListPage: React.FC = () => {
   const [, setIsCheckable] = useState<boolean>(false); // 체크박스 활성화 상태 관리
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 활성화 상태 관리
   const [initialMembers, setInitialMembers] = useState<IMember[]>([]);
+  const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null); // 추가: 선택된 멤버 ID 상태
 
   const factoryList = [
     { id: 1, name: 'A공장' },
     { id: 2, name: 'B공장' },
     { id: 3, name: 'C공장' }
   ];
-  const toggleModal = () => {
+  const toggleModal = (id: number | null = null) => {
+    setSelectedMemberId(id); // 선택된 멤버 ID 설정
     setIsModalOpen(!isModalOpen);
   };
 
@@ -147,9 +149,9 @@ const MemberListPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {members.map((member) => (
+            {members.map((member, idx) => (
               <tr key={member.id} className="hover">
-                <td>{member.id}</td>
+                <td>{idx + 1}</td>
                 <td>{member.userName}</td>
                 <td>{member.rank}</td>
                 <td className="flex flex-row justify-center items-center gap-2">
@@ -185,7 +187,10 @@ const MemberListPage: React.FC = () => {
                       >
                         취소
                       </button>
-                      <button className="btn btn-sm btn-outline btn-primary" onClick={toggleModal}>
+                      <button
+                        className="btn btn-sm btn-outline btn-primary"
+                        onClick={() => toggleModal(member.id)}
+                      >
                         삭제
                       </button>
                     </div>
@@ -198,13 +203,13 @@ const MemberListPage: React.FC = () => {
                     </button>
                   )}
                 </td>
-                {isModalOpen && (
-                  <DeleteMemberModal toggleModal={toggleModal} memberId={member.id} />
-                )}
               </tr>
             ))}
           </tbody>
         </table>
+        {isModalOpen && selectedMemberId !== null && (
+          <DeleteMemberModal toggleModal={toggleModal} memberId={selectedMemberId} />
+        )}
       </div>
     </div>
   );
