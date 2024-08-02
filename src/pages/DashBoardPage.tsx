@@ -16,8 +16,7 @@ const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL; // 노드�
 const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
 
 const DashBoardPage = () => {
-  const [socket, sendMessage] = useSocket(WebSocketServerUrl, EdukitId);
-
+  const [socket, sendMessage, diceStats] = useSocket(WebSocketServerUrl, EdukitId);
   return (
     <div className="grid grid-cols-[1fr_2fr_1fr] grid-rows-4 gap-4 h-[100%] w-[100%]">
       <div className="row-span-1 col-span-1 mt-4 ml-4 border-2 border-borderMaterial">

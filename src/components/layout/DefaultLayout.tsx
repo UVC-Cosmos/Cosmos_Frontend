@@ -1,12 +1,18 @@
 import { apiInstance } from '@/api/api';
 import Logo from '@/assets/cosmos.svg?react';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
+
 import { IFactory, ILine, IUser } from '@/interface/authInterface';
 import { useEffect, useState } from 'react';
+
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AuthRoute } from '../route/AuthRotue';
 import '../modal/ShowUserInfo.css';
 import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
+
+import { useState, useEffect } from 'react';
+import useNotificationSocket from '../../hooks/useNotificationSocket';
+import NotificationModal from '../modal/NotificationModal';
 
 interface IUser2 extends IUser {
   Factories: IFactory[];
@@ -16,18 +22,58 @@ interface IUser2 extends IUser {
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
 
+
   // const [isShowUserInfoModal, setIsShowUserInfoModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
+  const location = useLocation();
   const factories = user.Factories;
   const [selectedFactory, setSelectedFactory] = useState<number | null>(null); // 선택된 공장 상태
 
   const currentTime = useCurrentTime();
+  const [isShowUserInfo, setIsShowUserInfo] = useState<boolean>(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
+  const [socket, notifications] = useNotificationSocket(WebSocketServerUrl, user.id);
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+  const [userNotifications, setUserNotifications] = useState<
+    Array<{ id: number; content: string; createdAt: string }>
+  >([]);
+
+  // 페이지가 처음 로드될 때 HTTP 요청을 통해 데이터를 가져오는 부분
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await apiInstance.get('/notification');
+        if (response.status === 200) {
+          console.log('🚀 ~ fetchNotifications ~ response.data:', response.data);
+          setUserNotifications(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('notifications', (data: { id: number; content: string; createdAt: string }) => {
+        setUserNotifications((prevNotifications) => [...prevNotifications, data]);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('notifications');
+      }
+    };
+  }, [socket]);
 
   function clearCosmosSessionCookie() {
     document.cookie = 'cosmosSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -64,6 +110,21 @@ export const DefaultLayout = (): JSX.Element => {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleDeleteNotification = async (id: number) => {
+    try {
+      const res = await apiInstance.delete(`/notification/${id}`);
+      if (res.status === 200) {
+        setUserNotifications((prevNotifications) =>
+          prevNotifications.filter((notification) => notification.id !== id)
+        );
+      } else {
+        alert('알림 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('알림 삭제 중 오류 발생:', error);
     }
   };
 
@@ -259,7 +320,12 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div id="알림" className="relative tooltip" data-tip="알림">
+                <div
+                  id="알림"
+                  className="relative tooltip"
+                  data-tip="알림"
+                  onClick={() => setIsModalOpen(true)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -271,8 +337,8 @@ export const DefaultLayout = (): JSX.Element => {
                       d="M8 2a4.5 4.5 0 0 0-4.5 4.5v2.401l-.964 2.414A.5.5 0 0 0 3 12h10a.5.5 0 0 0 .464-.685L12.5 8.9V6.5A4.5 4.5 0 0 0 8 2m0 12.5A2 2 0 0 1 6.063 13h3.874A2 2 0 0 1 8 14.5"
                     ></path>
                   </svg>
-                  <div className="rounded-full w-5 h-5 bg-[#446597] absolute top-1 right-1 flex justify-center items-center">
-                    <p className="text-white text-sm">0</p>
+                  <div className="rounded-full w-5 h-5 bg-mainColorH absolute top-1 right-1 flex justify-center items-center">
+                    <p className="text-white text-sm">{userNotifications.length}</p>
                   </div>
                 </div>
                 <div onClick={handleLogout} className="tooltip" data-tip="로그아웃">
@@ -297,6 +363,13 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </div>
+        {isModalOpen && (
+          <NotificationModal
+            notifications={userNotifications}
+            onClose={() => setIsModalOpen(false)}
+            onDelete={handleDeleteNotification}
+          />
+        )}
       </div>
       {isModalOpen && <ExistingPasswordChangeModal onClose={toggleModal} title="비밀번호 변경" />}
     </>

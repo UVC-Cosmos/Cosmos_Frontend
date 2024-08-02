@@ -26,14 +26,6 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
   const [dice, setDice] = useState<string>('0');
   const [diceComparisonValue] = useAtom(DiceComparisonValueAtom);
   const [tempComparisonValue, setTempComparisonValue] = useState(diceComparisonValue);
-  const [diceCounts, setDiceCounts] = useState<DiceCounts>({
-    '1': 0,
-    '2': 0,
-    '3': 0,
-    '4': 0,
-    '5': 0,
-    '6': 0
-  });
 
   // // apex chart
   // const [options, setOptions] = useState({
@@ -119,15 +111,6 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
     }
   };
 
-  useEffect(() => {
-    if (diceValue >= '1' && diceValue <= '6') {
-      setDiceCounts((prevCounts) => ({
-        ...prevCounts,
-        [diceValue]: (prevCounts[diceValue as keyof DiceCounts] ?? 0) + 1
-      }));
-    }
-  }, [diceValue]);
-
   const handleComparisonValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTempComparisonValue(event.target.value);
   };
@@ -148,6 +131,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
             <div className="flex flex-row items-center">
               <input
                 type="number"
+                id="주사위 변경값"
                 max={6}
                 min={1}
                 value={tempComparisonValue}
