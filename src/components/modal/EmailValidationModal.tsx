@@ -6,8 +6,13 @@ import { emailCheckAtom } from '../../atom/auth/signupAtom';
 interface IProps {
   toggleModal: () => void;
   checkEmail: string;
+  emailCheckClick: () => void;
 }
-const EmailValidationModal = ({ toggleModal, checkEmail }: IProps): JSX.Element => {
+const EmailValidationModal = ({
+  toggleModal,
+  checkEmail,
+  emailCheckClick
+}: IProps): JSX.Element => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [code, setCode] = useState<string>('');
   const setIsEmailCheck = useSetAtom(emailCheckAtom);
@@ -40,6 +45,7 @@ const EmailValidationModal = ({ toggleModal, checkEmail }: IProps): JSX.Element 
         .then((res) => {
           if (res.status === 200) {
             setIsEmailCheck(true);
+            emailCheckClick();
           }
           // 모달 닫기.
           toggleModal();
