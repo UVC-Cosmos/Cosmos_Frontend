@@ -1,5 +1,6 @@
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
 import {
@@ -30,6 +31,8 @@ const SignupSection: React.FC = () => {
     userName: '',
     password: ''
   });
+
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -116,6 +119,7 @@ const SignupSection: React.FC = () => {
     try {
       const response = await apiInstance.post('/user', formData);
       console.log(response.data);
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
