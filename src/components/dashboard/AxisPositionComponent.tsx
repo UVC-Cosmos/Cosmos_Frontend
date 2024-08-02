@@ -40,7 +40,7 @@ const AxisPositionComponent: React.FC = () => {
     ],
     yaxis: {
       min: 0,
-      max: 5000000, // 예시: 0~100 범위 설정, 실제 값에 맞게 조정
+      max: 2500000,
       tickAmount: 4,
       labels: {
         style: {

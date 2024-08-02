@@ -8,6 +8,7 @@ import EmailValidationModal from '../modal/EmailValidationModal';
 const SignupSection: React.FC = () => {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false);
   const [isIdDuplicate, setIsIdDuplicate] = useAtom(userIdCheckAtom);
+  const [isIdDuplicateClick, setIsIdDuplicateClick] = useState<boolean>(false);
   const isEmailCheck = useAtomValue(emailCheckAtom);
 
   const [formData, setFormData] = useState({
@@ -57,11 +58,15 @@ const SignupSection: React.FC = () => {
   // ID 중복
   const checkDuplicateId = async () => {
     try {
-      console.log('아이디 중복 확인 요청');
       await apiInstance.post('/auth/idDuplicateCheck', { userId: formData.userId }).then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 && res.data === false) {
           setIsIdDuplicate(true);
+          setIsIdDuplicateClick(true);
           console.log('아이디 중복 확인 성공');
+        } else if (res.status === 200 && res.data === true) {
+          setIsIdDuplicate(false);
+          setIsIdDuplicateClick(true);
+          console.log('아이디 사용 가능');
         }
       });
     } catch (error) {
@@ -95,7 +100,7 @@ const SignupSection: React.FC = () => {
   return (
     <div className="form-container sign-up-container">
       <form className="form" onSubmit={handleSubmit}>
-        <h1 className="form-title">회원가입</h1>
+        <h1 className="form-title text-3xl">회원가입</h1>
         <div className="flex flex-col gap-2 w-[20rem]">
           <div className="flex flex-row justify-between">
             <label className="input input-bordered flex items-center gap-2">
@@ -112,10 +117,11 @@ const SignupSection: React.FC = () => {
               중복확인
             </button>
           </div>
-          {isIdDuplicate ? (
-            <div className="error-message text-xs">사용 가능한 아이디입니다.</div>
-          ) : (
+          {isIdDuplicate && isIdDuplicateClick && (
             <div className="error-message text-xs">아이디가 중복됩니다.</div>
+          )}
+          {!isIdDuplicate && isIdDuplicateClick && (
+            <div className="error-message text-xs">사용 가능한 아이디입니다.</div>
           )}
         </div>
         <div className="flex flex-col gap-2 w-[20rem]">

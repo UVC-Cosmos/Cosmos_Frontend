@@ -18,17 +18,17 @@ const EdukitId = import.meta.env.VITE_EDUKIT_ID; // edukitId ex) UVC-EDU-01
 const DashBoardPage = () => {
   const [socket, sendMessage, diceStats] = useSocket(WebSocketServerUrl, EdukitId);
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] grid-rows-4 gap-2 h-[100%] w-[100%]">
-      <div className="row-span-1 col-span-1 mt-2 ml-2">
+    <div className="grid grid-cols-[1fr_2fr_1fr] grid-rows-4 gap-4 h-[100%] w-[100%]">
+      <div className="row-span-1 col-span-1 mt-4 ml-4 border-2 border-borderMaterial">
         <MaterialStatusComponent />
       </div>
-      <div className="row-start-2 row-span-1 col-span-1 ml-2">
+      <div className="row-start-2 row-span-1 col-span-1 ml-4">
         <ProcessTimeComponent sendMessage={sendMessage} />
       </div>
-      <div className="row-start-3 row-span-2 col-span-1 mb-2 ml-2">
+      <div className="row-start-3 row-span-2 col-span-1 mb-2 ml-4">
         <ProductionComponent />
       </div>
-      <div className="row-span-2 col-start-2 col-span-1 relative mt-2">
+      <div className="row-span-2 col-start-2 col-span-1 relative mt-4">
         <UnityComponent />
         <div
           id="status-component"
@@ -37,22 +37,22 @@ const DashBoardPage = () => {
           <StatusComponent sendMessage={sendMessage} />
         </div>
       </div>
-      <div className="row-start-3 col-start-2">
+      <div className="row-start-3 col-start-2 border border-[#70c3d0]">
         <AxisPositionComponent />
       </div>
-      <div className="row-start-4 col-start-2 mb-2">
+      <div className="row-start-4 col-start-2 mb-2 border border-[#839449]">
         <AxisPosition2Component />
       </div>
-      <div className="row-span-1 col-start-3 col-span-1 mt-2 mr-2">
+      <div className="row-span-1 col-start-3 col-span-1 mt-4 mr-4">
         <ChipsValueCountComponent />
       </div>
-      <div className="row-start-2 row-span-1 col-start-3 col-span-1 mr-2">
+      <div className="row-start-2 row-span-1 col-start-3 col-span-1 mr-4">
         <ColorSensorComponent />
       </div>
-      <div className="row-start-3 row-span-1 col-start-3 col-span-1 mr-2">
+      <div className="row-start-3 row-span-1 col-start-3 col-span-1 mr-4">
         <DiceValuesComponent sendMessage={sendMessage} />
       </div>
-      <div className="row-start-4 col-start-3 row-span-1 col-span-1 mb-2 mr-2">
+      <div className="row-start-4 col-start-3 row-span-1 col-span-1 mb-2 mr-4">
         <DiceValueCountComponent />
       </div>
     </div>

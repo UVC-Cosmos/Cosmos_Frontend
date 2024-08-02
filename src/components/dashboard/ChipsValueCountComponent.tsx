@@ -19,13 +19,21 @@ const ChipsValueCountComponent: React.FC = () => {
 
   // 차트 데이터를 상태로 관리
   const [chartData, setChartData] = useState({
-    series: [no1Count, redChip],
+    // series: [no1Count, redChip],
+    series: [24, 14],
     options: {
       chart: {
         width: 300,
-        type: 'pie' as const
+        type: 'pie',
+        background: 'rgba(49, 53, 60, 1)'
       },
-      labels: ['양품', '불량품']
+      labels: ['양품', '불량품'],
+      colors: ['#70c3d0', '#f44336'],
+      legend: {
+        labels: {
+          colors: '#ffffff'
+        }
+      }
     }
   });
 
@@ -59,15 +67,13 @@ const ChipsValueCountComponent: React.FC = () => {
   }, [no1Count, no2Count]);
 
   return (
-    <div className="bg-bgComp p-2 h-[100%]">
-      <Chart
-        options={chartData.options}
-        series={chartData.series}
-        type="pie"
-        width={'100%'}
-        height={'100%'}
-      />
-    </div>
+    <Chart
+      options={chartData.options}
+      series={chartData.series}
+      type="pie"
+      width={'100%'}
+      height={'100%'}
+    />
   );
 };
 

@@ -26,7 +26,6 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
   });
 
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const newPasswordSectionRef = useRef<HTMLDivElement>(null); // CSSTransition nodeRef로 사용될 ref
 
   useEffect(() => {
     if (dialogRef.current) {
@@ -160,11 +159,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
                 type="password"
                 name="currentPassword"
                 value={formData.currentPassword}
-                onChange={(e) => {
-                  handleChange(e);
-                  // props.ChooseLanguage(el.id);
-                }}
-                // onChange={handleChange}
+                onChange={handleChange}
                 placeholder="기존의 비밀번호를 입력해주세요."
                 className="grow w-[240px] text-sm"
               />
@@ -193,17 +188,8 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
             </div>
           )}
 
-          <CSSTransition
-            in={isPasswordConfirmed}
-            timeout={300}
-            classNames="slide"
-            unmountOnExit
-            nodeRef={newPasswordSectionRef} // nodeRef로 DOM 요소 참조 전달
-          >
-            <div
-              className="flex flex-col gap-2 w-[392px] items-center h-[20rem]"
-              ref={newPasswordSectionRef} // ref로 직접 DOM 요소 참조
-            >
+          <CSSTransition in={isPasswordConfirmed} timeout={300} classNames="slide" unmountOnExit>
+            <div className="flex flex-col gap-2 w-[392px] items-center h-[20rem]">
               <div className="flex flex-row justify-between w-full">
                 <label className="input input-bordered flex items-center gap-2">
                   <input

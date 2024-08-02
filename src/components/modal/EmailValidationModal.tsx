@@ -51,19 +51,22 @@ const EmailValidationModal = ({ toggleModal, checkEmail }: IProps): JSX.Element 
 
   return (
     <div className="fixed left-0 top-0 z-[100] flex size-full flex-col items-center justify-center bg-black bg-opacity-70">
-      <div ref={modalRef} className="flex h-[30rem] w-[52rem] flex-col items-center bg-white">
-        <div className="flex h-24 w-[40rem] flex-row items-center justify-center">
-          <p className="mr-4 w-36 text-right text-lg">인증코드</p>
-          <input
-            type="text"
-            placeholder="인증코드를 입력하세요."
-            value={code}
-            onChange={handleChange}
-          />
+      <div ref={modalRef} className="flex h-[25%] w-[75%] flex-col items-center bg-white">
+        <div className="flex h-[100%] w-[40rem] flex-col items-center justify-center gap-8">
+          <label className="input input-bordered flex items-center gap-2">
+            인증코드
+            <input
+              type="text"
+              className="grow"
+              placeholder="인증 코드를 입력하세요."
+              value={code}
+              onChange={handleChange}
+            />
+          </label>
+          <button aria-label="verify-email-button" className="btn" onClick={handleVerification}>
+            인증
+          </button>
         </div>
-        <button aria-label="verify-email-button" onClick={handleVerification}>
-          인증
-        </button>
       </div>
     </div>
   );

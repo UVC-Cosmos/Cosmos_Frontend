@@ -8,7 +8,7 @@ const Overlay: React.FC<Props> = ({ handleClickSignUpButton, handleClickSignInBu
     <div className="overlay-container">
       <div className="overlay">
         <div className="overlay-panel overlay-left">
-          <h1>반가워요!</h1>
+          <h1 className="text-3xl">반가워요!</h1>
           <p className="overlay-description">
             이미 가입한 회원이시라면,
             <br />
@@ -19,7 +19,7 @@ const Overlay: React.FC<Props> = ({ handleClickSignUpButton, handleClickSignInBu
           </button>
         </div>
         <div className="overlay-panel overlay-right">
-          <h1>안녕하세요!</h1>
+          <h1 className="text-3xl">안녕하세요!</h1>
           <p className="overlay-description">
             아직 회원이 아니시라면,
             <br />

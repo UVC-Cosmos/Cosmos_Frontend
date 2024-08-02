@@ -33,7 +33,7 @@ export const DiceValueCountComponent: React.FC = () => {
     },
     background: 'rgba(49, 53, 60, 1)',
     title: {
-      text: '주사위 빈도',
+      text: '주사위 별 빈도',
       style: {
         color: '#ffffff'
       }
@@ -76,7 +76,7 @@ export const DiceValueCountComponent: React.FC = () => {
 
   const [series, setSeries] = useState([
     {
-      name: '주사위 빈도',
+      name: '주사위 별 빈도',
       data: [
         diceCounts['1'],
         diceCounts['2'],
@@ -100,7 +100,7 @@ export const DiceValueCountComponent: React.FC = () => {
   useEffect(() => {
     setSeries([
       {
-        name: '주사위 빈도',
+        name: '주사위 별 빈도',
         data: [
           diceCounts['1'],
           diceCounts['2'],

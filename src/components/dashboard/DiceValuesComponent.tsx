@@ -126,7 +126,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
       <p className="text-white">기준값: {dice}</p>
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row">
-          <div className="flex flex-col h-24 justify-between">
+          <div className="flex flex-col justify-around">
             <p className="text-white">주사위 기준 값</p>
             <div className="flex flex-row items-center">
               <input
@@ -147,7 +147,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
             </div>
           </div>
         </div>
-        <div>
+        <div className="h-full flex flex-col items-center justify-center">
           <img
             src={getDiceImage(diceValue)}
             alt={`Dice ${diceValue}`}
@@ -155,10 +155,6 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
           />
         </div>
       </div>
-      {/* <div className="h-[100%]">
-        <Chart options={options} series={series} type="bar" width={'100%'} height={'100%'} />
-      </div> */}
-      {/* <Chart options={options} series={series} type="bar" width={'250px'} height={'200px'} /> */}
     </div>
   );
 };
