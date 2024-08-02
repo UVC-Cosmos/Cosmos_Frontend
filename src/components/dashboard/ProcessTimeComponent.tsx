@@ -44,7 +44,7 @@ const ProcessTimeComponent: React.FC<{ sendMessage: (command: string, value: str
               min={0}
               value={parseFloat(tempDelayTime).toFixed(1)}
               onChange={handleDelayTimeChange}
-              className="border rounded px-2 py-1 mr-2 pr-10" // pr-10으로 오른쪽 여백 추가
+              className="border rounded px-2 py-1 mr-2 pr-10 w-20" // pr-10으로 오른쪽 여백 추가
             />
             <span className="absolute right-5 top-1/2 transform -translate-y-1/2 text-textGray01">
               sec
