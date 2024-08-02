@@ -38,32 +38,56 @@ export const LogPage = (): JSX.Element => {
   return (
     <div className="w-[100%] h-[100%] mx-auto bg-white">
       <div className="overflow-x-auto flex flex-col items-center">
-        <table className="w-[90vw] table m-4">
+        <div className="w-[80vw] flex flex-row justify-between mt-4">
+          <div className="text-2xl text-center font-bold flex items-center">생산 이력</div>
+          <CSVDownloader filename="생산량" extension=".csv" datas={csvData} columns={columns}>
+            <div className="flex justify-center rounded-sm p-2 items-center ml-[4rem] bg-mainColor w-[10rem] text-white">
+              데이터 다운로드
+            </div>
+          </CSVDownloader>
+        </div>
+
+        <table className="w-[80vw] table mx-auto mt-8">
           <thead>
             <tr>
-              <th colSpan={3} className="w-1/6 text-center border-borderGray border">
+              <th
+                colSpan={3}
+                className="w-1/6 text-center text-white border-borderGray border bg-tableHeader"
+              >
                 호기 별 생산량
               </th>
-              <th colSpan={3} className="w-1/6 text-center border-borderGray border">
+              <th
+                colSpan={3}
+                className="w-1/6 text-center text-white border-borderGray border bg-tableHeader"
+              >
                 호기 별 불량률
               </th>
-              <th colSpan={6} className="w-1/6 text-center border-borderGray border">
+              <th
+                colSpan={6}
+                className="w-1/6 text-center text-white border-borderGray border bg-tableHeader"
+              >
                 주사위 별 빈도
               </th>
             </tr>
             <tr>
-              <th className="w-1/12 border-l-borderGray border-l">1호기</th>
-              <th className="w-1/12">2호기</th>
-              <th className="w-1/12 border-r-borderGray border-r">3호기</th>
-              <th className="w-1/12">1호기</th>
-              <th className="w-1/12">2호기</th>
-              <th className="w-1/12 border-r-borderGray border-r">Total</th>
-              <th className="w-1/12">1</th>
-              <th className="w-1/12">2</th>
-              <th className="w-1/12">3</th>
-              <th className="w-1/12">4</th>
-              <th className="w-1/12">5</th>
-              <th className="w-1/12 border-r-borderGray border-r">6</th>
+              <th className="w-1/12 border-l-borderGray border-l text-center bg-tableHeader2 text-center">
+                1호기
+              </th>
+              <th className="w-1/12 bg-tableHeader2 text-center">2호기</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">
+                3호기
+              </th>
+              <th className="w-1/12 bg-tableHeader2 text-center">1호기</th>
+              <th className="w-1/12 bg-tableHeader2 text-center">2호기</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">
+                Total
+              </th>
+              <th className="w-1/12 bg-tableHeader2 text-center">1</th>
+              <th className="w-1/12 bg-tableHeader2 text-center">2</th>
+              <th className="w-1/12 bg-tableHeader2 text-center">3</th>
+              <th className="w-1/12 bg-tableHeader2 text-center">4</th>
+              <th className="w-1/12 bg-tableHeader2 text-center">5</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">6</th>
             </tr>
           </thead>
           <tbody>
@@ -72,29 +96,30 @@ export const LogPage = (): JSX.Element => {
                 key={index}
                 className={index === dummyHistory.length - 1 ? 'border-b border-b-borderGray' : ''}
               >
-                <td className="border-l-borderGray border-l">{entry.Statistics['1']}</td>
-                <td>{entry.Statistics['2']}</td>
-                <td className="border-r-borderGray border-r">{entry.Statistics['3']}</td>
-                <td>{entry.Defect.machine1DefectRate}</td>
-                <td>{entry.Defect.machine2DefectRate}</td>
-                <td className="border-r-borderGray border-r">{entry.Defect.totalDefectRate}</td>
-                <td>{entry.Dice['1']}</td>
-                <td>{entry.Dice['2']}</td>
-                <td>{entry.Dice['3']}</td>
-                <td>{entry.Dice['4']}</td>
-                <td>{entry.Dice['5']}</td>
-                <td className="border-r-borderGray border-r">{entry.Dice['6']}</td>
+                <td className="border-l-borderGray border-l text-center">
+                  {entry.Statistics['1']}
+                </td>
+                <td className="text-center">{entry.Statistics['2']}</td>
+                <td className="border-r-borderGray border-r text-center">
+                  {entry.Statistics['3']}
+                </td>
+                <td className="text-center">{entry.Defect.machine1DefectRate}</td>
+                <td className="text-center">{entry.Defect.machine2DefectRate}</td>
+                <td className="border-r-borderGray border-r text-center">
+                  {entry.Defect.totalDefectRate}
+                </td>
+                <td className="text-center">{entry.Dice['1']}</td>
+                <td className="text-center">{entry.Dice['2']}</td>
+                <td className="text-center">{entry.Dice['3']}</td>
+                <td className="text-center">{entry.Dice['4']}</td>
+                <td className="text-center">{entry.Dice['5']}</td>
+                <td className="border-r-borderGray border-r text-center">{entry.Dice['6']}</td>
               </tr>
             ))}
           </tbody>
         </table>
         {/* CSV 다운로드 버튼 추가 */}
       </div>
-      <CSVDownloader filename="생산량" extension=".csv" datas={csvData} columns={columns}>
-        <div className="flex justify-center rounded-sm p-2 items-center ml-[4rem] bg-mainColor w-[10rem] text-white">
-          데이터 다운로드
-        </div>
-      </CSVDownloader>
     </div>
   );
 };
