@@ -224,11 +224,15 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
                   변경
                 </button>
               </div>
-              {formData.confirmPassword === formData.newPassword ? (
+              {/* Conditional rendering for password confirmation */}
+              {formData.confirmPassword === '' ? (
+                <div></div>
+              ) : formData.confirmPassword === formData.newPassword ? (
                 <div className="text-sm text-colorOn">비밀번호가 일치합니다</div>
               ) : (
                 <div className="text-error text-sm">{errors.confirmPassword}</div>
               )}
+              {/* Other form elements, e.g., submit button */}
             </div>
           </CSSTransition>
         </div>

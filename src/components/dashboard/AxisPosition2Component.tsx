@@ -14,10 +14,9 @@ export const AxisPosition2Component: React.FC = () => {
         enabled: true,
         easing: 'linear',
         dynamicAnimation: {
-          speed: 500 // 1초마다 업데이트
+          speed: 700 // 0.5초마다 업데이트
         }
       },
-      // fontColor: '#ffffff',
       background: 'rgba(49, 53, 60, 1)',
       borderRadius: '5px',
       toolbar: {
@@ -71,24 +70,32 @@ export const AxisPosition2Component: React.FC = () => {
     }
   ]);
 
-  // useEffect(() => {
-  //   setSeries((prevSeries) => [
-  //     {
-  //       ...prevSeries[0],
-  //       data: [...prevSeries[0].data, [new Date().getTime(), motor2Position]]
-  //     }
-  //   ]);
-  // }, [motor2Position]);
-
   useEffect(() => {
-    if (motor2Position) {
-      setSeries((prevSeries) => [
-        {
-          ...prevSeries[0],
-          data: [...prevSeries[0].data, [new Date().getTime(), parseFloat(motor2Position)]]
-        }
-      ]);
-    }
+    const interval = setInterval(() => {
+      if (motor2Position) {
+        setSeries((prevSeries) => {
+          const newData = [
+            ...prevSeries[0].data,
+            [new Date().getTime(), parseFloat(motor2Position)]
+          ];
+
+          // 데이터 수가 너무 많아지지 않도록 최대 100개의 데이터만 유지
+          const maxDataPoints = 100;
+          if (newData.length > maxDataPoints) {
+            newData.splice(0, newData.length - maxDataPoints);
+          }
+
+          return [
+            {
+              ...prevSeries[0],
+              data: newData
+            }
+          ];
+        });
+      }
+    }, 500); // 0.5초마다 업데이트
+
+    return () => clearInterval(interval);
   }, [motor2Position]);
 
   return (

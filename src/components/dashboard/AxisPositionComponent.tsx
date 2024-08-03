@@ -14,7 +14,7 @@ const AxisPositionComponent: React.FC = () => {
         enabled: true,
         easing: 'linear',
         dynamicAnimation: {
-          speed: 500 // 0.5초마다 업데이트
+          speed: 1000 // 0.5초마다 업데이트
         }
       },
       background: 'rgba(49, 53, 60, 1)',
@@ -26,7 +26,6 @@ const AxisPositionComponent: React.FC = () => {
         enabled: false
       }
     },
-
     xaxis: {
       type: 'datetime',
       labels: {
@@ -72,14 +71,31 @@ const AxisPositionComponent: React.FC = () => {
   // motor2 는 가로축 최대 30000000
 
   useEffect(() => {
-    if (motor1Position) {
-      setSeries((prevSeries) => [
-        {
-          ...prevSeries[0],
-          data: [...prevSeries[0].data, [new Date().getTime(), parseFloat(motor1Position)]]
-        }
-      ]);
-    }
+    const interval = setInterval(() => {
+      if (motor1Position) {
+        setSeries((prevSeries) => {
+          const newData = [
+            ...prevSeries[0].data,
+            [new Date().getTime(), parseFloat(motor1Position)]
+          ];
+
+          // 데이터 수가 너무 많아지지 않도록 최대 100개의 데이터만 유지
+          const maxDataPoints = 100;
+          if (newData.length > maxDataPoints) {
+            newData.splice(0, newData.length - maxDataPoints);
+          }
+
+          return [
+            {
+              ...prevSeries[0],
+              data: newData
+            }
+          ];
+        });
+      }
+    }, 800); // 0.5초마다 업데이트
+
+    return () => clearInterval(interval);
   }, [motor1Position]);
 
   return (

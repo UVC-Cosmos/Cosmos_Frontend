@@ -71,6 +71,7 @@ export const dummyMember: IMember[] = [
 
 export const dummyHistory: IHistory[] = [
   {
+    Date: '2021-10-01',
     Statistics: {
       '1': 46,
       '2': 39,
@@ -91,6 +92,7 @@ export const dummyHistory: IHistory[] = [
     }
   },
   {
+    Date: '2021-10-02',
     Statistics: {
       '1': 46,
       '2': 39,
@@ -111,6 +113,7 @@ export const dummyHistory: IHistory[] = [
     }
   },
   {
+    Date: '2021-10-03',
     Statistics: {
       '1': 46,
       '2': 39,
@@ -131,6 +134,7 @@ export const dummyHistory: IHistory[] = [
     }
   },
   {
+    Date: '2021-10-04',
     Statistics: {
       '1': 46,
       '2': 39,

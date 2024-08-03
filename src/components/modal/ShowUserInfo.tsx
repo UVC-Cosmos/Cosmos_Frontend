@@ -34,7 +34,11 @@ const ShowUserInfo: React.FC<ShowUserInfoProps> = ({ onClose }) => {
         </button>
         <div className="overflow-x-auto">
           <table className="table">
-            <thead></thead>
+            <thead>
+              <div>
+                <h1 className="text-2xl font-bold">사용자 정보</h1>
+              </div>
+            </thead>
             <tbody>
               <tr>
                 <th>이름(Name)</th>

@@ -142,7 +142,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
 
   return (
     <dialog id="my_modal_3" className="modal" ref={dialogRef}>
-      <div className="modal-box">
+      <div className="modal-box bg-[#eeee]">
         <form method="dialog">
           <button
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -154,7 +154,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
         <h3 className="font-bold text-lg">{title}</h3>
 
         <div className="flex flex-col gap-2 w-[392px] items-center h-[240px]">
-          <div className="flex flex-row justify-between w-full">
+          <div className="flex flex-row justify-between w-full mt-8">
             <label className="input input-bordered flex items-center gap-2">
               <input
                 type="password"
@@ -166,10 +166,10 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
                 }}
                 // onChange={handleChange}
                 placeholder="기존의 비밀번호를 입력해주세요."
-                className="grow w-[240px] text-sm"
+                className="grow w-[256px] text-sm"
               />
             </label>
-            <button className="check-button" type="button" onClick={checkCurrentPassword}>
+            <button className="btn w-24" type="button" onClick={checkCurrentPassword}>
               확인
             </button>
           </div>
@@ -212,7 +212,7 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
                     value={formData.newPassword}
                     onChange={handleChange}
                     placeholder="새로운 비밀번호를 입력해주세요."
-                    className="grow w-[240px] text-sm"
+                    className="grow w-[256px] text-sm"
                   />
                 </label>
               </div>
@@ -227,22 +227,22 @@ const ExistingPasswordChangeModal: React.FC<ExistingPasswordChangeProps> = ({ on
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="다시 입력해주세요."
-                    className="w-[240px] grow text-sm"
+                    className="w-[256px] grow text-sm"
                   />
                 </label>
-                <button
-                  className="check-button bg-red-600"
-                  type="button"
-                  onClick={ExistingPasswordChange}
-                >
+                <button className="btn w-24" type="button" onClick={ExistingPasswordChange}>
                   변경
                 </button>
               </div>
-              {formData.confirmPassword === formData.newPassword ? (
+              {/* Conditional rendering for password confirmation */}
+              {formData.confirmPassword === '' ? (
+                <div></div>
+              ) : formData.confirmPassword === formData.newPassword ? (
                 <div className="text-sm text-colorOn">비밀번호가 일치합니다</div>
               ) : (
                 <div className="text-error text-sm">{errors.confirmPassword}</div>
               )}
+              {/* Other form elements, e.g., submit button */}
             </div>
           </CSSTransition>
         </div>

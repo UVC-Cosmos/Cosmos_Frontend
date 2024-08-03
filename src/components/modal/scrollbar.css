@@ -1,0 +1,26 @@
+/* 기본 스크롤바 스타일 */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px !important; /* 스크롤바 너비 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1 !important; /* 트랙의 배경 색상 */
+}
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none !important;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888 !important; /* 스크롤바의 색상 */
+  border-radius: 6px !important; /* 둥근 모서리 */
+}
+
+/* 호버 상태 */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555 !important; /* 호버 시 스크롤바의 색상 */
+}
+
+/* 활성 상태 */
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #333 !important; /* 활성화된 스크롤바의 색상 */
+}

@@ -1,6 +1,5 @@
 import { useAtom } from 'jotai';
-import React, { useEffect, useState } from 'react';
-import Chart from 'react-apexcharts';
+import React, { useState } from 'react';
 import diceImage0 from '../../assets/dice/dice0.png';
 import diceImage1 from '../../assets/dice/dice1.png';
 import diceImage2 from '../../assets/dice/dice2.png';
@@ -8,89 +7,19 @@ import diceImage3 from '../../assets/dice/dice3.png';
 import diceImage4 from '../../assets/dice/dice4.png';
 import diceImage5 from '../../assets/dice/dice5.png';
 import diceImage6 from '../../assets/dice/dice6.png';
-import { DiceComparisonValueAtom, DiceValueAtom } from '../../atom/mqtt/mqttAtom';
-
-interface DiceCounts {
-  '1': number;
-  '2': number;
-  '3': number;
-  '4': number;
-  '5': number;
-  '6': number;
-}
+import { DiceValueAtom } from '../../atom/mqtt/mqttAtom';
+import { SetDiceValueModal } from '../modal/SetDiceValueModal';
 
 const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: string) => void }> = ({
   sendMessage
 }) => {
-  const [diceValue, setDiceValue] = useAtom(DiceValueAtom);
+  const [diceValue] = useAtom(DiceValueAtom);
   const [dice, setDice] = useState<string>('0');
-  const [diceComparisonValue] = useAtom(DiceComparisonValueAtom);
-  const [tempComparisonValue, setTempComparisonValue] = useState(diceComparisonValue);
+  const [isSettingOpen, setIsSettingOpen] = useState<boolean>(false);
 
-  // // apex chart
-  // const [options, setOptions] = useState({
-  //   chart: {
-  //     id: 'basic-bar',
-  //     toolbar: {
-  //       show: false
-  //     }
-  //   },
-  //   background: 'rgba(49, 53, 60, 1)',
-  //   title: {
-  //     text: '주사위 빈도',
-  //     style: {
-  //       color: '#ffffff'
-  //     }
-  //   },
-  //   xaxis: {
-  //     categories: [1, 2, 3, 4, 5, 6],
-  //     labels: {
-  //       show: false
-  //     },
-  //     axisBorder: {
-  //       show: false
-  //     },
-  //     axisTicks: {
-  //       show: false
-  //     }
-  //   },
-  //   yaxis: {
-  //     labels: {
-  //       style: {
-  //         colors: ['#ffffff']
-  //       }
-  //     }
-  //   },
-  //   grid: {
-  //     yaxis: {
-  //       lines: {
-  //         show: false
-  //       },
-  //       show: false
-  //     }
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       horizontal: true,
-  //       borderRadius: 4,
-  //       columnWidth: '35%'
-  //     }
-  //   }
-  // });
-
-  // const [series, setSeries] = useState([
-  //   {
-  //     name: '주사위 빈도',
-  //     data: [
-  //       diceCounts['1'],
-  //       diceCounts['2'],
-  //       diceCounts['3'],
-  //       diceCounts['4'],
-  //       diceCounts['5'],
-  //       diceCounts['6']
-  //     ]
-  //   }
-  // ]);
+  const toggleSetting = () => {
+    setIsSettingOpen(!isSettingOpen);
+  };
 
   const getDiceImage = (value: string) => {
     switch (value) {
@@ -111,39 +40,22 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
     }
   };
 
-  const handleComparisonValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempComparisonValue(event.target.value);
-  };
-
-  const handleSendComparisonValue = () => {
-    setDice(tempComparisonValue);
-    sendMessage('38', tempComparisonValue); // 서버로 값 전송
-  };
-
   return (
-    <div className="bg-bgComp h-[100%] px-2">
-      <h2 className="text-base font-bold mb-4 text-white">다이스 밸류</h2>
-      <p className="text-white">기준값: {dice}</p>
-      <div className="flex flex-row items-center justify-between">
-        <div className="flex flex-row">
-          <div className="flex flex-col justify-around">
-            <p className="text-white">주사위 기준 값</p>
-            <div className="flex flex-row items-center">
-              <input
-                type="number"
-                id="주사위 변경값"
-                max={6}
-                min={1}
-                value={tempComparisonValue}
-                onChange={handleComparisonValueChange}
-                className="border rounded px-2 py-1"
-              />
-              <button
-                onClick={handleSendComparisonValue}
-                className="ml-2 px-4 py-2 bg-blue-500 h-8 text-white border rounded flex items-center"
-              >
-                변경
-              </button>
+    <div className="bg-bgComp h-[100%] p-2 relative">
+      <button className="absolute right-2" onClick={toggleSetting}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 20 20">
+          <path
+            fill="white"
+            d="M11.078 0c.294 0 .557.183.656.457l.706 1.957q.379.094.654.192q.3.107.78.33l1.644-.87a.7.7 0 0 1 .832.131l1.446 1.495c.192.199.246.49.138.744l-.771 1.807q.191.352.308.604q.126.273.312.76l1.797.77c.27.115.437.385.419.674l-.132 2.075a.69.69 0 0 1-.46.605l-1.702.605q-.073.352-.154.606a9 9 0 0 1-.298.774l.855 1.89a.68.68 0 0 1-.168.793l-1.626 1.452a.7.7 0 0 1-.796.096l-1.676-.888a7 7 0 0 1-.81.367l-.732.274l-.65 1.8a.7.7 0 0 1-.64.457L9.11 20a.7.7 0 0 1-.669-.447l-.766-2.027a15 15 0 0 1-.776-.29a10 10 0 0 1-.618-.293l-1.9.812a.7.7 0 0 1-.755-.133L2.22 16.303a.68.68 0 0 1-.155-.783l.817-1.78a10 10 0 0 1-.302-.644a14 14 0 0 1-.3-.811L.49 11.74a.69.69 0 0 1-.49-.683l.07-1.921a.69.69 0 0 1 .392-.594L2.34 7.64q.13-.478.23-.748a9 9 0 0 1 .314-.712L2.07 4.46a.68.68 0 0 1 .15-.79l1.404-1.326a.7.7 0 0 1 .75-.138l1.898.784q.314-.209.572-.344q.307-.162.824-.346l.66-1.841A.7.7 0 0 1 8.984 0zm-1.054 7.019c-1.667 0-3.018 1.335-3.018 2.983s1.351 2.984 3.018 2.984s3.017-1.336 3.017-2.984s-1.35-2.983-3.017-2.983"
+          ></path>
+        </svg>
+      </button>
+      <div className="flex flex-row justify-center items-center gap-2 w-[100%] h-[100%]">
+        <div className="stats shadow bg-bgLayout border border-borderMaterial">
+          <div className="stat">
+            <div className="stat-title text-white">주사위 기준 값</div>
+            <div className="stat-value text-center">
+              <p className="text-borderMaterial">{dice}</p>
             </div>
           </div>
         </div>
@@ -155,6 +67,13 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
           />
         </div>
       </div>
+      {isSettingOpen && (
+        <SetDiceValueModal
+          toggleSetting={toggleSetting}
+          sendMessage={sendMessage}
+          setDice={setDice}
+        />
+      )}
     </div>
   );
 };
