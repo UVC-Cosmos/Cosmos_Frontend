@@ -1,9 +1,14 @@
+import { apiInstance, apiInstanceInflux } from '@/api/api';
 import { dummyHistory } from '@/dummy/dummyMember';
+import { IHistory } from '@/interface/historyInterface';
+import { useEffect, useState } from 'react';
 import CSVDownloader from 'react-csv-downloader';
 export const LogPage = (): JSX.Element => {
+  const [history, setHistory] = useState<IHistory[]>([]);
+
   // csv 데이터 생성.
-  const csvData = dummyHistory.map((entry, index) => ({
-    cell1: index + 1,
+  const csvData = dummyHistory.map((entry) => ({
+    cell1: entry.Date,
     cell2: entry.Statistics['1'],
     cell3: entry.Statistics['2'],
     cell4: entry.Statistics['3'],
@@ -20,7 +25,7 @@ export const LogPage = (): JSX.Element => {
 
   // CSV 컬럼 정보 생성
   const columns = [
-    { id: 'cell1', displayName: 'No' },
+    { id: 'cell1', displayName: '생산일자' },
     { id: 'cell2', displayName: '생산량 1호기' },
     { id: 'cell3', displayName: '생산량 2호기' },
     { id: 'cell4', displayName: '생산량 3호기' },
@@ -34,6 +39,24 @@ export const LogPage = (): JSX.Element => {
     { id: 'cell12', displayName: '주사위 5' },
     { id: 'cell13', displayName: '주사위 6' }
   ];
+
+  const fetchLog = async () => {
+    try {
+      const response = await apiInstanceInflux.get('/history');
+      setHistory(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchLog();
+  console.log('히스토리', history);
+
+  // yyyy-mm-dd 형식을 yyyy.mm.dd 형식으로 변경
+  const changeDateFormat = (date: string) => {
+    const [year, month, day] = date.split('-');
+    return `${year}.${month}.${day}`;
+  };
 
   return (
     <div className="w-[100%] h-[100%] mx-auto bg-white">
@@ -50,6 +73,12 @@ export const LogPage = (): JSX.Element => {
         <table className="w-[80vw] table mx-auto mt-8">
           <thead>
             <tr>
+              <th
+                colSpan={1}
+                className="w-1/13 text-center text-white border-borderGray border bg-tableHeader"
+              >
+                생산일자
+              </th>
               <th
                 colSpan={3}
                 className="w-1/6 text-center text-white border-borderGray border bg-tableHeader"
@@ -70,6 +99,9 @@ export const LogPage = (): JSX.Element => {
               </th>
             </tr>
             <tr>
+              <th className="w-1/13 border-l-borderGray border-l text-center bg-tableHeader2 text-center">
+                생산일자
+              </th>
               <th className="w-1/12 border-l-borderGray border-l text-center bg-tableHeader2 text-center">
                 1호기
               </th>
@@ -96,6 +128,9 @@ export const LogPage = (): JSX.Element => {
                 key={index}
                 className={index === dummyHistory.length - 1 ? 'border-b border-b-borderGray' : ''}
               >
+                <td className="border-l-borderGray border-l text-center">
+                  {changeDateFormat(entry.Date)}
+                </td>
                 <td className="border-l-borderGray border-l text-center">
                   {entry.Statistics['1']}
                 </td>

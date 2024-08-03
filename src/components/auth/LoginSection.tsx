@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
 import { isLoginAtom, userAtom } from '../../atom/auth/authAtom';
-import { IUser } from '../../interface/authInterface';
-import { IUser2 } from '../layout/DefaultLayout';
 const LoginSection = (): JSX.Element => {
   const navigate = useNavigate();
   const setIsLogin = useSetAtom(isLoginAtom);
