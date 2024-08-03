@@ -20,6 +20,7 @@ interface IDice {
 }
 
 export interface IHistory {
+  Date: string;
   Statistics: IStatistics;
   Defect: IDefect;
   Dice: IDice;

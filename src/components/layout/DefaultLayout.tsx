@@ -10,7 +10,7 @@ import useNotificationSocket from '../../hooks/useNotificationSocket';
 import ExistingPasswordChangeModal from '../modal/ExistingPasswordChange';
 import NotificationModal from '../modal/NotificationModal';
 
-interface IUser2 extends IUser {
+export interface IUser2 extends IUser {
   Factories: IFactory[];
   Lines: ILine[];
   rank: string;

@@ -2,7 +2,11 @@ import { useAtom, useAtomValue } from 'jotai';
 import React, { FormEvent, useState } from 'react';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
-import { emailCheckAtom, userIdCheckAtom } from '../../atom/auth/signupAtom';
+import {
+  emailCheckAtom,
+  emailCheckBtnClickAtom,
+  userIdCheckAtom
+} from '../../atom/auth/signupAtom';
 import EmailValidationModal from '../modal/EmailValidationModal';
 
 const SignupSection: React.FC = () => {
@@ -10,7 +14,9 @@ const SignupSection: React.FC = () => {
   const [isIdDuplicate, setIsIdDuplicate] = useAtom(userIdCheckAtom);
   const [isIdDuplicateClick, setIsIdDuplicateClick] = useState<boolean>(false);
   const isEmailCheck = useAtomValue(emailCheckAtom);
-
+  const [isEmailCheckClick, setIsEmailCheckClick] = useAtom(emailCheckBtnClickAtom);
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isSamePassword, setIsSamePassword] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: '',
     userId: '',
@@ -35,6 +41,10 @@ const SignupSection: React.FC = () => {
     userName: Yup.string().required('이름은 필수 입력 항목입니다.'),
     userId: Yup.string()
   });
+
+  const emailCheckClick = () => {
+    setIsEmailCheckClick(true);
+  };
 
   // handle input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +83,20 @@ const SignupSection: React.FC = () => {
       console.log(error);
     }
   };
+
+  // 비밀번호 확인
+  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  // // 비밀번호 일치 확인
+  // const isPasswordMatch = () => {
+  //   if (formData.password !== confirmPassword) {
+  //     setIsSamePassword(false);
+  //   } else {
+  //     setIsSamePassword(true);
+  //   }
+  // };
 
   // 이메일 인증 버튼 클릭 함수
   const handleEmailVerification = async () => {
@@ -153,11 +177,17 @@ const SignupSection: React.FC = () => {
               인증
             </button>
           </div>
-          {isEmailCheck ? (
+          {isEmailCheck && isEmailCheckClick && (
+            <div className="error-message text-xs">인증이 완료되었습니다.</div>
+          )}
+          {!isEmailCheck && isEmailCheckClick && (
+            <div className="error-message text-xs">이메일 인증을 완료해주세요.</div>
+          )}
+          {/* {isEmailCheck ? (
             <div className="error-message text-xs">인증이 완료되었습니다.</div>
           ) : (
             <div className="error-message text-xs">이메일 인증을 완료해주세요.</div>
-          )}
+          )} */}
           {/* {errors.email && <div className="error-message text-xs">{errors.email}</div>} */}
         </div>
         <div className="flex flex-col gap-2 w-[20rem]">
@@ -173,13 +203,42 @@ const SignupSection: React.FC = () => {
           </label>
           {errors.password && <div className="error-message text-xs">{errors.password}</div>}
         </div>
-
-        <button type="submit" className="form-button">
+        <div className="flex flex-col gap-2 w-[20rem]">
+          <label className="input input-bordered flex flex-row items-center gap-2">
+            <input
+              type="password"
+              name="confirmPassword"
+              className="grow"
+              placeholder="Password Check"
+              value={confirmPassword}
+              onChange={handleConfirmPassword}
+            />
+          </label>
+          {confirmPassword.length !== 0 &&
+            formData.password !== confirmPassword &&
+            confirmPassword.length >= formData.password.length && (
+              <div className="error-message text-xs">비밀번호가 일치하지 않습니다.</div>
+            )}
+          {confirmPassword.length !== 0 &&
+            formData.password === confirmPassword &&
+            confirmPassword.length === formData.password.length && (
+              <div className="error-message text-xs">비밀번호가 일치합니다.</div>
+            )}
+        </div>
+        <button
+          type="submit"
+          className={`form-button ${!isEmailCheck ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+          disabled={!isEmailCheck}
+        >
           회원가입
         </button>
       </form>
       {isEmailModalOpen && (
-        <EmailValidationModal checkEmail={formData.email} toggleModal={handleEmailModal} />
+        <EmailValidationModal
+          checkEmail={formData.email}
+          toggleModal={handleEmailModal}
+          emailCheckClick={emailCheckClick}
+        />
       )}
     </div>
   );

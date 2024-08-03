@@ -1,10 +1,10 @@
 import { useSetAtom } from 'jotai';
 import { FormEvent, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { apiInstance } from '../../api/api';
 import { isLoginAtom, userAtom } from '../../atom/auth/authAtom';
-import { IUser } from '../../interface/authInterface';
 const LoginSection = (): JSX.Element => {
   const navigate = useNavigate();
   const setIsLogin = useSetAtom(isLoginAtom);
@@ -14,6 +14,8 @@ const LoginSection = (): JSX.Element => {
     password: ''
   });
 
+  const [cookies, removeCookie] = useCookies(['cosmosSession']); // 쿠키 이름 설정
+  const cookie = cookies.cosmosSession;
   const [errors, setErrors] = useState({
     userId: '',
     password: ''
@@ -44,22 +46,35 @@ const LoginSection = (): JSX.Element => {
     e.preventDefault(); // 폼의 기본 제출 동작 방지
     try {
       // formData의 속성을 구조 분해 할당하여 전송 데이터 구성
-      const response = await apiInstance.post('/auth/login', {
-        userId: formData.userId,
-        password: formData.password
-      });
-      // if (response.)
-      // console.log(response, '로그인 성공');
-      // console.log(userData, '유저 데이터');
-
-      const userData = response.data as IUser;
-      setIsLogin(true);
-      setUser(userData);
-      if (userData.role === 'Admin') {
-        navigate('/admin/member');
-      } else {
-        navigate('/main/dashboard');
-      }
+      await apiInstance
+        .post('/auth/login', {
+          userId: formData.userId,
+          password: formData.password
+        })
+        .then((response) => {
+          if (response.data.Factories.length === 0 && response.data.role === 'User') {
+            // 쿠키도 초기화
+            removeCookie('cosmosSession', cookie);
+            localStorage.clear();
+            navigate('/error');
+          } else if (response.data.role === 'Admin') {
+            setIsLogin(true);
+            setUser(response.data);
+            navigate('/admin/member');
+          } else if (response.data.role === 'User') {
+            setIsLogin(true);
+            setUser(response.data);
+            navigate('/main/dashboard');
+          } else if (
+            response.data.role === 'A-factoryAdmin' ||
+            response.data.role === 'B-factoryAdmin' ||
+            response.data.role === 'C-factoryAdmin'
+          ) {
+            setIsLogin(true);
+            setUser(response.data);
+            navigate('/factory/member');
+          }
+        });
     } catch (error) {
       setIsLogin(false);
       setUser(null);

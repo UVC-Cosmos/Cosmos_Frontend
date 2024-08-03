@@ -40,7 +40,9 @@ export default {
         textGray01: 'rgba(112, 112, 112, 1)',
         borderGray: 'rgba(219, 219, 219, 1)',
         borderMaterial: 'rgba(26, 84, 114, 1)',
-        borderMaterial2: 'rgba(26, 84, 54, 1)'
+        borderMaterial2: 'rgba(26, 84, 54, 1)',
+        tableHeader: 'rgba(25, 74, 103, 1)',
+        tableHeader2: '#b2d7ff'
       },
       scrollbar: {
         'rounded': true,

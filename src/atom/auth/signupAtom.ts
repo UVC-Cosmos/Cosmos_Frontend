@@ -4,3 +4,4 @@ import { atom } from 'jotai';
 
 export const userIdCheckAtom = atom<boolean>(false);
 export const emailCheckAtom = atom<boolean>(false);
+export const emailCheckBtnClickAtom = atom<boolean>(false);
