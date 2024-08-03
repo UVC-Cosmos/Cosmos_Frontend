@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   No1PowerStateAtom,
   No2PowerStateAtom,
@@ -19,9 +19,30 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   const [no3PowerState] = useAtom(No3PowerStateAtom);
   const [sen1PowerState] = useAtom(Sen1PowerStateAtom);
   const [sen2PowerState] = useAtom(Sen2PowerStateAtom);
+  const [user] = useState(() => JSON.parse(localStorage.getItem('user') || '{}'));
 
+  const userPermissions = user.Lines; // 유저가 제어할 수 있는 권한 배열
+
+  const commandMapping: { [key: string]: { id: number; name: string } } = {
+    '9': { id: 1, name: '1호기' },
+    '10': { id: 2, name: '2호기' },
+    '11': { id: 3, name: '3호기' },
+    '12': { id: 4, name: '센서1' },
+    '13': { id: 5, name: '센서2' }
+  };
   const handleToggle = (command: string, state: string) => {
-    sendMessage(command, state === 'true' ? '0' : '1');
+    const device = commandMapping[command];
+
+    // 유저가 해당 장치를 제어할 권한이 있는지 확인
+    const hasPermission = userPermissions.some((permission) => permission.id === device.id);
+
+    if (hasPermission) {
+      console.log(`${device.name}를 제어합니다.`);
+      sendMessage(command, state === 'true' ? '0' : '1');
+    } else {
+      // 권한이 없는 경우, 경고를 띄움
+      alert(`권한이 없어 ${device.name}를 제어할 수 없습니다.`);
+    }
   };
 
   return (
