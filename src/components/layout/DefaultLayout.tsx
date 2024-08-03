@@ -15,26 +15,25 @@ interface IUser2 extends IUser {
   Lines: ILine[];
   rank: string;
 }
+
 export const DefaultLayout = (): JSX.Element => {
   const navigate = useNavigate();
-
-  // const [isShowUserInfoModal, setIsShowUserInfoModal] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotifyModalOpen, setIsNotifyModalOpen] = useState<boolean>(false);
   const location = useLocation();
   const user: IUser2 = JSON.parse(localStorage.getItem('user') || '{}');
   const factories = user.Factories;
   const [selectedFactory, setSelectedFactory] = useState<number | null>(null); // 선택된 공장 상태
-
   const currentTime = useCurrentTime();
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
   const [socket, notifications] = useNotificationSocket('http://localhost:3000', user.id);
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
   const [userNotifications, setUserNotifications] = useState<
     Array<{ id: number; content: string; createdAt: string }>
   >([]);
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   // 페이지가 처음 로드될 때 HTTP 요청을 통해 데이터를 가져오는 부분
   useEffect(() => {
@@ -78,10 +77,6 @@ export const DefaultLayout = (): JSX.Element => {
   const toggleNotifyModal = () => {
     setIsNotifyModalOpen(!isNotifyModalOpen);
   };
-
-  // const goToEditProfile = () => {
-  //   navigate('/main/edit');
-  // };
 
   const goToDashboard = () => {
     navigate('/main/dashboard');
@@ -137,10 +132,6 @@ export const DefaultLayout = (): JSX.Element => {
     }
   }, []);
 
-  // 회원정보 조회 모달 열기/닫기 함수
-  // const openUserInfoModal = () => setIsShowUserInfoModal(true);
-  // const closeUserInfoModal = () => setIsShowUserInfoModal(false);
-
   return (
     <>
       <div>
@@ -175,11 +166,7 @@ export const DefaultLayout = (): JSX.Element => {
               className="bg-bgLayout w-[5vw] flex flex-col justify-between items-center shadow-xl-center"
             >
               <div id="position-top" className="flex flex-col gap-4 pt-3">
-                <div
-                  onClick={goToDashboard}
-                  // className={`tooltip ${isActive('/main/dashboard') ? 'border border-borderGray' : ''}`}
-                  data-tip="대시보드"
-                >
+                <div onClick={goToDashboard} data-tip="대시보드">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -192,11 +179,7 @@ export const DefaultLayout = (): JSX.Element => {
                     ></path>
                   </svg>
                 </div>
-                <div
-                  data-tip="생산기록"
-                  onClick={goToLog}
-                  // className={`tooltip ${isActive('/main/log') ? 'bg-white' : ''}`}
-                >
+                <div data-tip="생산기록" onClick={goToLog}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -236,24 +219,34 @@ export const DefaultLayout = (): JSX.Element => {
                       aria-label="close sidebar"
                       className="drawer-overlay"
                     ></label>
-                    <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                    <ul className="menu bg-[#eeee] text-base-content min-h-full w-[480px] ">
                       <div className="overflow-x-auto">
                         <table className="table">
-                          <thead></thead>
-                          <tbody>
+                          <thead>
                             <tr>
-                              <th>이름(Name)</th>
-                              <td className="from-neutral-950">{user.userName}</td>
+                              <th colSpan="2" className="border h-32 w-64 bg-bgLayout">
+                                <h1 className="text-3xl font-bold text-white">사용자 정보</h1>
+                              </th>
                             </tr>
-                            <tr>
-                              <th>아이디(ID)</th>
-                              <td>
+                          </thead>
+                          <tbody>
+                            <tr className="mt-3">
+                              <th></th>
+                              <td></td>
+                            </tr>
+                            <tr className="mt-2">
+                              <th className="text-xl">이 름</th>
+                              <td className="text-lg from-neutral-950">{user.userName}</td>
+                            </tr>
+                            <tr className="mt-2">
+                              <th className="text-xl">아이디</th>
+                              <td className="text-lg">
                                 <ul>{user.userId}</ul>
                               </td>
                             </tr>
-                            <tr>
-                              <th>비밀번호(PW)</th>
-                              <td>
+                            <tr className="mt-2">
+                              <th className="text-xl">비밀번호</th>
+                              <td className="text-lg">
                                 <ul>
                                   <button className="btn btn-sm" onClick={toggleModal}>
                                     비밀번호 변경
@@ -261,13 +254,13 @@ export const DefaultLayout = (): JSX.Element => {
                                 </ul>
                               </td>
                             </tr>
-                            <tr>
-                              <th>이메일(Email)</th>
-                              <td>{user.email}</td>
+                            <tr className="mt-2">
+                              <th className="text-xl">등록 이메일</th>
+                              <td className="text-lg">{user.email}</td>
                             </tr>
-                            <tr>
-                              <th>소속 공장(Factories)</th>
-                              <td>
+                            <tr className="mt-2">
+                              <th className="text-xl">소속 공장</th>
+                              <td className="text-lg">
                                 <ul>
                                   {user.Factories.map((factory, index) => (
                                     <li key={index}>{factory.name}</li>
@@ -275,15 +268,15 @@ export const DefaultLayout = (): JSX.Element => {
                                 </ul>
                               </td>
                             </tr>
-                            <tr>
-                              <th>직급(Rank)</th>
-                              <td>
+                            <tr className="mt-2">
+                              <th className="text-xl">직급</th>
+                              <td className="text-lg">
                                 <ul>{user.rank}</ul>
                               </td>
                             </tr>
-                            <tr>
-                              <th>제어 권한(Line)</th>
-                              <td>
+                            <tr className="mt-2">
+                              <th className="text-xl">제어 권한</th>
+                              <td className="text-lg">
                                 <ul>
                                   {user.Lines.length > 0 ? (
                                     user.Lines.map((line, index) => (
@@ -301,7 +294,7 @@ export const DefaultLayout = (): JSX.Element => {
                     </ul>
                   </div>
                 </div>
-                <div className="tooltip" data-tip="공지사항">
+                {/* <div className="tooltip" data-tip="공지사항">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="3rem"
@@ -315,7 +308,7 @@ export const DefaultLayout = (): JSX.Element => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </div>
+                </div> */}
                 <div
                   id="알림"
                   className="relative tooltip"
@@ -359,14 +352,14 @@ export const DefaultLayout = (): JSX.Element => {
             </div>
           </div>
         </div>
-        {isNotifyModalOpen && (
-          <NotificationModal
-            notifications={userNotifications}
-            onClose={toggleNotifyModal}
-            onDelete={handleDeleteNotification}
-          />
-        )}
       </div>
+      {isNotifyModalOpen && (
+        <NotificationModal
+          notifications={userNotifications}
+          onClose={toggleNotifyModal}
+          onDelete={handleDeleteNotification}
+        />
+      )}
       {isModalOpen && <ExistingPasswordChangeModal onClose={toggleModal} title="비밀번호 변경" />}
     </>
   );

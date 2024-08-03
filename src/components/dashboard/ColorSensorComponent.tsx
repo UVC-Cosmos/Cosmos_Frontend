@@ -8,7 +8,7 @@ const ColorSensorComponent: React.FC = () => {
   const [no1CountString] = useAtom(No1CountAtom);
   const [no2SensingMemory] = useAtom(No2SensingMemoryAtom);
   const no1Count = parseInt(no1CountString, 10);
-
+  // const isChipColor = useRef<boolean>(false);
   const [chipColor, setChipColor] = useState<string>('');
   const [previousNo1Count, setPreviousNo1Count] = useState<number>(isNaN(no1Count) ? 0 : no1Count);
   const sensingMemoryRef = useRef(no2SensingMemory);
@@ -22,8 +22,10 @@ const ColorSensorComponent: React.FC = () => {
       const timeoutId = setTimeout(() => {
         if (sensingMemoryRef.current.toString() === 'true') {
           setChipColor('white');
+          // isChipColor.current = true;
         } else {
           setChipColor('red');
+          // isChipColor.current = true;
         }
       }, 5000);
 
@@ -39,14 +41,13 @@ const ColorSensorComponent: React.FC = () => {
     <div className="p-2 bg-bgComp h-[100%]">
       <h2 className="font-bold text-white mb-4 text-2xl">반출 된 칩 색깔</h2>
       <div className="flex items-center justify-center">
-        {/* {chipColor && ( */}
-        <img
-          // src={chipColor === 'white' ? whiteChipImage : redChipImage}
-          src={redChipImage}
-          alt="Chip Color"
-          className="w-36 h-36"
-        />
-        {/* )} */}
+        {chipColor && (
+          <img
+            src={chipColor === 'white' ? whiteChipImage : redChipImage}
+            alt="Chip Color"
+            className="w-36 h-36"
+          />
+        )}
       </div>
     </div>
   );
