@@ -26,7 +26,7 @@ export const DefaultLayout = (): JSX.Element => {
   const [selectedFactory, setSelectedFactory] = useState<number | null>(null); // 선택된 공장 상태
   const currentTime = useCurrentTime();
   const WebSocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
-  const [socket, notifications] = useNotificationSocket('http://localhost:3000', user.id);
+  const [socket, notifications] = useNotificationSocket(WebSocketServerUrl, user.id);
   const [userNotifications, setUserNotifications] = useState<
     Array<{ id: number; content: string; createdAt: string }>
   >([]);
