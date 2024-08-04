@@ -38,17 +38,45 @@ const ColorSensorComponent: React.FC = () => {
   }, [no1Count]);
 
   return (
-    <div className="p-2 bg-bgComp h-[100%]">
-      <h2 className="font-bold text-white mb-4 text-2xl">반출 된 칩 색깔</h2>
-      <div className="flex items-center justify-center">
-        {chipColor && (
-          <img
-            src={chipColor === 'white' ? whiteChipImage : redChipImage}
-            alt="Chip Color"
-            className="w-36 h-36"
-          />
-        )}
+    <div className="relative w-full h-full">
+      <div
+        className="p-2 bg-bgComp h-[100%]"
+        style={{
+          filter: chipColor ? 'none' : 'blur(5px)',
+          pointerEvents: chipColor ? 'auto' : 'none',
+          width: '100%',
+          height: '100%',
+          zIndex: 1
+        }}
+      >
+        <h2 className="font-bold text-white mb-4 text-2xl">반출 된 칩 색깔</h2>
+        <div className="flex items-center justify-center">
+          {chipColor && (
+            <img
+              src={chipColor === 'white' ? whiteChipImage : redChipImage}
+              alt="Chip Color"
+              className="w-36 h-36"
+            />
+          )}
+        </div>
       </div>
+      {!chipColor && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: '#ffffff',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            padding: '10px',
+            borderRadius: '5px',
+            zIndex: 2
+          }}
+        >
+          <p>인식된 칩이 없습니다.</p>
+        </div>
+      )}
     </div>
   );
 };

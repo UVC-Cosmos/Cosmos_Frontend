@@ -1,14 +1,15 @@
-import { apiInstance, apiInstanceInflux } from '@/api/api';
+import { apiInstance } from '@/api/api';
 import { dummyHistory } from '@/dummy/dummyMember';
 import { IHistory } from '@/interface/historyInterface';
+import { useHistoryQuery } from '@/store/query/useHistoryQuery';
 import { useEffect, useState } from 'react';
 import CSVDownloader from 'react-csv-downloader';
 export const LogPage = (): JSX.Element => {
-  const [history, setHistory] = useState<IHistory[]>([]);
+  const { data: history } = useHistoryQuery();
 
   // csv 데이터 생성.
-  const csvData = dummyHistory.map((entry) => ({
-    cell1: entry.Date,
+  const csvData = history!.map((entry) => ({
+    cell1: entry.date,
     cell2: entry.Statistics['1'],
     cell3: entry.Statistics['2'],
     cell4: entry.Statistics['3'],
@@ -39,18 +40,6 @@ export const LogPage = (): JSX.Element => {
     { id: 'cell12', displayName: '주사위 5' },
     { id: 'cell13', displayName: '주사위 6' }
   ];
-
-  const fetchLog = async () => {
-    try {
-      const response = await apiInstanceInflux.get('/history');
-      setHistory(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  fetchLog();
-  console.log('히스토리', history);
 
   // yyyy-mm-dd 형식을 yyyy.mm.dd 형식으로 변경
   const changeDateFormat = (date: string) => {
@@ -99,58 +88,63 @@ export const LogPage = (): JSX.Element => {
               </th>
             </tr>
             <tr>
-              <th className="w-1/13 border-l-borderGray border-l text-center bg-tableHeader2 text-center">
+              <th className="w-1/13 border-l-borderGray border-l text-center bg-tableHeader2 text-bgComp">
                 생산일자
               </th>
-              <th className="w-1/12 border-l-borderGray border-l text-center bg-tableHeader2 text-center">
+              <th className="w-1/12 border-l-borderGray border-l text-center bg-tableHeader2 text-bgComp">
                 1호기
               </th>
-              <th className="w-1/12 bg-tableHeader2 text-center">2호기</th>
-              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">2호기</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-bgComp text-center">
                 3호기
               </th>
-              <th className="w-1/12 bg-tableHeader2 text-center">1호기</th>
-              <th className="w-1/12 bg-tableHeader2 text-center">2호기</th>
-              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">1호기</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">2호기</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-bgComp text-center">
                 Total
               </th>
-              <th className="w-1/12 bg-tableHeader2 text-center">1</th>
-              <th className="w-1/12 bg-tableHeader2 text-center">2</th>
-              <th className="w-1/12 bg-tableHeader2 text-center">3</th>
-              <th className="w-1/12 bg-tableHeader2 text-center">4</th>
-              <th className="w-1/12 bg-tableHeader2 text-center">5</th>
-              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-center">6</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">1</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">2</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">3</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">4</th>
+              <th className="w-1/12 bg-tableHeader2 text-bgComp text-center">5</th>
+              <th className="w-1/12 border-r-borderGray border-r bg-tableHeader2 text-bgComp text-center">
+                6
+              </th>
             </tr>
           </thead>
           <tbody>
-            {dummyHistory.map((entry, index) => (
-              <tr
-                key={index}
-                className={index === dummyHistory.length - 1 ? 'border-b border-b-borderGray' : ''}
-              >
-                <td className="border-l-borderGray border-l text-center">
-                  {changeDateFormat(entry.Date)}
-                </td>
-                <td className="border-l-borderGray border-l text-center">
-                  {entry.Statistics['1']}
-                </td>
-                <td className="text-center">{entry.Statistics['2']}</td>
-                <td className="border-r-borderGray border-r text-center">
-                  {entry.Statistics['3']}
-                </td>
-                <td className="text-center">{entry.Defect.machine1DefectRate}</td>
-                <td className="text-center">{entry.Defect.machine2DefectRate}</td>
-                <td className="border-r-borderGray border-r text-center">
-                  {entry.Defect.totalDefectRate}
-                </td>
-                <td className="text-center">{entry.Dice['1']}</td>
-                <td className="text-center">{entry.Dice['2']}</td>
-                <td className="text-center">{entry.Dice['3']}</td>
-                <td className="text-center">{entry.Dice['4']}</td>
-                <td className="text-center">{entry.Dice['5']}</td>
-                <td className="border-r-borderGray border-r text-center">{entry.Dice['6']}</td>
-              </tr>
-            ))}
+            {history &&
+              history.map((entry, index) => (
+                <tr
+                  key={index}
+                  className={index === history.length - 1 ? 'border-b border-b-borderGray' : ''}
+                >
+                  <td className="border-l-borderGray border-l text-center text-bgComp">
+                    {changeDateFormat(entry.date)}
+                  </td>
+                  <td className="border-l-borderGray border-l text-center text-bgComp">
+                    {entry.Statistics['1']}
+                  </td>
+                  <td className="text-center text-bgComp">{entry.Statistics['2']}</td>
+                  <td className="border-r-borderGray border-r text-center text-bgComp">
+                    {entry.Statistics['3']}
+                  </td>
+                  <td className="text-center text-bgComp">{entry.Defect.machine1DefectRate}</td>
+                  <td className="text-center text-bgComp">{entry.Defect.machine2DefectRate}</td>
+                  <td className="border-r-borderGray border-r text-center text-bgComp">
+                    {entry.Defect.totalDefectRate}
+                  </td>
+                  <td className="text-center text-bgComp">{entry.Dice['1']}</td>
+                  <td className="text-center text-bgComp">{entry.Dice['2']}</td>
+                  <td className="text-center text-bgComp">{entry.Dice['3']}</td>
+                  <td className="text-center text-bgComp">{entry.Dice['4']}</td>
+                  <td className="text-center text-bgComp">{entry.Dice['5']}</td>
+                  <td className="border-r-borderGray border-r text-center text-bgComp">
+                    {entry.Dice['6']}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         {/* CSV 다운로드 버튼 추가 */}

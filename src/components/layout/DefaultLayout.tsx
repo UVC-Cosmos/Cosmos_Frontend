@@ -136,8 +136,11 @@ export const DefaultLayout = (): JSX.Element => {
     <>
       <div>
         <header className="h-[7vh] bg-bgLayout flex justify-between">
-          <div className="ml-4 mt-2 rounded-full overflow-hidden w-12 h-12 bg-white flex items-center justify-center shadow-lg border border-gray-200">
-            <Logo className="w-full h-full object-cover" />
+          <div className="ml-4 mt-2  overflow-hidden   flex items-center justify-center shadow-lg text-white text-2xl font-bold">
+            {/* <Logo className="w-full h-full object-cover" /> */}
+            <div>
+              <p>COSMOSync</p>
+            </div>
           </div>
           <div className="flex flex-row gap-4 m-2 items-center">
             {factories.map((factory) => (

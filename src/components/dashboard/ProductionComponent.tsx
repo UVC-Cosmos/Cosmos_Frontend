@@ -132,10 +132,11 @@ const ProductionComponent: React.FC = () => {
             padding: '10px',
             borderRadius: '5px',
             textAlign: 'center',
-            zIndex: 2
+            zIndex: 2,
+            width: '55%'
           }}
         >
-          <p>호기 별 생산량이 0 입니다.</p>
+          <p>호기 별 생산량이 없습니다.</p>
         </div>
       )}
     </div>

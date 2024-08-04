@@ -8,13 +8,15 @@ import diceImage4 from '../../assets/dice/dice4.png';
 import diceImage5 from '../../assets/dice/dice5.png';
 import diceImage6 from '../../assets/dice/dice6.png';
 import { DiceValueAtom } from '../../atom/mqtt/mqttAtom';
+import { DiceComparisonValueAtom } from '../../atom/mqtt/mqttAtom';
 import { SetDiceValueModal } from '../modal/SetDiceValueModal';
 
 const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: string) => void }> = ({
   sendMessage
 }) => {
   const [diceValue] = useAtom(DiceValueAtom);
-  const [dice, setDice] = useState<string>('0');
+  const [diceComparisonValue] = useAtom(DiceComparisonValueAtom);
+  const [dice, setDice] = useState<string>(diceComparisonValue);
   const [isSettingOpen, setIsSettingOpen] = useState<boolean>(false);
 
   const toggleSetting = () => {
@@ -55,7 +57,7 @@ const DiceValuesComponent: React.FC<{ sendMessage: (command: string, value: stri
           <div className="stat">
             <div className="stat-title text-white">주사위 기준 값</div>
             <div className="stat-value text-center">
-              <p className="text-borderMaterial">{dice}</p>
+              <p className="text-borderMaterial">{diceComparisonValue}</p>
             </div>
           </div>
         </div>

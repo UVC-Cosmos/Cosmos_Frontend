@@ -2,15 +2,15 @@ import { apiInstance } from '@/api/api';
 import { IHistory } from '@/interface/historyInterface';
 import { useQuery } from '@tanstack/react-query';
 
-const fetchHistory = async (date: number): Promise<IHistory[]> => {
-  const response = await apiInstance.get(`/history/:${date}`);
+const fetchHistory = async (): Promise<IHistory[]> => {
+  const response = await apiInstance.get(`/history/`);
   return response.data;
 };
 
-export const useHistoryQuery = (date: number) => {
+export const useHistoryQuery = () => {
   return useQuery<IHistory[]>({
-    queryKey: ['history', date],
-    queryFn: () => fetchHistory(date),
+    queryKey: ['history'],
+    queryFn: fetchHistory,
     enabled: true
   });
 };

@@ -101,10 +101,11 @@ const ChipsValueCountComponent: React.FC = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             padding: '10px',
             borderRadius: '5px',
-            zIndex: 2
+            zIndex: 2,
+            width: '55%'
           }}
         >
-          <p>1호기의 생산량이 0 입니다.</p>
+          <p>1호기의 생산량이 없습니다.</p>
         </div>
       )}
     </div>

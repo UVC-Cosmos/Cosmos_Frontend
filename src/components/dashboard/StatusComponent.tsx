@@ -33,16 +33,19 @@ const StatusComponent: React.FC<{ sendMessage: (command: string, value: string) 
   const handleToggle = (command: string, state: string) => {
     const device = commandMapping[command];
 
-    // 유저가 해당 장치를 제어할 권한이 있는지 확인
-    const hasPermission = userPermissions.some((permission) => permission.id === device.id);
+    if (device) {
+      const hasPermission = userPermissions.some((permission) => permission.id === device.id);
 
-    if (hasPermission) {
-      console.log(`${device.name}를 제어합니다.`);
-      sendMessage(command, state === 'true' ? '0' : '1');
-    } else {
-      // 권한이 없는 경우, 경고를 띄움
-      alert(`권한이 없어 ${device.name}를 제어할 수 없습니다.`);
+      if (hasPermission) {
+        console.log(`${device.name}를 제어합니다.`);
+        sendMessage(command, state === 'true' ? '0' : '1');
+      } else {
+        // 권한이 없는 경우, 경고를 띄움
+        alert(`권한이 없어 ${device.name}를 제어할 수 없습니다.`);
+        return;
+      }
     }
+    sendMessage(command, state === 'true' ? '0' : '1');
   };
 
   return (
